@@ -1,0 +1,74 @@
+---
+title: "GRADUATE STUDENT STAT 840 A2"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 3
+
+## a)
+
+$$
+\hat{\theta} = T(\hat{F}_n) = \frac{\bar{Y}}{\bar{X}} = \frac{\frac{1}{n} \sum_{i=1}^n Y_i}{\frac{1}{n} \sum_{i=1}^n X_i} = \frac{ \sum_{i=1}^n Y_i}{ \sum_{i=1}^n X_i}
+$$
+
+```{R}
+x = c(76, 138, 67, 29, 381, 23, 37, 120, 61, 387, 93, 172, 78, 66, 60, 46, 2, 507, 179, 121, 50, 44, 77, 64, 64, 56, 40, 40, 38, 136, 116, 46, 243, 87, 30, 71, 256, 43, 25, 94, 43, 298, 36, 161, 74, 45, 36, 50, 48)
+
+y = c(80, 143, 67, 50, 464, 48, 63, 115, 69, 459, 104, 183, 106, 86, 57, 65, 50, 634, 260, 113, 64, 58, 89, 63, 77, 142, 60, 64, 52, 139, 130, 53, 291, 105, 111, 79, 288, 61, 57, 85, 50, 317, 46, 232, 93, 53, 54, 58, 75)
+
+theta_hat = sum(y) / sum(x)
+theta_hat
+```
+
+## b)
+
+```{R}
+n = length(x)
+
+jack = rep(NA, n)
+for (i in 1:n)
+{
+  jack[i] = sum(y[-i]) / sum(x[-i])
+}
+theta_bar = mean(jack)
+theta_jack = n*theta_hat - (n-1)*theta_bar
+theta_jack
+
+par(mfrow = c(1,2))
+plot(jack, xlab="i", ylab="theta-hat_(-i)")
+idx = c(17, 26, 35, 42)
+abline(v=idx, col="blue")
+boxplot(jack)
+x[idx]
+y[idx]
+```
+
+We can use a boxplot to isolate the outliers. The first 3 points are outliers from below, meaning that removing the point makes Y lower and X higher. This means the points themselves have Y high, and X low. This corresponds to cities that show large growth. Plotting Y/X confirms this.  Including these points brings the average ratio much higher due to their large growth.
+
+```{R}
+par(mfrow = c(1,1))
+plot(y/x)
+abline(v=c(17, 26, 35), col="blue")
+```
+
+The other outlier is from above, meaning removing it makes the estimate become higher. This city has a high population but its growth ratio is 1.06, much smaller than $\hat{\theta}$ at 1.23, so its inclusion brings the average down.
+
+```{R}
+y[42] / x[42]
+```
+
+## c)
+
+```{R}
+se_jack = sqrt(((n-1) / n) * sum((jack - theta_bar)^2)) # notes 3 p 20
+ci_jack = c(L=theta_hat + qnorm(0.025)*se_jack, U=theta_hat + qnorm(0.975)*se_jack)
+round(ci_jack, 4)
+```
+
+
+

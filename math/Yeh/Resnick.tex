@@ -1,0 +1,2317 @@
+\documentclass{article}
+\usepackage{amsmath} 
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{enumitem} % http://ctan.org/pkg/enumitem
+%\doublespacing 
+\linespread{1.25}
+\addtolength{\oddsidemargin}{-1.7in}
+\addtolength{\evensidemargin}{-1.7in}
+\addtolength{\topmargin}{-1.5in}
+\addtolength{\textheight}{1.75in}
+\renewcommand{\labelitemi}{$\rightarrow$}
+\renewcommand{\labelitemii}{$\rightarrow$}
+\renewcommand{\labelitemiii}{$\rightarrow$}
+\renewcommand{\labelitemiv}{$\rightarrow$}
+
+
+
+\begin{document}
+\begin{flushleft}
+
+\section*{0. Another day, another reason to kill myself.}
+\bigbreak
+\hrule
+\bigbreak
+
+UPDATE: after 2 days, I am abandoning this project. I found out the solution manual is partial. I apologize for not checking first. I already tried this with Rosenthal, and I felt like I was learning nothing. I was not even getting the questions with answers correct. I do not have the mathematical background to self-check everything. The only positive learning experience I had in math, was working through Abbott and checking each and every question as I go along. I got about 80 percent of them correct, and I even tried the proofs before reading them. That was a long journey but I felt like I actually learned something. It looks like there are no good books on probability after all, they are either too hard or have partial solutions manuals. The only thing left to do (aside from giving up completely) is to study Real Analysis. Ash's book is also partial. Capinski's book has full solutions... but let's be real lol. Durrett has full solutions ironically. Maybe I can unironically use him after I learn measure theory. Grimmett seems to be "actual probability", meaning when you spend your entire class time doing measure theory, and on the test see bullshit about what's the mean of RV X1 * X2, these are the type of questions. Royden has full solutions, but I prefer Yeh. Rudin too. Schilling too. It seems a lot of real analysis books actually care about the person learning. Well I truly do not know what to do now. I am absolutely not going to do exercises from a partial book because I want to be in 100 percent, or not at all. It is true that Resnick and Ash might be the most readable introductions. But to learn, I must do problems. Ok maybe I won't abandon Resnick completely. But I will not be doing problems from here, and getting a half-assed experience. My requirement is to do a bunch (300-500, but not 1000+) problems from a book to learn the subject. There seem to be a lot of Real Analysis books with complete solutions, and Royden/Yeh/Schilling are my favorites, but I will go with Yeh due to flying amazon reviews. I guess I can learn probability afterwards... Which is fine, real analysis is more fundamental anyways. Interesting: I finished question number 3 in Resnick and wanted to know if I did it right. So I opened the solutions manual, only to find out it is partial and has no solution. And when I checked Yeh, the first question is exaclty the same (but way more thorough) and has solutions to all. It is a sign! In review: there are literally zero probability books worth working through completely, but at least 4 good books on hard core real analysis. So I shall do that, specifically with Yeh. I do not know what to do about Probability. Most likely I will read a book without doing problems, like Resnick or Ash. Grimmett and Durrett have complete solutions (but they are intense. BUT i may be ready for them after Yeh) so that may be an option. 
+
+\qquad Alright Goys and Birls. We are embarking on a new quest to learn probability, this time from the book by \emph{Resnick}. The question of interest is, how many chapters will I get through until I give up again? This time we have motivation. 
+
+\qquad I was looking for a list of problems to do, when a R*dditor mentioned that anyone who does well on quals, does all the problems, at least once. Saying you get it, but doing the 15 problems assigned per semester for homework, is lying to yourself. 
+
+\qquad I postulate that probability is a subject worth knowing in and out. Every result in statistics stems directly from measure theory. All results in machine learning stem from convergence concepts in statistics. If you look at any \emph{big boi} book on statistics, like Casella and Romano, or machine learning, like PRML, then you may wonder ``what are the prerequisites to understanding this shit? What path of suffering must I traverse before I can tackle these problems, without the nagging voice telling me that I am not ready?'' well, the prerequisite is measure theoretic probability. 
+
+\qquad Back when I actually cared about statistics, I was fascinated by how CLT and LLN are mathematical laws that govern macro behavior in the real world. It is proof that our system of \emph{meaningless symbols} is useful enough to capture these natural phenomena. In physics, we model planetary motion, but the model keeps changing to become more accurate by incorporating things like dark matter. Without being a physician, one can still feel like a \emph{purveyor of truth} by assigning Normal Distributions to everything. 
+
+\qquad Measure theory will make you understand once and for all, why everything follows the Normal Distribution. Then you can feel like a \emph{God of this new world} by visualizing particles assembling into things that follow the CLT. Other books with solutions include Capinski, which is too light, and Ash, which looks really good but a bit dense, a possible follow up if I ever finish a first book. Schilling is an amazing book but only for measure theory. It deserves the Pulitzer prize. 
+
+\qquad These notes are going to be my thoughts and prayers as I read along the book. Since I don't feel like re-typesetting the entire book, most of it will be my text notes. But hopefully I can typeset important ideas in a way that they are more rememberable.
+
+
+
+\section*{1.1 What we wish to learn.}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{LLN.} The sample average converges to the mean. WTF is convergence? if $X_i$ is an indicator for event A, then the average is the probability of event A: number of times A occured, divided by the total, $n$. LLN justifies frequentism and statistical estimation, in particular consistency, saying an estimator gets closer to the true value as $n$ tends to infinity. Fuck you, Bayes.
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{CLT.} Sample averages are Normal.
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Martingales.} Don't care, and neither should you.
+
+\bigbreak
+
+\section*{1.2 Another book, another intro to Set Theory.}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{$\Omega$ - sample space} - set of points which are outcomes of experiment
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{events} - subsets of $\Omega$, collections of simple events [points of $\Omega$]
+
+\bigbreak
+
+If you have a PhD in Set Theory, you can make a set and rotate it in a way so that the rotated set has twice the volume [see Vsauce: Banach-Tarski]. Now we have to muck around with smegma-algebras to avoid these bad sets. 
+
+\bigbreak
+
+We construct complex events from simple ones by manipulating sets. 
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Duality between sets and functions}: union and intersection of sets translates to addition and subtraction of numbers. This is because we integrate functions over sets, yielding a number. Taking the integral [expectation] of a function [random variable, but really indicator in this case] equates to computing the probability of an event [measure, size of the set].
+
+\bigbreak
+
+Two functions are equal iff $f \leq g$ and $g \leq f$
+
+\section*{1.3 Limits of Patience}
+\bigbreak
+\hrule
+\bigbreak
+
+We have events as subsets of $\Omega$. We shall have sequences of events. These sequences may have limits. These limits will determine whether functions converge. 
+
+\bigbreak
+
+\[
+    \inf_{k \geq n} A_k = \bigcap_{k = n}^{\infty} A_k \qquad \sup_{k \geq n} A_k = \bigcup_{k = n}^{\infty} A_k
+\]
+
+We have a sequence of sets, picture a sequence of blogs. We prune it by removing the first $n$ items. The infimum is the intersection of the tail, supremum is the union of the tail.
+
+\[
+    \liminf_{n \rightarrow \infty} A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k \qquad \limsup_{n \rightarrow \infty} A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k
+\]
+
+As union means there exists, and intersection means forall, liminf becomes ``there exists $n$ such that forall $k \geq n$ the thing is present'' meaning the thing occurs all the time after $n$. which can be visualized like this:
+
+\begin{verbatim}
+    ___***____*_______**__*________********************* (inf)
+                                   |
+                              specific n
+\end{verbatim}
+
+limsup becomes ``for each $n$, there exists some $k \geq n$ where the thing is present'' meaning the thing is always present somewhere down the line. 
+
+\begin{verbatim}
+    _____________ . . . _________*_________ (sup)
+        |                        |
+      any n                    thing
+\end{verbatim}
+
+TODO: elaborate. link is indicator, turning set into number
+
+https://math.stackexchange.com/questions/2442005/intuition-on-limit-sup-and-inf-for-sequences-of-sets
+
+\bigbreak
+
+Limit of set sequence: liminf = limsup
+
+\bigbreak
+
+Note that limsup and liminf are defined first, then limit is defined in terms of limsup and liminf. Then we show that the limit of the infimum equals liminf. 
+
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{example 1.3.1}
+
+\begin{verbatim}
+	liminf [0, n/(n+1) ) = limsup [0,n/(n+1) ) = [0,1)
+	to check 2 sets equal, show A in B and B in A.
+	=> if x in liminf, x in U n Int k=n Ak
+    if x in the union, there exists n such that x is in that set. 
+    then x is in int_k=n^inf Ak
+    so there is some n, and forall k>n, x in Ak.
+    so there is some n, and forall k>n, x in [0, k/(k+1) )
+        so x in [0, k/(k+1) ) forall k>n
+        so x in [0,1)
+	<= if x in limsup, for every n, x in U_k=n^inf Ak
+    for every n, there exists k>n such that x in Ak
+    for every n, there exists k>n such that x in [0, k/(k+1) )
+    as n -> inf, k -> inf since k>n, thus k/(k+1) -> 1
+    thus x in [0,1)
+	[so basically liminf says after some n, x is in all Ak]
+	[and limsup says that for each n, x in some further Ak]
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Lemma 1.3.1}
+
+\bigbreak
+
+limsup says that it is the set of points which occur infinitely often in the sequence. so picture sequence $A_n$ as a sequence of blobs, each blob is a set. sum of indicators over all $A_n$ says that we check if x is in each $A_n$, and contribute 1 if it is, 0 otherwise. the sum is infinity so x is in an infinite number of $A_n$s. Thus there is an infinite subsequence $A_{n_k}$ where x occurs.
+
+\bigbreak
+
+liminf says it is the set of points that are in all $A_n$ except a finite number. so the inficators over all $A_n^c$ will be finite, since it doesn't occur in only a finite number. Also write it as the set of all points in all $A_n$ after the initial $n$.
+
+\begin{verbatim}
+    
+proof: 
+
+a) =>   
+    w in limsup 
+    for every n, w in U_k>n Ak 
+    so for all n, there exists k_n >= n 
+        such that w in A_k_n
+    
+    sum_j=1^inf I_A_j (w) >= sum_n I_A_k_n (w) = inf 
+
+    so w in { w : sum_n I_A_n (w) = inf }
+    limsup An in { w : sum_n I_A_n (w) = inf }
+    
+[for each n, w in some further set, say A_n_k.
+thus sum over all n is sum of 1's = infinity.
+since this is a subsequence, its sum is less than
+if we sum over all An. So all An must be >= infinity.
+thus w, and limsup, belong to the set of points 
+whose indicators sum to infinity]
+
+    <=
+    w in { w : sum_n I_A_n (w) = inf }
+
+    then there exists k_n -> inf such that w in A_k_n
+    [take the subsequence of everywhere where w occurs]
+
+    thus forall n, w in U_j>=n Aj
+        (this is limsup)
+    thus { w : sum_n I_A_n (w) = inf } subset of limsup An
+    
+[basically map each occurence to the corresponding n, 
+so first occurence to 1,second to 2, and so on. 
+since these occurences occur at index >= i, then the
+i^th occurence occurs after >= i. 
+thus w in A_k_n => w in U_j>=n]
+
+[if w belongs to the set of points whose indicators
+sum to infinity, indicators are 0 or 1, so there is 
+an infintie subsequence kn of these which are 1, 
+then work backward to construct the def of limsup]
+
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{$\liminf \subset \limsup$}: if $x$ in liminf, then $x$ is in all but a finite number of sets. so it occurs infinitely often, after $n$. which is what limsup says. but limsup is more general and implies there may be gaps between occurences, and in this case, there are none.
+
+\bigbreak
+
+so if $x$ in liminf, for the finite number of sets $1..(n-1)$ where it doesn't occur, pick $n$ as the further number where $x$ occurs. For the rest of the numbers $i$, pick $i$. this way we defined it in terms of limsup, for each number we gave a further number where it occurs. 
+
+\bigbreak
+
+The other direction doesn't work because if $x$ in limsup, we would need to find a number such that x occurs in every set after that number. but that is not given. we only have that it occurs some time later.
+
+\[ 
+    (\liminf_{n \rightarrow \infty} A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k)^c = \limsup_{n \rightarrow \infty} A_n^c = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k^c
+\]
+
+Just apply DeMorgan twice.
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{why bother?}
+
+\bigbreak
+
+say for a sequence of functions $X_n$ we want to show $X_n \rightarrow X$ almost surely: $P( \{ \omega : \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega) \} ) = 1$
+
+\bigbreak
+
+[the measure of the set where the limit of $X_n$ coincides with $X$ is equal to 1]
+
+\bigbreak
+
+the criterion for this is that $P( \{ |X_n-X| > \epsilon \}$ i.o. $) = 0 \quad \forall \epsilon > 0$
+
+\bigbreak
+
+[the map of $\Omega$ under $X_n$ and $X$ is going to be some sequence $A_n$ and $A$ say. the measure of the part of $\Omega$ whose map $A_n$ is different from $A$ by $\epsilon$ for many further $n$ is 0. so the points of $\Omega$ that $X_n$ maps to a value greater than $\epsilon$ of the $X$ map, for many further $n$ [infintiely often], has measure 0, meaning no intervals]
+
+\bigbreak
+
+with $A_n = \{ |X_n-X|>\epsilon \}$ we check $P( \limsup A_n ) = 0$
+
+\bigbreak
+
+[imagine a landscape of blobs, signifying where $X_n$ is different from $X$. if limsup has measure 0, these blobs [points that keep occuring as $n$ goes to infinity] should be discrete points, and no intervals]
+
+\bigbreak
+
+\section*{1.4 Monotonicity in sets and life}
+\bigbreak
+\hrule
+\bigbreak
+
+Monotone sequences of sets always have limits. Non-decreasing if $A_1 \subset A_2 \subset \dotsb$
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Prop 1.4.1}
+\begin{verbatim}
+(An) monotone seq of subsets
+    1) if An ^, then lim_n->inf An = Un An
+    2) if An v, then lim_n->inf An = int An
+
+also, for any sequence Bn, 
+    inf_k>=n Bk ^
+        [intersection of sets after n
+        intersection of less sets can only get bigger]
+    sup_k>=n Bk v
+        [union of sets after n,
+        union of less sets can only get smaller]
+
+inf_k>=n Bk is intersection of all Bk after n.
+it is increasing because int of less sets gets larger. 
+it is monotone and its limit is the union over n.
+thus liminf Bn = lim_n->inf (inf_k>=n Bk)
+
+sup_k>=n Bk is union of all Bk after n.
+it is decreasing because union of less sets gets smaller.
+it is monotone and its limit is the int over n.
+thus limsup Bn = lim_n->inf (sup_k>=n Bk)
+
+proof:
+
+1) WTS: liminf An = limsup An = U An
+
+An increasing, know Aj in Aj+1
+    int_k>n Ak = An
+
+therefore liminf An = Un (int_k>n Ak) = U An
+
+likewise,
+
+limsup An = int_n U_k>n Ak   subset of   U_k>1 Ak 
+    (since at n=1 it is the largest union)
+    = U An   
+    = liminf An (which we deduced just above)
+    subset limsup An   (liminf subset of limsup)
+
+thus limsup An   subset U An   subset limsup An
+thus limsup An = U An = liminf An
+
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Example 1.4.1}
+
+\begin{verbatim}
+lim_n->inf [0, 1-1/n] 
+    as n->inf, we get [0, 1-e]
+    this is increasing so limit is union, which is [0,1)
+	
+lim_n->inf [0, 1-1/n)
+    as n->inf, we get [0, 1-e)
+    this is increasong so limit is union [0,1)
+	
+lim_n->inf [0, 1+1/n]
+    as n->inf we get [0, 1+e]
+    this is decreasing, so limit is int [0,1]
+	
+ lim_n->inf [0, 1+1/n)
+    as n->inf we get [0, 1+e)
+    this is decreasing, so limit is int [0,1]
+
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Parallels between sets and functions}
+
+\begin{verbatim}
+1. 
+    I_(inf_n>=k An) = inf_n>=k I_An
+
+LHS is 1 if x in inf_n>=k An, meaning 
+x in the intersection of all An after k,
+meaning x in all An after k. so their 
+indicators are 1, and RHS is 1. 
+if RHS is 1, x in all An after k.
+so its in the intersection, which is set-infimum, so LHS is 1.
+
+    I_(sup_n>=k An) = sup_n>=k I_An 
+
+LHS indicates that x is in the union of all An after k
+RHS says that the indicator of some An after k is 1. 
+
+2. 
+    I_(Un An) <= sum_n I_An
+
+if sequence is disjoint, they are equal since RHS can 
+only be 1 since x is in only one An.
+LHS is 0 only if x is not in any An, 
+then all indicators are 0. 
+if x in at least some An, then LHS is 1 and RHS is 1 or more.
+
+3. 
+    I_(lim sup An) = limsup I_An
+
+LHS is 1 if x in limsup, or the union of Ans after k 
+RHS is limsup applied to NUMBER SEQUENCE from calculus.
+limsup of number seq is the limit of supremum of 
+    sequence as n->inf 
+so it is 1 if x occurs somewhere after n
+it is 0 if x never occurs after n
+
+    I_(liminf An) = liminf I_An
+
+LHS is indicator that x is in liminf, the interseciton 
+    of all sets after k
+RHS is liminf of number seq
+it is 0 if x ever doesn't occur in the number sequence.
+it is 1 if x is always in An after k.
+
+4. 
+    I_(A triangle B) = I_A + I_B mod 2
+
+LHS is indicator that x is in A or B but not both
+RHS is 1 if x in A or B, 0 if it is in neither or both
+
+note (3) follows from (1) because 
+
+    I_(limsup An) = I_(inf_n>=1 sup_k>=n Ak)
+
+know limsup An = lim_n->inf sup_k>n Ak
+know (sup_k>n Ak) is decreasing set (union of less and less sets)
+so limit is intersection over all n, denoted inf 
+
+REMINDER: the leftmost union/int in liminf/limsup if just 
+a way to say limit as n->inf. The rightmost int/union is a
+increasing/decreasing set so its limit is union/int.
+
+    apply (1), replacing An with sup_k>n Ak
+        thus we switch the indicator and inf to get:
+        inf_n>1 I_{sup_k>n Ak}
+    apply (1) again, switching indicator and sup:
+        inf_n>1 sup_k>n I_{Ak}
+        = limsup I_An   <- limsup FOR NUMBER SEQUENCE
+
+[the def for limsup is inf/sup (smallest supremum)]
+[the def for liminf is sup/inf (largest infimum)] - wikipedia
+
+proof:
+1) 
+    I_(inf_n>k An) = 1   
+    iff   w in inf_n>k An = int_n=k^inf An
+        means w in An for all n >= k
+        means I_An (w) = 1 for all n>=k
+    iff   inf_n>k I_An (w) = 1     
+        number sequence of 1, so its inf is 1
+
+\end{verbatim}
+
+
+\section*{1.5 Clojure}
+\bigbreak
+\hrule
+\bigbreak
+
+a collection of subsets $\mathfrak{C}$ is \emph{closed} under a set operation, if we take any of its elements, perform the set operation, and get a result which is still in $\mathfrak{C}$.
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Example 1.5.1}
+
+$\mathfrak{C}$ is finite intervals. It is not closed under unions because we can take a union of intervals $[1,2] \cup [3,4]$ which has a gap, and is thus not an interval. But it is closed under intersections because an intersection will be an interval.
+
+\bigbreak
+
+$\mathfrak{C}$ is open subsets. It is not closed under complements since the complement of an open set is closed. 
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{why bother?}
+
+In probability models, we work with events, which are measurable subsets [not all subsets are measurable. Thanks \emph{Ted and your Set Theory PhD}]. We will be manipulating events using union, intersection, complements. It would be nice to know that the result is still a measurable set. So we require that set operations still yield measurable sets. 
+
+\bigbreak
+
+In short, we need scaffolding so we don't accidentally end up with a set that can be calculated to have measure 1 and 2 at the same time. I supposed it is less effort to invent this branch of mathematics, than to invent axiomatic set theory without paradoxes. Mathematics is a social venture and nobody is going to spell out the fact that the crowd is accepting 1 = 2. 
+
+\bigbreak
+
+$\sigma$-Fields will be our collections of events because mathematicians have found them to be sufficient for doing what they want to do in terms of convergence of sequences, while maintaining closure and measurability.
+
+\bigbreak
+
+P.S. we requre that Fields and other classes are non-empty, because if they are empty we can say ``for all $A_n$ in this field, property $P$ holds'' for any property $P$, which is correct in logic. But $\Omega$ is always present, so we can forget about this requirement.
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Field / Algebra}
+
+\begin{itemize}
+    \item $\Omega \in \mathfrak{A}$
+    \item complements 
+    \item finite union
+\end{itemize}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{$\sigma$-Field / $\sigma$-Algebra}
+
+\begin{itemize}
+    \item $\Omega \in \mathfrak{A}$
+    \item complements 
+    \item countable union
+\end{itemize}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{countable / co-countable}
+
+\begin{verbatim}
+Omega = R
+BB = { A in R : A countable } U { A in R : Ac countable }
+
+1) Omega in BB, since Omega-c = nullset is countable
+
+2) A in BB implies Ac in BB  (by symmetry of def)
+
+3) Ai in BB implies int Ai in BB
+    2 cases:
+    a) at least one Ai is countable 
+        so int Ai is countable and hence in BB.
+
+    b) no Ai is countable, so Aic is countable for each i. 
+        so U Aic is countable and
+        (U Aic)c = int Ai in BB
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{field that is not a $\sigma$-field}: $\Omega = (0,1]$
+
+\begin{verbatim}
+AA consists of empty set and 
+finite unions of disjoint intervals (a,a'] 
+with 0 <= a <= a' <= 1    
+1) Omega
+2) complements
+3) finite intersection since int intervals -> interval 
+
+the set given to show that Its not a sigma-algebra is 
+basically a chain of intervals that get smaller and smaller.
+it has a similar structure of gaps between the intervals 
+that also get smaller and smaller. there is no way to write
+this as a finite union, since it is clearly a union of 
+separate intervals with gaps between, and there is an 
+infinite number of them.
+\end{verbatim}
+
+\section*{$\sigma$-field generated by class C}
+\bigbreak
+\hrule
+\bigbreak
+
+$\sigma$-fields cannot be constructed by a countable set of operations on simple sets. only abstraction works: "say this thing exists and has this property. then it has this other property too". how to guarantee a $\sigma$-field exists if it is so abstract?
+
+\begin{verbatim}
+let Op be a set operation, say 'countable union'. 
+
+{CCt for t in T} is an indexed family of subsets
+each CCt is a family of subsets, 
+    and there is one for each t in T.
+for each t, CCt is closed under Op
+
+let CC = int over t in T, CCt
+    this is closed under Op. [not true for unions]
+
+let's verify this for Op = countable union:
+
+    if Bi in CC, then Bi in CCt for all t.
+
+    CCt is closed under Op so UBi in CCt for all t. 
+        -> it is in the intersection.
+        -> intersection is closed under Op.
+
+apply (int closed under Op) to {complement, countable union}
+    -> Cor 1.6.1 intersection of sigma-fields is a sigma-field.
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Def 1.6.1} $\mathfrak{C}$ collection of subsets, the $\sigma$-field generated by $\mathfrak{C}$, denoted $\sigma(\mathfrak{C})$ is a $\sigma$-field, satisfying:
+
+\begin{itemize}
+    \item $\mathfrak{C} \subset \sigma(\mathfrak{C})$
+    \item it's a subset of any other $\sigma$-field containing $\mathfrak{C}$ \hfill \texttt{[minimality]}
+\end{itemize}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Prop 1.6.1 Existence}
+
+\begin{verbatim}
+CC class of subsets, there is unique sigma-field containing CC.
+
+proof:
+
+let NN = { BB : BB is a sigma-field, CC subset BB }
+    be the set of all sigma-fields containing CC. 
+    NN not empty since Powerset is one such sigma-field.
+
+let BB# = int BB 
+    each BB is sigma-field -> so is BB# 
+    each BB contains CC -> BB# contains CC
+    minimality: any other sigma-field containing CC would 
+        be in NN, hence BB# is a subset of it.
+    
+thus BB# = sigma(CC)
+
+[CC is in BB# because BB# is intersection of all sigma fields 
+    containing CC, thus intersection contains CC]
+[BB# is smallest sigma-field because for any sigma-field 
+    containing CC, BB# is its subset due to it being the 
+    intersection of all sigma-fields containing CC.]
+
+in a probability model we start with some class of measurable 
+sets, say intervals (0,1], and P is length. When we need to do a 
+countable number of set operations, this can take us outside our 
+collection, but not outside the sigma-algebra. Measure theory 
+says if out class is measurable, so is its sigma-algebra.
+\end{verbatim}
+
+\section*{Borel sets on $\mathfrak{R}$}
+\bigbreak
+\hrule
+\bigbreak
+
+\begin{verbatim}
+Omega = R, CC = (a,b] for -inf <= a <= b <= inf
+
+let Borel(R) = sigma(CC)
+    be Borel subsets of R, sigma-field generated by intervals.
+
+equivalent generating sets:
+    sigma((a,b))  -inf <= a <= b <= inf
+    sigma([a.b))  -inf <  a <= b <= inf
+    sigma([a,b])  -inf <  a <= b <  inf
+    sigma((-inf, x]) for x in R
+    sigma(open subsets of R)
+
+sample proof:
+    CC() is open intervals (a,b)
+    CC(] is half open intervals (a,b]
+    WTS: sigma CC() = sigma CC(]
+
+    note (a,b) = U (a, b - 1/n ]
+        -> (a, b - 1/n ] in CC(]
+        -> U (a, b - 1/n ] in sigma CC(]
+        -> (a,b) in sigma CC(]
+        -> CC() subset sigma CC(]
+        -> sigma CC()   subset   sigma cc(]
+
+[we showed the elements of CC() are in it, and it is 
+a sigma-field, so it contains the minimal sig-field]
+
+converse: (a,b] = int (a, b + 1/n)
+    -> (a, b + 1/n) in CC()
+    -> int (a, b + 1/n) in sigma CC()
+    -> (a,b] in sigma CC()
+    -> CC(]   subset   sigma CC()
+    -> sigma CC(]   subset   sigma CC()
+
+sample proof Borel(R) = sigma(open sets in R)
+
+    from real analysis: O subset R is open, 
+    O = U_j=1^inf I_j 
+        I_j are open disjoint intervals
+
+    [any open set is a countable union of 
+    open disjoint intervals]
+
+    O = U_j=1^inf I_j
+        -> I_j in CC()
+        -> U I_j in sigma CC()
+        -> O in sigma CC()
+        -> sigma(open sets)   subset   sigma CC()
+
+conversely, (a,b) is open set
+    -> CC()   subset   sigma(open sets)
+    -> sigma CC()   subset   sigma(open sets)
+
+Remark:
+    E is metric space, Borel(E) is sigma-field 
+    generated by open subsets of E. such as:
+    - R, real numbers
+    - Rd, d-dim Euclidean space
+    - Rinf, sequence space: space of all real sequences
+    - C[0,inf) space of continuous functions on [0,inf)
+        
+\end{verbatim}
+
+\section*{Comparing Borel Sets}
+\bigbreak
+\hrule
+\bigbreak
+
+
+\begin{verbatim}
+Borel(R) is sigma-field generated by intervals of R.
+Borel(0,1] should be sigma-field of subintervals of (0,1]
+
+if a set A from Borel(R) is a subset of (0,1] 
+    we would hope it is in Borel((0,1]). this is true:
+
+Thm 1.8.1  Omega0   subset   Omega
+
+    1) 
+        BB is sigma-field of Omega
+        BB0 := { A int Omega0 : A in BB } 
+            is sigma-field of Omega0.
+            write: BB int Omega0 
+
+[take each set from sigma field and intersect it with Omega0. 
+result is still a sigma-field]
+
+    2) 
+        CC class of subsets of Omega
+        CC0 := CC int Omega0 = { A int Omega0 : A in CC }
+        then sigma(CC0) = sigma(CC) int Omega0
+        or:  sigma( CC int Omega0 ) = sigma(CC) Int Omega0
+
+        specializing to Borel we get
+            Borel(0,1] = Borel(R) int (0,1]
+
+[BB0 is a sigma-field of subsets of Omega0, 
+meaning Omega0 is the 'main set']
+
+proof:
+
+first, show that a sigma-field intersected with a set
+is still a sigma-field:
+
+    i) Omega in BB
+        intersect with Omega0, get Omega0
+        Omega0 in BB0
+
+    ii) if B in BB0   WTS [Omega0 \ B in BB0] 
+        Omega0 \ B
+        Omega0 \ (A int Omega0)
+        Omega0 int (A int Omega0)c
+        Omega0 int (Ac U Omega0-c)
+        Omega0 int (Ac)    
+            know Ac in BB, so this thing is in BB0
+
+    iii) 
+        Bn = An int Omega0 for An in BB
+        U Bn = U (An int Omega0) = (U An) int Omega0   
+            in BB0, since U An in BB
+
+second, show that sigma-field intersected with a set is same as 
+intersecting the set with the generating class, and then taking 
+sigma operation: sigma(CC int Omega0) = sigma(CC) int Omega0
+
+->
+    CC   subset   sigma(CC)
+
+    { A : A in CC }   subset   
+    { A : A in sigma(CC) }
+
+    { A int Omega0 : A in CC }   subset   
+    { A int Omega0 : A in sigma(CC) }
+
+    CC int Omega0   subset   sigma(CC) int Omega0
+
+[for each A in CC, sigma(CC) contains it
+thus for each A in CC, if we intersect it with Omega0, 
+then the corresponding set from sigma(CC) intersected 
+with Omega0 is still the same. 
+so sigma(CC) int Omega0 contains it.]
+
+    from part 1, know RHS is sigma-field
+        it contains minimal sigma-field generated by LHS
+        sigma(CC int Omega0)   subset   sigma(CC) int Omega0
+
+<-
+    WTS: sigma(CC) int Omega0   subset   sigma(CC0)
+
+    let GG = { A in Omega : A int Omega0 in sigma(CC0) }
+        = { A : A int Omega0 in sigma(CC0) }
+        WTS sigma(CC)   subset   GG
+
+[the trick here is that by showing sigma(CC)  subset  GG, 
+we will show that every element of sigma(CC) contains 
+GG's property: that if we intersect its sets with Omega0, 
+they will be in sigma(CC0), which we wanted to show originally. 
+thus we 'translate' the proof obligation into set theory]
+
+    for A in CC:
+        -> A int Omega0 in CC0
+        -> A int Omega0 in sigma(CC0)
+        -> A in GG   (by def of GG)
+        -> CC   subset   GG
+
+GG is a sigma-field
+
+    i) Omega int Omega0 = Omega0 
+            -> Omega0 in sigma(CC0)
+            -> Omega in GG
+
+    ii) A in GG
+            Ac int Omega0
+            (Omega \ A) int Omega0
+            Omega0 \ (A int Omega0)
+            (A int Omega0) in sigma(CC0)  (A in GG)
+            Omega0 \ (A int Omega0) in sigma(CC0) (complements)
+            Ac in GG.
+
+    iii) An in GG
+            (U An) int Omega0 = U (An int Omega0)
+            (An int Omega0) in sigma(CC0)  (An in GG)
+            U (An int Omega0) in sigma(CC0) (count union)
+            U An in GG
+
+so GG is sigma-field containing CC
+    sigma(CC)   subset   GG
+    sigma(CC) int Omega0   subset   sigma(CC0)
+\end{verbatim}
+
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{Cor 1.8.1}
+
+\begin{verbatim}
+if Omega0 in sigma(CC) then 
+
+sigma(CC0) = {A : A subset Omega0, A in sigma(CC)}
+
+[this says that the sigma-field intersected with Omega0
+is exactly the elements of the original sigma-field which
+are subsets of Omega0]
+[we know LHS is created by intersecting with Omega0. but 
+RHS is an actual subcollection of sigma(CC). so for the 
+RHS to know about the structure of Omega0, it needs to 
+be present, hence the original requirement that Omega0 in 
+sigma(CC). Additionally, the intersection done by the sigma
+operation will implicitly create sigma(CC int Omega0) 
+inside of it!!!]
+
+proof:
+
+sigma(CC0)
+sigma(CC) int Omega0
+{ A int Omega0 : A in sigma(CC) }
+{ B : B in sigma(CC), B  subset  Omega0 }    
+
+mini proof to show last 2 sets are the same:
+    RHS subset LHS 
+        if X in RHS, 
+            then X in sigma(CC) 
+            and X subset Omega0 
+        then X in sigma(CC)
+        X int Omega0 = X 
+        thus X in LHS (replace A by X and it works)
+    LHS subset RHS
+        if X in LHS, X = A int Omega0 for A in sigma(CC)
+        Omega0 in sigma(CC) (given)
+        thus X in sigma(CC) (intersection)
+        and X subset Omega0 (since X = A int Omega0)
+
+[instead of taking intersection with Omega0, we require 
+that the set is a subset of Omega0]
+[if Omega0 was not in sigma(CC), then we would not be sure 
+whether A int Omega0 would still be in sigma(CC).]
+
+thus Borel sets on (0,1] are just Borel sets from R, 
+which happen to be subsets of (0,1]
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{1.9 Exorcising my ignorance}
+
+\begin{verbatim}
+1. Omega = {0,1}
+    CC = {{0}}
+    sigma(CC) = {{0}, {1}, nullset, {0,1}}
+        contains the elements of CC {0}, then 
+        by complements Omega \ {0} = {1}
+        by intersection {0} int {1} = nullset 
+        by union {0} U {1} = {0,1} = Omega
+    the smallest sigma-algebra is the power set,
+        so there can't be any other sigma-algebras 
+
+2. Omega = {0,1,2}
+    sigma(CC) = {{0},{1,2},nullset,{0,1,2}}
+        contains elements of CC {0}
+        by complement, Omega \ {0} = {1,2}
+        by int, {0} int {1,2} = nullset 
+        by union, {0} U {1,2} = Omega
+    Note how we don't have a way to refine the 
+        "other" stuff, {1,2}, it is just a chunk
+        made by complements. 
+    a larger sigma-algebra can contain {1} or {2},
+        and by complement from {1,2} it automatically
+        includes the other singleton. 
+        so by complements we get all size-1 subsets.
+        by union we get all other size sets, meaning 
+        the Power set.
+    so we can have 2 sigma-algebras this way. 
+
+3.
+    LHS: int_n U_k>n (Ak U Bk)
+    RHS: (int_n U_k>n Ak) U (int_m U_j>m Bj)
+    ->
+    if x in LHS,
+        foreach n, x in U_k>n (Ak U Bk)
+        foreach n, there exists k>n, st x in (Ak U Bk)
+            x in either Ak or Bk:
+            if x in Ak, then it is true that:
+                there exists k>n, st x in Ak
+                x in U_k>n Ak
+            if x in Bk, then it is true that:
+                there exists k>n, st x in Bk
+                x in U_k>n Bk
+            thus x in (U_k>n Ak) U (U_k>n Bk)
+        foreach n, x in [(U_k>n Ak) U (U_k>n Bk)]
+        x in int_n [(U_k>n Ak) U (U_k>n Bk)]
+        x in [int_n (U_k>n Ak)] U [int_n (U_k>n Bk)]
+        x in limsup An U limsup Bn 
+    <-
+    if x in RHS, 
+        x in limsup An or x in limsup Bn 
+        if x in limsup An, 
+            x in int_n U_k>n Ak 
+            foreach n, x in U_k>n Ak 
+            foreach n, there exists k>n st x in Ak
+            foreach n, there exists k>n st x in (Ak U Bk)
+        if x in limsup Bm,
+            x in int_m U_j>m Bj
+            foreach m, x in U_j>m Bj
+            foreach m, there exists j>m st x in Bj
+            foreach m, there exists j>m st x in (Aj U Bj)
+            re-naming:
+            foreach n, there exists k>n st x in (Ak U Bk)
+        holy shit i just used OR ELIMINATION unironically
+        thus x in limsup (An U Bn)
+
+    if An -> A, Bn -> B, 
+        A = liminf An = limsup An 
+        B = liminf Bn = limsup Bn
+        
+        WTS: limsup (An U Bn) = liminf (An U Bn) = A U B
+        limsup:
+            from the previous part, we know: 
+            limsup (An U Bn) 
+            = (limsup An) U (limsup Bn) 
+            = A U B      so this is true.
+        liminf: 
+            WTS: liminf (An U Bn) = A U B
+            OR,: liminf (An U Bn) = limsup (An U Bn)
+            U_n int_k>n (Ak U Bk) = int_n U_k>n (Ak U Bk)
+            U_n int_k>n (Ak U Bk) = (limsup An) U (limsup Bn) 
+            -> 
+                we know liminf subset limsup always 
+            <- 
+                x in limsup An or x in limsup Bn 
+                foreach n, there exists k>n, st x in Ak or Bk 
+                cannot claim that x is in each set after some k.
+            FALSE 
+        it is not true that An U Bn -> A U B
+        
+        [soy lemma]
+        is it true that if An -> A, then Anc -> Ac ???
+        we'd need to show 
+        liminf Anc = limsup Anc = Ac 
+        U_n int_k>n Akc = int_n U_k>n Akc = Ac 
+        U_n (U_k>n Ak)c = int_n (int_k>n Ak)c = Ac 
+        (int_n U_k>n Ak)c = (U_n int_k>n Ak)c = Ac
+        (limsup An)c = (liminf An)c = Ac 
+        (A)c = (A)c = Ac    so this is true.
+
+        WTS: limsup (An int Bn) = liminf (An int Bn) = A int B
+        limsup: 
+            (limsup (Anc U Bnc))c 
+            ((limsup Anc) U (limsup Bnc))c   [from part 1]
+            ((Ac) U (Bc))c                   [soy lemma]
+            (A int B)
+        liminf:
+            WTS: limsup (An int Bn) = liminf (An int Bn)
+            int_n U_k>n (Ak int Bk) = U_n int_k>n (Ak int Bk)
+            <- 
+                liminf always subset of limsup 
+            -> 
+                foreach n, there exists k>n st x in Ak and Bk
+                cannot say it's in each further Ak,Bk
+            FALSE
+        it is not true that An int Bn -> A int B
+
+
+
+
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\begin{verbatim}
+
+
+
+    PROBABILITY SPACE: triple (Omega, BB, P) where
+
+	- Omega is sample space corresponding to outcomes of an experiment
+	
+	- BB is a sigma algebra of subsets of Omega. these subsets are called events. 
+	
+	- P is a probability measure, function with domain BB and range [0,1] st
+	
+		i) P(A) >= 0 forall A in BB
+		
+		ii) P is sigma-additive: (An) are disjoint events in BB,
+		
+			P(UAn) = sum P(An) 
+			
+		iii) P(Omega) = 1
+		
+- - - simple consequences
+
+P(Ac) = 1 - P(A)
+
+	1 = P(Omega) = P(A U Ac) = P(A) + P(Ac)
+
+P(nullset) = 0
+
+	P(nullset) = P(Omega-c) = 1 - P(Omega) = 1 - 1
+	
+P(A U B) = P(A) + P(B) - P(A int B)
+
+	P(A) = P(A int Bc) + P(A int B)
+	P(B) = P(B int Ac) + P(B int A)
+	
+	P(A U B) = P( (A int Bc) U (B int Ac) U (A int B) )
+		= P(A int Bc) + P(B int Ac) + P(A int B)
+		= P(A) - P(A int B) + P(B) - P(A int B) + P(A int B)
+		= P(A) + P(B) - P(A int B)
+		
+inclusion-exclusion formula:
+
+	P(UAj) = sum P(Aj) 
+		- sum_i<j P(Ai int Aj)
+		+ sum_i<j<k P(Ai int Aj int Ak)
+		...
+		(-1)^(n+1) P(A1 ... An)
+		
+	use induction to prove. this thing also yields Bonferroni inequalities. 
+	
+monotonicity: P is non-decreasing.
+
+	A  subset  B
+	P(A) <= P(B)
+	
+	since P(B) = P(A) + P(B \ A) >= P(A)
+	
+subadditivity: P is sigma-subadditive:
+
+	P(UAn) <= sum P(An)
+	
+		[this is for any events An. if the An were disjoint, we'd get equality due to its sigma-additivity]
+	
+	UAn = A1 U (A1c int A2) U (A3 int A1c int A2c) U ... 
+	
+		[A1 U (new stuff from A2) U (new stuff from A3) U ... ]
+		
+	= P(A1) + P(A1c int A2) + P(A3 int A1c int A2c) + ... 
+	
+	<= P(A1) + P(A2) + P(A3) + ... since P non-decreasing (meaning larger sets = larger P)
+	
+continuity: P is continuous for monotone sequences:
+
+	i) An ^ A, then P(An) ^ P(A)
+	
+	ii) An v A, then P(An) v P(A)
+	
+	proof i)
+	
+		assume A1 subset A2 subset ... 
+		
+		let 
+		B1 = A1
+		B2 = A2 \ A1
+		Bn = An \ An-1...
+		[each Bn is the new stuff]
+		
+		(Bi) is a disjoint seq of events
+		
+		U_i=1^n Bi = An
+		
+		U Bi = U Ai = A
+		
+		by sigma-additivity, 
+		
+		P(A) 
+		= P(U Bi) 
+		= sum_i=1^inf P(Bi)  
+		= lim_n->inf sum_i=1^n P(Bi)
+		= lim_n->inf P(U_i=1^n Bi)
+		= lim_n->inf P(An)
+		
+	for ii), if An v A, then Anc ^ Ac and by part 1,
+	
+		P(Anc) = 1 - P(An) 
+		this converges to
+		P(Ac) = 1 - P(A)
+		
+		so that P(An) v P(A)
+		
+more continuity and Fatou's lemma:
+
+	i) FATOU'S LEMMA
+	
+		P(liminf An) <= liminf P(An) <= limsup P(An) <= P(limsup An)
+		
+	ii) 
+	
+		if An -> A, P(An) -> P(A)   
+		
+			[above we showed conv for monotone seq, here its general]
+	
+	proof:
+	
+		i) 
+			
+			P(liminf An) = P(lim_n->inf int_k>n Ak)
+			
+			= lim_n->inf P(int_k>n Ak)
+			
+				since int_k>n Ak is an increasing set seq,
+				
+				and P is continuous for monotone set sequences. 
+				
+			<= lim_n->inf P(An)
+				
+				know P(int_k>=m Ak) <= P(Am)
+				
+				thus inf_m>n P(int_k>=m Ak) <= inf_m>n P(Am)
+				
+				but 
+				
+					P(int_k>=m Ak) = inf_m>n P(int_k>=m Ak)
+					
+					since the lowest value of LHS is achieved precisely at n = m,
+					because that's when the intersection has the most sets and is thus
+					the smallest possible set. 
+					
+				thus P(int_k>=m Ak) <= inf_m>n P(Am)
+				
+			<= lim_n->inf inf_m>n P(Am)
+				
+			<= liminf P(An)
+			
+				by def of liminf (wiki)
+					
+			likewise,
+			
+			P(limsup An) = P(lim_n->inf (U_k>n Ak) )
+			
+			= lim_n->inf P(U_k>n Ak)
+			
+				know P(Am) <= P(U_k>m Ak)
+				
+				thus sup_m>n P(Am) <= sup_m>n P(U_k>m Ak)
+				
+				the largest value of RHS is precisely at n = m since we will be taking the union
+				of the largest number of sets. 
+				
+				thus sup_m>n P(Am) <= P(U_k>n Ak)
+				
+			>= lim_n->inf sup_m>n P(Am)
+				
+			>= limsup P(An)
+			
+				by def of limsup (wiki)
+	
+		ii) (ii) follows from (i) since 
+		
+			if An -> A then limsup An = liminf An = A, thus:
+			
+			P(A) = P(liminf An) <= liminf P(An) <= limsup P(An) <= P(limsup An) = P(A)
+			
+			[basically An -> A gives us that liminf An = limsup An = A, so P() of these things
+			are all equal, and since those are on the outside bounds of Fatou's lemma, 
+			then limsup P(An) and liminf P(An) get sandwiched meaning they are equal]
+			
+example
+
+	Omega = R
+	
+	F(x) = P((-inf, x])
+	
+	i) F is right-continuous
+	
+	ii) F is monotone non-decreasing
+	
+	iii) F has limits
+	
+		F(inf) = lim_x->inf F(x) = 1
+		
+		F(-inf) = lim_x->(-inf) F(x) = 0
+		
+Def: a function F: R->[0,1] satisfying the above is called PROBABILITY DISTRIBUTION FUNCTION. (df)
+
+we start with P, and get F using P((-inf, x])
+
+in practice we start with a known distribution fn, and then construct a probability space (Omega, B, P)
+
+	such that P((-inf, x]) holds.
+		
+proof:
+
+	i)
+	
+		show F right continuous:
+		
+		xn v x
+		
+		WTS: F(xn) v F(x)
+		
+		know that (-inf, xn] v (-inf, x]
+		
+		by continuity of P for monotone set seq,
+		
+		F(xn) v F(x)
+
+	ii) 
+		
+		if x < y, 
+	
+		(-inf, x]  subset  (-inf, y]
+		
+		and by monotonicity of P, 
+		
+		F(x) = P((-inf, x]) <= P((-inf, y]) = F(y)
+		
+	iii)
+	
+		F(inf) = lim_xn->inf F(xn)   for non-decreasing sequence xn -> inf
+		
+		= lim_xn->inf P((-inf, xn])
+		
+		= P( lim_xn->inf (-inf, xn] )    continuity of P for monotone set sequence
+		
+		= P( Un (-inf, xn] ) = P((-inf, inf))   since limit of monotone non-dec set seq is union
+		
+		= P(R) = P(Omega) = 1
+		
+		similarly, 
+		
+		F(-inf) = lim_xn->(-inf) F(xn) 
+		
+		= lim_xn->(-inf) P((-inf, xn])
+		
+		= P( lim_xn->(-inf) (-inf, xn] )   continuity of P for sets that are monotone non increasing
+		
+		= P( int (-inf, xn] ) = P(nullset) = 0  since limit of monotone non-inc set seq is int
+		
+- - - More Closure
+
+- PI SYSTEM
+
+	- finite intersection
+	
+- LAMBDA SYSTEM (sigma-additive class, dynkin class)
+
+a structure GG is a collection of subsets of Omega satisfying some closure properties.
+
+- minimal structure SS generated by class CC is a non-empty structure satisfying
+
+	i) CC  subset  SS
+	
+	ii) if SS' is anotehr structure containing CC, then SS  subset  SS'
+	
+	denote minimal structure by SS(CC)
+	
+Prop 2.2.1
+
+	minimal structure SS exists and is unique.
+	
+	as with generating a minimal sigma-field, let NN = { GG : GG is a structure containing CC }
+	
+	and SS(CC) = int GG   (intersection over all GG in NN)
+	
+- - - Dynkin's Theorem
+
+a class of subsets LL of Omega is called a lam-system if it satisfies one of these 2:
+
+	a1
+	
+		Omega in LL
+	
+	a2
+	
+		A,B in LL
+		A  subset  B
+		B \ A in LL
+	
+	a3
+	
+		countable union
+	
+or, equivalently, 
+
+	b1 (same as a1)
+	
+		Omega in LL
+	
+	b2
+	
+		complements
+	
+	b3
+		
+		disjoint countable union
+		
+we can show old postulates = new ones. check old => new: suppose a1,a2,a3 hold. 
+
+	b1 holds.
+
+	since Omega in LL, applying a2 using Omega as B yields complements, showing b2.
+	
+	for disjoint A,B WTS: AUB in LL.
+	
+	Omega \ A = Ac   in LL
+	
+	B is assumed to be in LL
+	B  subset  Omega \ A = Ac 
+	by (a2) Omega \ A \ B = Ac int Bc   in LL
+	
+	by (b2) we have (Ac int Bc)c = AUB  in LL, this gives finite union.
+	
+	if disjoint Aj in LL,
+	let Bn = U_j=1..n Aj
+	Bn in LL (previous argument)
+	UBn = lim_n->inf Bn     since Bn increasing set seq
+	since the Bn are all in LL, (a3) says their limit, UBn, is in LL
+	UBn = UAn  thus UAn in LL (this is (b3))
+	
+	[note the postulate (a3) says the countable union is in LL. but this happens to be the limit 
+	of our set sequence]
+	
+sigma-field is always a lambda system, by 'new postulates'
+
+Pi-system is class of sets closed under finite intersections.
+
+Thm 2.2.2 Dynkin's Theorem
+
+	a) 
+		PP is pi-sys
+		LL is lam-sys
+		PP  subset  LL
+		=>
+		sigma(PP)  subset  LL
+		
+	b)
+	
+		PP is pi-sys
+		=>
+		sigma(PP) = LL(PP)
+		
+			meaning the minimal sigma-field over PP = minimal lam-sys over PP.
+			
+	(b) follows from (a):
+	
+		assume (a) true. 
+		
+		PP  subset  LL(PP)
+		
+		by (a), sigma(PP)  subset  LL(PP)
+		
+		know sigma(PP) is a sigma-field, is a lam-sys containing PP so contains the minimal lam-sys:
+		LL(PP)  subset  sigma(PP)
+		
+proof:
+		
+	[PROOF THAT LL(PP) IS A PI-SYSTEM]	
+
+	fix A in sigma(PP)
+	
+	relative to this A, define
+	
+		GG_A = { B in sigma(PP) : A int B in LL(PP) }
+		
+		[from Schilling, I remember these sets are defined to give desired properties that we wanna prove]
+
+	step A.
+	
+		[SKIP, since Yi Shen explicitly said we don't need this]
+	
+	since LL(PP) is a pi-sys and lam-sys, by prop 2.2.4 it is a sigma-field, 
+	
+		which contains PP, and thus contains sigma(PP) by minimality.
+	
+	PP  subset  LL(PP)  subset  LL
+		[LL(PP) is the minimal lam-sys generated by PP. LL contains it since by minimality, 
+		LL(PP) is in all lam-systems that contain PP]
+		
+	since LL(PP) is sigma-field containing PP, 
+	
+	sigma(PP)  subset  LL(PP)  subset LL
+	
+	thus sigma(PP)  subset LL
+	
+- - - cool application of Dynkin's Theorem
+
+Prop 2.2.3
+
+	P1, P2 two probability measures on (Omega, BB). the class:
+	
+		LL := { A in BB : P1(A) = P2(A) }
+		
+		is a lam-sys
+
+proof: show new postulates.
+
+	a) Omega in LL since P1(Omega) = P2(Omega) = 1
+	
+	b) if A in LL, 
+	
+		P1(A) = P2(A)
+		
+		P1(Ac) = 1 - P1(A) = 1 - P2(A) = P2(Ac)
+		
+		thus Ac in LL
+		
+	c) Aj disjoint in LL, 
+	
+		P1(Aj) = P2(Aj) forall j
+		
+		P1(UAj) = sum P1(Aj) = sum P2(Aj) = P2(UAj)
+		
+		thus UAj in LL
+		
+	[basically:
+	P1 and P2 agree on Omega since it should be 1. ok.
+	if P1 and P2 agree on A, then they agree on Ac since it's just 1 - P(A). ok.
+	if P1 and P2 agree on infinite sequence of events, they agree on the limit. ok.]
+		
+Cor 2.2.1 
+
+	P1, P2 two prob measures on (Omega, BB)
+	
+	PP is pi-sys such that forall A in PP, P1(A) = P2(A)
+	
+	=> forall B in sigma(PP), P1(B) = P2(B)
+	
+	[if two prob measures agree on a pi-system, they agree on the sigma-field over that pi-sys]
+	
+proof:
+
+	LL = { A in BB : P1(A) = P2(A) }
+	
+	is a lam-sys (prop 2.2.3)
+	
+	we have PP  subset  LL
+	
+		[since LL is the structure of all sets where P1 and P2 equal, and PP can be a sub-structure]
+		
+	by Dynkin's theorem, sigma(PP)  subset LL
+	
+Cor 2.2.2
+
+	Omega = R
+	
+	P1, P2 prob measures on (R, Borel(R)) such that their cdf's equal:
+	
+		forall x in R, 
+		
+		F1(x) = P1((-inf, x]) = F2(x) = P2((-inf, x])
+		
+	then P1 === P2 on Borel(R)
+	
+	this says a probability measure on R is uniquely determined by its distribution function.
+	[they agree on intervals (a,b] then they agree everywhere]
+	
+proof:
+
+	PP = { (-inf, x] : x in R }
+	
+	then PP is a pi-sys since (-inf, x] int (-inf, y] = (-inf, min(x,y)] in PP
+	
+	[the set of intervals (-inf,b] is closed under complements, thus is a pi-sys]
+	
+	sigma(PP) = Borel(R) since Borel sets are generated by these intervals. 
+	
+	given that F1(x) = F2(x) forall x in R, means P1 agrees with P2 on PP.
+		
+		[here we have that P1 and P2 agree on a pi-sys]
+		
+		by Cor 2.2.1, if they agree on a pi-sys, they agree on sigma(PP).
+		
+	since sigma(PP) = Borel(R), they agree on Borel(R)
+		
+Prop 2.2.4
+
+	if class CC is both a pi-sys and lam-sys, then it is a sigma-field.
+	
+proof:
+	
+	first, check CC is field:
+	
+	i) Omega, since lam-sys
+	
+	ii) complements, since lam-sys
+	
+	iii) finite intersection, since pi-sys
+	
+	now need to add countable union.
+	
+	UAj = lim_n->inf U_j=1..n Aj    [im pretty sure NPTEL said this is not how it is defined]
+	
+	know U_j=1..n Aj in CC  (since field)
+	
+	just need to show CC closed under monotone non-dec limits. this is the old postiblate (a3)
+	
+	[in Schilling, this was the theorem that I spent like 2 days thinking about during walks,
+	using a few wacky tricks]
+	
+- - - Two Constructions
+
+- examples of how to construct probability spaces
+
+the sum of prob for sequence of N coin tosses equals sum of N-1 tosses, 
+
+	times p to signify getting a head on the Nth toss,
+	
+	times q to signify getting a tail on the Nth toss, 
+	
+	and adding together.
+	
+	this way he telescopes backward to show they all equal 1. 
+	
+	for example, 
+	
+		for a sequence of length 1, we have (p1 + q1)
+		
+		for length 2, (p1 + q1)p2 + (p1 + q1)q2 = (p + q)^2
+		
+		for length 3, p3(p2 + q2)^2 + q3(p2 + q2)^2 = (p + q)^3
+		
+		[i think?]
+
+- - - 2.4 Construction of Prob Spaces
+		
+- how do we construct a measure P given a distribution function F?
+		
+- how to construct prob space for iid sequence of RVs or sequence of RVs with given finite dimensional distributions?
+	[i dont even know what this means]
+	
+	example:
+	
+	build a model of infinite coin tosses to answer:
+	
+	a) probability that heads occurs infinitely often 
+	
+	b) probability that excess of heads over tails is at least 17
+	
+	c) probability of losing all your money if heads = +1, tails = -1
+	
+	need uncountable spaces for such questions. 
+	
+	for coin toss, sample space is
+		
+		Omega = {0,1}^N
+		
+		countable sequence of wi, wi in {0,1}
+		
+- General construction of a Probability Model
+
+[SKIP: extension]
+
+extension theorem is applied depending on how easily you can check that P is sigma-additive. 
+	Some sort of compactness argument is needed.
+	
+result:
+
+Thm 2.4.3 Extension Theorem
+
+	SS semialgebra
+	P sigma-additive set function SS->[0,1] 
+	P(Omega) = 1
+	there is a unique probability measure on sigma(SS) that extends P. 
+
+- - - 2.5 Measure Constructions
+
+- we will construct probability spaces. 
+
+Lebesgue Measure
+
+Omega = (0,1]
+BB = Borel((0,1])
+SS = intervals (a,b] 0 <= a <= b <= 1
+
+define lambda : SS->[0,1] by 
+lam( nullset ) = 0
+lam(a,b] = b-a
+
+note lam(A) >= 0
+to show it has unique extension, show lam is sigma-additive.
+
+[our goal is to apply the extension theorem. it requires 
+1. SS is semialgebra (got, i think)
+2. P is countably additive - this is what we must show
+3. P(Omega) = 1 (got)
+which will give us the result that lambda extends to sigma(SS) which is Borel(0,1]
+and countable-additivity may seem obvious but i guess we need to prove that it holds]
+
+first show lam is finitely additive in SS.
+
+	let (a,b] in SS and suppose
+	
+		(a,b] = U_i=1..k (ai, bi]
+		
+		where RHS are disjoint intervals. [basically the interval is partitioned into disjoint intervals]
+		
+	then lam(a,b] = b-a
+	
+		sum_i=1..k lam(ai, bi] = sum_i=1..k (bi - ai) = b-a    [because bi = ai+1]
+
+		thus lam is finitely additive.
+		
+		[here is what we had to do.
+		we need to show that the measure of the entire interval equals the finite sum of the 
+		measures of its disjoint partition. 
+		LHS: we measured the entire interval, b-a.
+		RHS: we measured the finite sum of partition, bi-ai. these all add up to b-a.
+		because the measure of the entire interval equals the sum of measures of partition, 
+		we get the desired result: that lam is finitely additive]
+	
+now show sigma-additive. 
+	
+	this involves an infinite number of sets, 
+		we need a compactness argument to deal with the infinities.
+		
+	let (a,b] = U_i=1..inf (ai, bi]
+	
+	we prove this by showing each side is <= the other.
+	
+	part 1: b-a <= sum_i=1..inf (bi-ai)
+	
+		pick e < b-a. now
+	
+			[a + e, b]  subset  U_i=1..inf (ai, bi + e/2^i)
+			
+			[we have that (a,b] = U (ai, bi] so now we add a little bit to the right
+			and make it an open interval: (a,b]  subset  U (ai,bi+e) which still covers point bi.
+			we also take away a little bit from point "a" by adding e to it and making that side closed,
+			and that is still covered by the open interval "(a". 
+			thus [a+e, b]  subset  U (ai, bi+e)   ]
+		
+		LHS is compact and RHS is an open cover. by compactness, there is a finite subcover.
+		
+			this means there exists integer N such that 
+		
+			[a + e, b]  subset  U_i=1..N (ai, bi + e/2^i)
+
+			[i thought there exists SOME subcover, not that you could just truncate the sequence!
+			I bet in the way he defined it, since the intervals getting unioned are in order, at 
+			some point the intervals k=N..inf are so small that they are covered by the right tail
+			of the previous interval N-1. this is all given epsilon, so given a different epsilon 
+			we can find another N such that the intervals are small enough that they are covered 
+			by the tail of the previous interval]
+			
+		if we manage to prove that:
+		
+			b - a - e <= sum_i=1..N (bi - ai + e/2^i)
+				
+				[aka length LHS <= length RHS, for finite union / sum]
+				
+			then we will have
+		
+				b - a - e <= sum_i=1..N (bi - ai + e/2^i) 
+				
+					<= sum_i=1..inf (bi - ai) + e
+			
+					[which is the sigma-additivity of LAMBDA we want to show]
+				
+				b - a <= sum_i=1..inf (bi - ai) + 2e
+			
+				b - a <= sum_i=1..inf (bi - ai) 
+		
+				[since e can be arbitrarily small]
+				[this proves sigma-additivity of LAMBDA]
+				
+		so we need to prove that:
+		
+			[a,b]  subset  U_i=1..N (ai, bi)
+			
+			implies
+			
+			b-a <= sum_i=1..N (bi - ai)
+			
+			[we want to establish the connection between intervals (sets) and their lengths (number)
+			just for finite unions / sums. because the infinite case has been offloaded to the 
+			finite case using compactness for sets, and <= for sums]
+			
+			[OK WTF he got rid of epsilon which means the covering no longer holds!!!
+			point a is not in U (ai,bi).
+			what he is doing is already including the future argument "this holds for all e" UGH]
+			
+		prove this by induction. 
+		
+			this thing is true for N=1.
+				
+				["trump voice: WRONG!!" 
+				for N=1 we get [a,b]  subset  (a1, b1). but a1=a and b1=b by construction.
+				the only way this makes sense is if the meanings of the points are gone now]
+				
+				NEW MEANINGS FOR POINTS:
+				
+				given: [a,b]  subset  (a1,b1)
+				
+					implies
+					
+					b-a <= b1-a1
+					
+					[this is OK]
+			
+			
+			now assume the implication holds for N-1. show implication for N.
+			
+				IND HYPOTHESIS (for N-1):
+				
+					[a,b]  subset  U_i=1..N-1 (ai,bi)
+			
+					implies b-a <= sum_i=1..N-1 (bi - ai)
+					
+				IND STEP (for N):
+				
+					if we are given that [a,b]  subset  U_i=1..N (ai,bi)
+						
+						now we want to show 
+						
+						b-a <= sum_i=1..N (bi - ai)
+						
+					since the intervals are in order, bN is the right-most endpoint.
+					
+					let max(ai) = aN, as per the construction
+					
+					if max(ai) <= a then we have what we want:
+					
+						b-a <= bN-aN <= sum_i=1..N (bi-ai)
+						
+						[i think this implies that there is 1 interval in the union
+						that starts under max(ai) = aN and ends at bN, so that open interval
+						covers our closed interval]
+						
+					if max(ai) > a
+					
+						invoke the induction hypothesis on interval [a,aN] so that:
+						
+							aN - a <= sum_i=1..N-1 (bi - ai)
+			
+						then the total will be
+						
+							b-a = b - aN + aN - a
+							
+							<= b-aN + sum_i=1..N-1 (bi - ai)
+							
+							since bN >= b,
+							
+							<= bN-aN + sum_i=1..N-1 (bi - ai)
+	
+							= sum_i=1..N (bi - ai)     as desired.
+					
+		[it seems the "abandoned" epsilon can possibly still hold here since
+		we assume that bN > b, which carries the epsilon for the right interval,
+		and we assume that "a" can be anywhere between the ai]
+		
+		[the induction works like this: 
+		either there is 1 open interval that covers the entire closed interval, or
+		we take out (aN,bN) and recurse on the remaining interval [a,aN]
+		this makes sense except for the retarded base case [a,b]  subset  (a,b)
+		but let's imagine that is the end of the forall epsilon, [a+e,b]  subset  (a,b+e) holds]
+		
+	part 2: show   sum_i=1..inf (bi-ai) <= b-a
+	
+		[overview: the bullshit argument is this:
+		sum_i=1..n (bi-ai) <= b-a    holds for all n, let n->inf]
+		
+		(a,b] = U_i=1..inf (ai,bi]
+		
+		for each n, 
+		
+			lam((a,b]) = b-a >= sum_i=1..n lam((ai,bi]) = sum_i=1..n (bi-ai)
+	
+				since
+				
+					(a,b] = U_i=1..inf (ai,bi]
+					
+				then taking only n sets
+				
+					U_i=1..n (ai,bi]  subset  (a,b]
+					
+				we know lam is finitely additive on SS
+				
+					lam(U_i=1..n (ai,bi]) = sum_i=1..n lam(ai,bi) 
+				
+				define POOP as the interval from [bN,b]
+				
+					lam(U_i=1..n (ai,bi] U POOP) = lam(a,b] 
+					
+					still holds since this is a case for N+1
+					
+					sum_i=1..n lam(ai,bi) + lam(POOP) = lam(a,b]
+					
+					sum_i=1..n (bi-ai) <= b-a
+					
+				[OK APPARENTLY we need to use the SEMI-ALGEBRA property to show that
+				(a,b] without the first n sets is still in SS, meaning it can still be
+				assigned a measure by lam]
+				[why am i so retarded? am i still holding on to things that are not riguruslie proven?
+				will reading Tao make me forget everything for real?]
+				[OK i guess i literally pulled POOP out of my ass and it is never given that it
+				is in SS. there is my logical error. but semi-algebra says the set difference
+				is a finite disjoint union]
+				[perhaps a better way to show this is using induction. altho here the epsilons need
+				to be remembered, which were discarded]
+				[FFS he proves my idea below]
+			
+		since SS is a semi-algebra, 
+		
+			[set difference is a finite disjoint union]
+		
+			(a,b] \ U_i=1..n (ai,bi]  is a finite union, say U_j=1..m Ij 
+			
+		so by finite additivity,
+		
+			lam(a,b] = lam(  U_i=1..n (ai,bi]   U   U_j=1..m Ij  ) 
+			
+			= sum_i=1..n lam(ai,bi] + sum_j=1..m lam(Ij)
+			
+			>= sum_i=1..n lam(ai,bi]
+			
+		take n->inf, we get
+		
+			sum_i=1..inf lam(ai,bi] <= lam(a,b]
+			
+	thus lam is sigma-additive.
+
+- Construction of Prob Measure on R with given Distribution Function F(x)
+
+given Lesbesgue measure and distribution fn F(x), we construct prob measure Pf on R such that
+
+	Pf ((-inf, x]) = F(x)
+	
+		[so we want to construct a set function Pf that matches dist fn F]
+	
+define left continuous inverse of F as:
+
+	F^-1(y) = inf { s : F(s) >= y }, 0 < y <= 1
+
+		[draw something like a sigmoid, with a vertical jump.
+		then the inverse using this definition will replace the hole + jump with a
+		continuous line, because the hole will be filled in with value s such that F(s) >= y
+		meaning the gap is filled in with the upper point, from the requirement F(s) >= y
+		this thing is left-continuous (and in fact i think it is continuous since 
+		the right-continuity of F seems to be imported?)]
+		
+		[one way to think of inverse is to flip the graph around the x=y line.
+		a more Chad approach is to just input the point y to get x.
+		(normally we take x, put it into f(x)=y to get the point on the graph above x.
+		here do the opposite: put the point above x, meaning y, into Finv, to get x
+		so for each F(x)=y, Finv(y) is just the x point under it
+		and if y is chosen betewen a jump, then x is the point under it, and F(x) will be
+		the highest point above x]
+		
+define
+
+	A(y) = { s : F(s) >= y }
+	
+	[think of this as the upper-right portion of F(x) that is truncated at a percentile.
+	so A(0.9) is the top 10th percentile, just the x's]
+	
+properties of A(y):
+
+	a) A(y) is closed. 
+		
+		sn is a monotone NON-INCREASING (going down) sequence in A(y) and converges to s.
+			
+			since F is non-decreasing, F(sn) is monotone non-decreasing.
+			
+			since y <= F(sn) forall n,
+			
+				y <= lim F(sn)   
+				
+					[limit applies when thing holds forall n, Abbott]
+				
+				y <= F(s)
+					
+					since F is right-cts, lim F(sn) = F(s)	
+						
+			thus s is in the set A(y).
+
+		if sn is NON-DECREASING seq, (going up)
+		
+			y <= F(sn) <= F(s)
+			
+				since F non-decreasing.
+			
+			so s is still in A(y).
+		
+	b) since A(y) closed, its infimum belongs to A(y):
+	
+		inf A(y)  in  A(y)
+		
+		by def of Finv, 
+		
+			F( Finv (y)) >= y
+		
+		[so take A(0.9) is the set of all x's such that F(x)>=0.9 is the 10th precentile, closed set.
+		its infimu is in the set since F right-cts.
+		then Finv(0.9) will be the left-most x such of that percentile set
+		then when we apply F to that point, it should be >= 0.9 as specified
+		always equal unless y is a point between a jump, then F(y) will be the first value greater]
+		
+		[for any point y, Finv(y) is just the x point under it. Then F(x) is just the point above x.
+		if y is chosen from a jump, then F(x) will be the highest point above it, by right-continuity.
+		thus F( Finv(y) ) >= y
+		
+	c) 
+	
+		Finv (y) > t  iff  y > F(t)
+		
+		Finv (y) <= t  iff  y <= F(t)			
+		
+		because:
+		
+			if t < Finv (y) = inf A(y)
+			
+				[it makes sense that Finv(y), the x point under y, is equal 
+				to A(y) which is the smallest point st F(x) >= y.
+				t being < Finv(y) means that we take point y, Finv(y) is the x point under it,
+				and t is less than that. then t is not in A(y).
+			
+			then t not in A(y)
+		 
+		 	thus F(t) < y
+		 	
+		 		[formal, set-theoretic way to show this using A(y). 
+		 		an informal argument would use graph]
+		 		
+		 	conversely, 
+		 	
+		 	if Finv (y) <= t
+		 	
+		 		[t is greater than the x point below y. so it is in the set A since F non-dec]
+		 	
+		 	then t in A(y)
+		 	
+		 	thus F(t) >= y
+		 	
+		 		[property of A]
+		 		
+define for A  subset  R
+
+	E_F (A) = { x in (0,1] : Finv(x) in A }
+	
+		[so the pre-image of A under Finv]
+		[points in (0,1] that Finv maps to A]
+		[since Finv(y) is just the x points under y, this is the set of points above A on graph F(_)]
+	
+	if A is Borel, this thing is a Borel subset of (0,1]
+	
+Lemma 2.5.1 
+
+	if A in Borel(R), E_F (A) in Borel((0,1])
+	
+proof:
+
+	let GG = { A  subset  R : E_F (A) in Borel(0,1] }
+	
+		[subsets A whose pre-image under Finv is Borel(0,1]]
+		[we plan to show Borel(R) is GG]
+	
+	GG contains finite invervals (a,b]
+	
+		from property (c) of Finv, 
+		
+		E_F ((a,b]) = { x in (0,1] : Finv(x) in (a,b] }
+		
+			[definition]
+			
+		= { x in (0,1] : a < Finv(x) <= b }
+	
+			[definition of Finv(x) belonging to (a,b]]
+			
+		= { x in (0,1] : F(a) < x <= F(b) }
+	
+			[property (c), we aren't "just appllying F to all 3 sides"]
+	
+		= (F(a), F(b)]   in  Borel(0,1]
+		
+			[we know x in (0,1] but also x in (F(a), F(b)]]
+			
+	GG is a sigma-field
+	
+		i) R in GG since E_F(R) = (0,1] which is Borel, thus in GG
+		
+		ii) if A in GG, 
+		
+			E_F(Ac) = { x in (0,1] : Finv(x) in Ac }
+			
+			= { x in (0,1] : Finv(x) in A }c 
+			
+				[since Ac would be R\A, mapping to all points that are not above A, meaning 
+				the complement of those above A]
+				
+			= (E_F(A))c
+			
+				[since A is Borel, we know its complement is in Borel]
+				
+		iii) if An in GG,
+		
+			E_F(U An) = U E_F (An) 
+		
+				E_F(U An) = { x in (0,1] : Finv(x) in U An }
+			
+				U E_F (An) = U { x in (0,1] : Finv(x) in An }
+			
+			[ok i believe this holds since inverse image applies to all set operations. thanks Schilling]
+			[TODO: this seems a bit hand-wavy, or am i missing something?]
+			
+			thus U An in GG.
+	
+	thus GG contains intervals, is a sigma-field, thus
+	
+		Borel(R) = Borel(intervals)  subset  GG
+		
+define P_F(A) = lam( E_F(A))
+			
+	[for a set A, E_F(A) is its pre-image under Finv, some set in (0,1].
+	now we measure this set.
+	this reminds me how the cdf has a uniform distribution]
+	
+	Pf is a probability measure.
+	
+	check its distribution function matches F:
+	
+		P_F(-inf, x] = lam(E_F(-inf,x]) = lam{ y in (0,1] : Finv(y) in (-inf,x] }
+		
+		= lam{ y in (0,1] : Finv(y) <= x }
+		
+		= lam{ y in (0,1] : y <= F(x) }
+		
+		= lam(0, F(x)] 
+		
+		= F(x)
+		
+
+
+
+			
+			
+REMEMBER: MAYBE THE PROOFS ARENT PERFECT BUT I NEED PRESENTATION!	
+REMEMBER: THIS BOOK USES RETARD NOTATION: SUM / UNION FOR SETS		
+		
+SKIP: example 2.1.2 p34 <basically use inclusion-exclusion to take care of overlaps of Ai: 1 in 1 place, 2 in 2, so on...>	
+SKIP: proof of pi-lambda theorem
+SKIP: 2.3 discrete constructions
+SKIP: 2.4 extension
+
+TODO: find better proof of Fatou's lemma, the real sequence part 
+TODO: how are properties of liminf, limsup analogous to real numbers, when using indicators?
+
+
+\end{verbatim}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+\bigbreak
+\hrule
+\bigbreak
+\textbf{}
+
+
+$\Omega$
+
+$\liminf_{n \rightarrow \infty} A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k$
+
+$\limsup_{n \rightarrow \infty} A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k$
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+\bigbreak
+\hrule
+\bigbreak
+
+
+
+
+
+
+\end{flushleft}
+\end{document}

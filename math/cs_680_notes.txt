@@ -1,0 +1,65 @@
+
+
+- 680 vids notes
+	- 8
+	- early layers compute basis functions, later layers just take linear combinations of them 
+	- multilayer NNs allow us to essentially modify the weight of y = w phi(x) and also modify the basis function phi at the same time.
+	- optimizers: lec 9, 1:09:40
+	- breakthrus:
+		gradient vanishing fixed by relu
+		overfitting fixed by dropout
+	- as we increase layers, the number of units needed decreases exponentially
+
+
+
+- - - 680 notes
+	- D
+		chap 1
+		- generalize: take a class, do you memorize notes or can you answer new, unseen, but related questions? 
+		- ML systems are in different categories: regression / classification / rank; because they have diff error measurement
+		- we use PROBABILISTIC MODEL OF LEARNING: data generating distribution D over input/output pairs
+			gives high probability to reasonable pairs
+			low probability to unreasonable pairs (x might be unusual, or y might be inappropriate for x)
+		- learning problem is defined by 2 things:
+			- loss function captures what is important to learn 
+			- data generating distribution D, defines what data we expect
+		- SEV NOTE: sample average assigns 1/n to each element, while its distribution assigns f(x), yet they converge.
+			this is because we basically get bins of similar elements, comprising frequencies.
+		- induction machine learning:
+			given loss L, sample d from data distribution D, compute F that has low expected error over D wrt L.
+		- the distribution of the training data must match distribution of test data. cannot generalize otherwise.
+		- decision trees:
+			given data and list of features, iterate over features and compute the score (naive bayes accuracy)
+			take feature with highest score, partition data based on that feature, recurse (remove this feature from list)
+			; we can limit depth of tree to minimize overfitting
+		chap 2
+		- Bayes optimal classifier: returns highest probability class y for a given x
+			it achives smallest 0/1 error over all classifiers.
+			given x, choose label with highest probability. this minize prob of error.
+		- inductive bias: different people categorize images differently (bird / not bird), (fly / not fly)
+			absense of direction that tells us what feature to focus on
+		- inductive bias of decision tree is basically yes/no for feature combinations, versus crazier functions like parity 
+		- tuning hyperparams on validation data encourages genralization, since we are "fitting" to both seen and unseen data.
+		- turning UNORDERED categories into numbers {1,2,3,4} makes them into an ORDERED SET.
+			this has an effect: now categories 2,3 are considered closer than 2,4 for example. 
+			instead, turn N categories into N binary dimensions: IsItCetegoryN?
+		- inductive bias of KNN is that nearby points should have same label, and all features are equally important.
+			for decision trees, we ask which features are most important - pick a few. 
+			in KNN, every features is used equally. if you have data with only a few relevant features, KNN bade
+			feature scale: meters vs mm makes a difference
+		- SEV NOTE: spiral data might have complex decision tree decision bdry, but easy for 1-knn
+			a cluster of pts A and a second cluster B, linearly separable, but the decision bdry will be complex for 1-knn
+		- SEV NOTE: for the hypersphere example, if the inner sphere grows without bound, wont it contain the hypercube?
+		chap 3
+		- permute training examples for perceptron.
+		- perceptron decision bdry is where w.x = 0, dot product = 0, so plane perpendicular to W.
+		- algorithm converges when it passes thru all the training data and does no updates, since theyre classified correctly.
+		- margin of data set: for all hyperplanes that separate the problem, pick th eone thats farthest from both clusters.
+		- the proof skips over all points that don't update w, thus it doesn't contradict that badly ordered points take forever.
+		- SEV NOTE: didnt get voted / average perceptron
+		- Q: t-test assumes gaussian data. apparently using it for binary responses is ok - but do they need to be 50/50 ???
+			this probably has something to do with CLT when we take mean of binary sample.
+		- skipped rank
+		chap 7
+		- 
+		

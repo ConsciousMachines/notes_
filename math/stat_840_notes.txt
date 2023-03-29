@@ -1,0 +1,411 @@
+
+
+- 840 bonus questions
+	- can we drop a number in \propto if it can be equal to 0?
+	- A2 Q7: how to interpret monitor?
+		- the time series looks consistent. 
+		- the acf gives something at T=1, but is this even Markov, since yn depends on xn depends on yn-1 ???
+			are we supposed to interleave x,y and then check acf?
+		- how to interpret marginal histogram?
+	- why does independent MH have a = pi_y g_x / pi_x g_y but random walk only has pi_y / pi_x ??? are g_x and g_y assumed similar?
+
+
+
+
+
+- - - 840 notes
+	- Rao Blackwell Thm says you can always get a smaller variance estimator by conditioning on suff stat
+
+	- ex 1: the point is to factorize THETA and some function of Xi: g(T(X), theta). 
+		There can still be Xi in the other thing, h(x). SINGLE OUT THETA!!!
+
+	- likelihood principle follows form sufficiency (i guess you can say T(x) is in the lik)
+
+	- strong likelihood principle: lik carries all info that x has about theta.
+
+		- if x,y are 2 observations possibly from different models with the same parameter theta, and satisfy
+			L1(theta, x) = c * L2(theta, y)
+			for some c,
+			for every theta, 
+			they they carry same info about theta and lead to identical inferences.
+			??? OK HOW OFTEN DOES SUCH A CONSTRAINT HOLD FOR DIFFERENT MODELS?
+				ok i guess the Binomial vs NegBinomial -.-
+
+	- ex 3: dont we specify the model before running the experiment. so we dont know to set parameters to 9,12
+		i guess we choose the model later which fits data best.
+
+		- random quantity in the experiment can be either # successes, or # trials -> both lead to proportional lik
+			ok so Bin vs NBin: similar models. likelihood proportional to theta ^ 9 * (1 - theta) ^ 3 in both cases.
+			-> by strong lik principle, both experiments carry same info about theta and lead to identical inferences.
+
+		- so i guess models can be similar or carry "submodels" as in both Bin & NBin contain Bernoulli as a "sub-model"
+			the difference is in how they combine Bernoullis together.
+
+	- conditionality principle: 
+		2 experiments on theta available: E1, E2. select E1 w prob p. resulting inference on theta only depends on experiment.
+		
+		- meaning, we don't consider (as in the Expected value of theta) the weight of the other possible experiment.
+			this makes sense as a Frequentist, theta is fixed. 
+			but if in reality people are sending you measurements from 2 machines, then maybe its worth switching to Bayes.
+
+	- Brinbaum says likelihood principle = sufficiency principle + conditionaly principle.
+	
+	- Neyman-Pearson-Wald inference
+	
+		- based on Neyman-Pearson lemma
+		
+		- construct estimating function T(X, theta)
+		
+		- inference based on sampling distribution of T 
+			(under repeated sampling)
+			procedures made before observing data
+			either find sampling dist or approximate using asymptotics
+			
+		- examples of procedures:
+			1. unbiased estimator
+			2. minimum risk estimator, and UMVE
+			3. empirical bayes inference
+			4. Neyman Pearson Hypothesis testing
+			5. robustness
+			
+		- ex 5: we want to find the mean. 
+		
+			- NPW says: use estimating function
+			
+				T(X, theta) = sqrt(n) (Xbar - theta) / S
+				
+				where Xbar is sample mean, S^2 is sample variance.
+				
+				CLT says T ~ N(0,1) 
+				
+	- Fisherian inference
+	
+		likelihood maximization
+		
+		under some regularity conditions, for large n,
+		
+			(theta_hat - theta) -D-> N(0, J^-1(theta))
+			 
+			where J is expected Fisher info: J(theta) = E( -d_theta ^2 lik )
+	
+				I(theta) is observed Fisher info, inside the E
+				
+		likelihood confidence region CR should contain points theta whose likelihood is higher than points outside CR
+		
+		likelihood probability statements come from sampling dist of ML estimator.
+	
+	- ex 10: lik says:
+		
+		if d = 1, we observe event happening at time yi: f(yi)
+			and also the censoring happens after yi: 1 - G(yi)
+			
+			if d = 0, then censoring happens at time yi: g(yi) 
+			and the event happens after yi: 1 - F(yi) = S(yi)
+			
+	lol i always wonder if E is over X or over theta, when talking about Fisher. this is not Bayes, so theta is not a RV. thus E over X
+	
+	- ex 11: not that J(theta) = E(nu / ...) 
+		nu is number of observed uncensored events.
+		it is sum of indicator that event happened before censor
+		so its expectation if probability that event happens before censor 
+		this is multiplied by n since we sum 1..n 
+		
+		its interesting how we find expression for J(theta), 
+			then we replace theta with theta_hat,
+			and n * Prob with nu, which just gives us the observed information again, which was inside the E.
+			
+	- profile likelihood:
+	
+		theta = (theta1, theta2) and we only care about theta1. 
+			want to remove theta2 from lik
+			we replace theta2 with its ML estimator, given theta1. 
+		
+		SO,
+			- first hold the good parameter constant
+			- maximize lik wrt bad parameter
+			- replace bad param with its ML estimator
+			- now this lik is a function of just the good parameter. bad parameter was replaced with its ML estimator.
+			
+	- beta distribution augments data with a successes, b failures. this is an example of DATA AUGMENTATION PRIOR.
+	
+	- prediction of new value of x:
+		basically we have posterior times the likelihood of x_new. 
+		f_pi never defined. 
+		lik of x_new is independent of x. 
+		the posterior is a distribution over theta. 
+		the likelihood is a function of x, theta. 
+		we integrate over theta to get the "mean" or the most likely outcome, given our knowledge of distribution of theta.
+			the distribution is over theta. the variable is the likelihood_x_new, which is a funciton of theta.
+	
+		* * * NOTE: f(x, theta) would be the joint distribution that contains info of the distributions of x, and dist of theta.
+		f(x | theta) is just the likelihood which does not contain information about the distribution of theta. 
+			it is just a function parametrized by theta.
+		
+		likewise, the posterior g(theta | x) is the distribution of just theta, parameterized by x. 
+			it does not contain information about the distribution of x.
+			
+		the result is a distribution over x_new
+		
+	- P(F(X) <= t) = t would imply F(X) ~ Unif
+		but we have P(F(X) <= t) <= t which is similar, and i think aplpies to mixed discrete/cont dist
+		
+		the first part of the proof basically says that we can ignore the horizontal chunk of CDF because it has prob 0,
+		and thus if F(t) has a horizontal chunk after t, that chunk has prob 0. thus P(F(X) <= F(t)) = F(t)
+		
+		
+- - - 840 QUESTIONS
+- A1 Q9c - analytical solution for integral of bivariate mixture
+- is it correct to think that likelihood principle applies to models that have "submodels" 
+	- Bin and NBin both contain Bernoulli inside
+- conditionality principle: we only consider the chosen experiment. is this the frequentist approach?
+	- if scientist sends us data from 2 machines, would it be wise to switch to Bayesian approach?	
+	- should we include which machine we got theta from in our inference, otherwise it doesnt make sense?
+- why is m different from n in bayes prediction?
+- on p 25 bottom, should it be Var_g_pi on RHS?
+- ask shoja if there are any jobs for implementing numerical low level stuff. 
+- exchange paradox: is the paradox from the fact that expectation is linear, but growth of theta is exponential?
+- p 30 top - likelihood is not a prob distribution - why not exactly? because x, theta are substituted already?
+	the likelihood times some prior is a distribution so why can't we just assume an improper prior of 1?
+- Bayesian exchange paradox: so if the prior over theta is 1/2, then the expected winnings are again 5/4
+	the posterior itself makes more sense since it tells us that prob is 1/2 either way, knowing x doesn't help
+- - - 
+- p 12 remark 2- why assign g(i) and not 1/n 
+x p 25 - if X ~ g, why is f(X) usually small in relation to g(X) ?
+	imagine g is normal. then most of the density is += 3 SD around mu. another dist is usually less in this region.
+- p 30 - control variates - confused about whether xi,yi should be equal or not. when should they be from same distribution instead?
+	if u2 was independent, then variances add and increase. 
+	adding negative of d(x) would turn to positive since variance.
+	hence 2 similar functions based off the SAME variable is the closest you can get to perfect -1 correlation.
+# SEV NOTE: so this test graph exists, and prob(type 1) = 1.
+# but choosing to be ignorant by not keeping track of this 
+# statistic allows us to maintain the prob(type 1) at 5% ???
+# it's like quantum mechanics, where the probability changes
+# once we observe it. 
+
+- - - 840 NOTES CORRECTIONS
+p 9 - ex 1 - shouldnt it be (ni choose xi) ;; also should be proportional rather than equals since Pi(ni C xi) can be anything. also h(x) =/= 1
+p 9 - "inference on theta" instead of "inference on mu"
+p 11 - "the random quantity in the experiment should be 8 or 12" should be "9 or 12" 
+		since (bin) random # successes = 9, or (nbin) random # trials = 12
+p 13 - S^2 should have factor of (n-1) instead of n?
+p 15 - example 8 part (ii) the first partial should be WRT alpha 
+p 20 - after "the first derivative of the profile log likelihood", mu should be x-bar
+p ? - "and M can be interpreted as the expected proportion" -> 1/M
+p 25 - recall example 16 - it should be recall example 18
+p 31 - example 20 - a* should be 1.690309 and not 1.96032 (i programmed the example)
+
+
+Q
+- 6: how do we measure type 1 error? do we fix theta, n, c, 
+	type 1 error means reject H0 when its true, so forget theta. draw from N(0,1)
+
+
+
+
+- 7: am i supposed to get a very small correlation? of 0.01
+- 7: do we need to provide SE and CI for antithetic sample?
+	i cant get the right formula for SE. using the var_AS formula gives me a negative answer. 
+		but using the SE for the entire AS sample seems reasonable. 
+	ANS: use the very first formula 
+- 8: is delta the constant 1? then the MC estimate is just n/n = 1
+	since d is constant 1, this is giving me cov = 0 in part (b)
+	ANS: delta = exp(-x^2 / 2)
+- 8: should Xi and Yi for control variates be different samples from same distribution?
+	ANS: no they are same thing. i figured it out by implementing example 20.
+
+
+
+
+- - - chapter 3: resampling
+
+	non-parametric techniques for computing standard error (~variance) (and thus confidence intervals)
+
+	- Bootstrap
+		we use data to determine variance, and distribution of an estimator.
+		(estimator for an unknown parameter theta)
+
+		a parameter is a FUNCTIONAL that takes a distribution F and returns a number.
+
+			mean is integral wrt dF(x)
+			median is F^-1(1/2)
+			variance is integral of x^2 wrt dF(x) and then subtract mean^2 
+
+		PLUG-IN PRINCIPLE: iid sample X1..Xn from dist F. Fn-hat is estimate of F (from n samples)
+			estiate theta using theta-hat = T(Fn-hat)
+			aka plug in the estimated distribution into the functional, to get the parameter estimate.
+			
+			[i guess in this chapter we talk about functionals since we have non-parametric dist based on data]
+
+		bootstrap is used to make inference about (theta-hat - theta) which is BIAS of estimator.
+
+			a random sample from Fn-hat is used to estimate theta-hat from theta*-hat. 
+
+			then we assume (theta-hat - theta) ~= (theta*-hat - theta-hat)
+
+			[so we have our distribution approximation Fn-hat]
+			[we take a sample from it and calculate theta*-hat]
+			[then we hope the bias, theta*-hat - theta-hat is distributed similar to theta-hat - theta]
+
+			Bias_F(theta-hat) = E_F(theta-hat - theta) 
+				~= E_Fn(theta*-hat - theta-hat)
+				[who said this is true??]
+
+			Var_F(theta-hat - theta) ~= Var_Fn(theta*-hat - theta-hat)
+
+			Fn-hat is known, thus we can find properties of the distribution theta*-hat - theta-hat 
+				(analytically or using MC)
+
+	- Parametric Bootstrap 
+
+		F from parametric family of distributions, indexed by C. 
+
+		theta = T(F_C)
+
+		we have likelihood fn, can get theta using MLE. get C-hat.
+			by invariant property, MLE of F_C and theta are:
+			F_C-hat
+			theta-hat = T(T_C-hat)
+
+		X1*..Xn* are random sample from F_C-hat 
+
+			C*-hat is MLE of C-hat using this data.
+			[remember, C-hat is the "true" distribution parameter, so C*-hat estimates C-hat]
+
+		to get the VARIANCE OF THETA-HAT,
+
+			Var(theta-hat)
+
+			Var_F(theta-hat - theta)   
+									[since variance doesn't change when we subtract a constant]
+									[and in frequentist stats, theta is constant]
+			~= Var_Fn(theta*-hat - theta-hat)
+									[we approximate F using Fn-hat]
+									[draw sample to get theta*-hat]
+									[subtract "known" theta-hat to get variance]
+
+			the analytical solution tells us about the distribution of (theta*-hat - theta-hat)
+
+			when we cant get analytical soln, 
+				simulate B random samples from F_C-hat
+				which yields B estimates theta*-hat_i   (for i in B)  which are esimtates of theta-hat 
+				then calculate empirical bias & var:
+
+				Bias(theta-hat) = 1/B sum (theta*-hat_i - theta-hat)
+
+				Var(theta-hat) = 1/B-1 sum (theta*-hat - theta-hat)^2
+
+	- Nonparametric Bootstrap 
+
+		the estimate of F is the empirical cdf Fn-hat, 
+
+			Fn-hat(x) = 1/n sum_1^n I(Xi <= x)
+
+				= #{Xi <= x} / n 
+
+			it is a discrete dist and puts equal weight on each observation.
+
+			it is unbiased:
+
+				E_F( Fn-hat(x) ) = 1/n sum_1^n E_F( I(Xi <= x) )
+
+				= 1/n sum_1^n P_F(Xi <= x)
+
+				= 1/n sum_1^n F(x)
+
+				= F(x)
+
+			also, it is strongly consistent: 
+
+				Fn-hat(x) -as-> F(x) forall x 
+
+		mu = T(F) = integral x dF(x)
+
+		T(Fn-hat) = integral x dFn-hat(x) = 1/n sum_1^n Xi = Xbar (bc discrete cdf)
+
+		in this case, sampling from Fn-hat is the same as resampling from X1..Xn (since non-parametric)
+
+			as opposed to the parametric case where we are given a distribution (with estimated parameters) 
+			and we sample from it. 
+
+			but here the cdf is empirical so we only have point masses at the observed values,
+			and with equal probability. so sampling this cdf means choosing from the point masses 
+			with equal probability. which means resampling. 
+
+	
+
+
+re-read:
+method 3: studentized pivotal interval 
+method 4: percentile intervals 
+
+
+	- - - Jackknife
+
+		used to estimate bias, SE 
+
+		to estimate the bias we remove one observation and recompute theta-hat,
+			from the (n-1) remaining observations 
+			call this thing theta-hat(-i)
+
+			we will have (n) such theta-hat(-i) things. we take their mean to be theta-bar 
+
+		Bias(theta-hat) = E[theta-hat] - theta 
+
+		jacknife estimate of bias is 
+
+			Bias-hat(theta-hat) = (n-1)(theta-bar - theta-hat)
+			
+				[explained later]
+
+		WE ASSUME THE BIAS TAKES THIS FORM, GIVEN n:
+			E[theta-hat] = theta + a1(theta) / n 
+
+				a1(theta) depends on the distribution of Xi and theta, but not on n 
+			
+			[we are talking about theta-hat given sample size n]
+			[this usually appears in a lot of estimators]
+			[so this wouldnt work for say Xbar + 1, because the bias is constant and not divided by n]
+
+		thus 
+			Bias(theta-hat) = a1(theta) / n
+
+			E[theta-hat(-i)] = theta + a1(theta) / n-1 
+
+			E[theta-bar] = theta + a1(theta) / n-1 
+
+			E[theta-bar - theta-hat] = a1(theta) / n(n-1)
+
+			thus unbiased estimator of the bias is:
+
+			n(n-1) (theta-bar - theta-hat) 
+
+
+
+
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

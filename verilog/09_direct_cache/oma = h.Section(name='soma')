@@ -1,0 +1,12 @@
+
+NEURON+Python Online Help System
+================================
+
+Syntax:
+    ``h.nrn_load_dll(dll_file_name)``
+
+
+Description:
+    Loads a dll containing membrane mechanisms. This works for mswin, mac, 
+    and linux. 
+

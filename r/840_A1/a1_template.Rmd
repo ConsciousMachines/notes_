@@ -1,0 +1,23 @@
+---
+title: "GRADUATE STUDENT STAT 840 A1"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+
+```{r}
+summary(cars)
+```
+
+$$
+\begin{aligned}
+a &= b \\
+&= c \\
+&= d +d + d + d \\
+\end{aligned}
+$$

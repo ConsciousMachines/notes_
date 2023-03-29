@@ -1,0 +1,90 @@
+---
+title: "GRADUATE STUDENT STAT 840 A2"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 5
+
+# a)
+
+Start with state 1. At time $n$, use $\texttt{sample()}$ to randomly choose the next state $X_n$ using the transition probabilities corresponding to state $X_{n-1}$. They are located in the row of the matrix corresponding to that state. 
+
+```{r}
+P = matrix(ncol = 6, nrow = 6)
+P[1,] = c( .5,  .5,   0,   0,   0,   0)
+P[2,] = c(.25,  .5, .25,   0,   0,   0)
+P[3,] = c(.25, .25, .25, .25,   0,   0)
+P[4,] = c(  0,   0, .25, .25, .25, .25)
+P[5,] = c(  0,   0,   0, .25,  .5, .25)
+P[6,] = c(  0,   0,   0,   0,  .5,  .5)
+Pt = t(P)
+
+n = 1000
+states = rep(NA, n)
+states[1] = 1
+
+for (i in 2:n)
+{
+  # https://stats.stackexchange.com/questions/67911/how-to-sample-from-a-discrete-distribution
+  states[i] = sample(x = c(1,2,3,4,5,6), size = 1, replace = T, prob = P[states[i-1],])
+}
+
+par(mfrow=c(1,1))
+plot(states, type='l', main='sample path')
+```
+
+## b)
+
+Compute relative frequencies by counting the proportion of time spent in each state. We can find the stationary distribution $\pi$ by solving the equation $P^T \pi = \pi$ which equates to finding the eigenvector with eigenvalue 1.
+
+```{r}
+# compute relative frequency of simulation
+freq = rep(NA,6)
+for (i in 1:6)
+{
+  freq[i] = sum(states == i) / n
+}
+
+# guess value of stationary distribution pi
+eig_ = eigen(Pt)
+
+# the eigenvalue 1 is in first place
+for (i in 1:6)
+  print(eig_$values[i])
+
+# its corresponding eigenvector
+pi_ = matrix(nrow=6, ncol=1)
+pi_[,1] = as.numeric(eig_$vectors[,1])
+pi_ = pi_ / sum(pi_) # probabilities need to sum to 1
+
+# compare relative freq to stationary dist
+par(mfrow=c(1,2))
+barplot(freq, 
+        ylim=c(0,.3), 
+        names.arg = c(1,2,3,4,5,6),
+        main='relative frequency', 
+        xlab='i')
+barplot(pi_[,1], 
+        ylim=c(0,.3), 
+        names.arg = c(1,2,3,4,5,6), 
+        main='stationary distribution',
+        xlab='i')
+```
+
+## c)
+
+Check that the distribution is stationary because taking a step, meaning multiplying by $P^T$, does not change the distribution.
+
+```{r}
+# compare equality up to numeric error
+(pi_ - Pt %*% pi_) < 0.0000000000000001
+```
+
+
+
+

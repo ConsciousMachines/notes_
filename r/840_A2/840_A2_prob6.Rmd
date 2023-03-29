@@ -1,0 +1,186 @@
+---
+title: "GRADUATE STUDENT STAT 840 A2"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 6
+
+## a)
+
+$$
+\begin{aligned}
+f(x \mid \alpha, \eta) &\propto \alpha \eta x^{\alpha-1} e^{-\eta x^{\alpha}} \\
+& \qquad 0<x<\infty \\
+f(\mathbf{X} \mid \alpha, \eta) &\propto \prod_{i=1}^n \alpha \eta x_i^{\alpha-1} e^{-\eta x_i^{\alpha}} \\
+&\propto \alpha^n \eta^n \prod_{i=1}^n x_i^{\alpha-1} e^{-\eta x_i^{\alpha}} \\
+\log f(\mathbf{X} \mid \alpha, \eta) &= ?+n \log(\alpha) + n \log(\eta) + \sum_{i=1}^n (\alpha - 1) \log(x_i) -\eta x_i^{\alpha} \\
+? &= \text{log(proportionality constant)} \\
+\pi(\alpha, \eta) &\propto e^{-\alpha} \eta^{\beta-1} e^{-c \eta} \\
+&\propto e^{-\alpha -c \eta} \eta^{\beta-1} \\
+\log \pi(\alpha, \eta) &= ? -\alpha -c \eta + (\beta-1) \log(\eta) \\ 
+\pi(\alpha, \eta \mid \mathbf{X}) &= f(\mathbf{X} \mid \alpha, \eta) \pi(\alpha, \eta) \\ 
+&\propto e^{-\alpha -c \eta} \eta^{\beta-1} \alpha^n \eta^n \prod_{i=1}^n x_i^{\alpha-1} e^{-\eta x_i^{\alpha}} \\
+&\propto e^{-\alpha -c \eta} \eta^{n+\beta-1} \alpha^n \prod_{i=1}^n x_i^{\alpha-1} e^{-\eta x_i^{\alpha}} \\
+\log \pi(\alpha, \eta \mid \mathbf{X}) &= ?-\alpha -c \eta + (n+\beta-1) \log(\eta) +n \log(\alpha) + \sum_{i=1}^n (\alpha - 1) \log(x_i) -\eta x_i^{\alpha}
+\end{aligned}
+$$
+```{R}
+log_post_pi = function(alp, eta, c,b,x)
+{
+  n = length(x)
+  p1 = (-alp -c*eta)
+  p2 = (n + b - 1)*log(eta)
+  p3 = n * log(alp)
+  p4 = (alp-1)*log(x) -eta * (x^alp)
+  return(p1 + p2 + p3 + sum(p4))
+}
+
+post_pi = function(alp, eta, c,b,x)
+{
+  n = length(x)
+  p1 = exp(-alp -c*eta)
+  p2 = eta^(n + b - 1)
+  p3 = alp^n
+  p4 = (x^(alp-1)) * exp(-eta * (x^alp))
+  return(p1 * p2 * p3 * prod(p4))
+}
+```
+
+## b)
+
+$$
+\begin{aligned}
+q(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)}) &= \frac{1}{\alpha_{(t)} \eta_{(t)}} \exp \Biggl\{ - \frac{\alpha_*}{\alpha_{(t)}} - \frac{\eta_*}{\eta_{(t)}} \Biggr\} \\
+\alpha(\theta_n, \theta_*) &= \min \Biggl\{ \frac{\pi(\theta_* \mid X) q(\theta_*, \theta_n)}{\pi(\theta_n \mid X) q(\theta_n, \theta_*)} , 1 \Biggr\} \\
+\rho(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)} ) &= \min \Biggl\{ \frac{\pi(\alpha_*, \eta_* \mid X) q(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)})}{\pi(\alpha_{(t)}, \eta_{(t)} \mid X) q(\alpha_{(t)}, \eta_{(t)} \mid \alpha_*, \eta_*)} , 1 \Biggr\} \\
+\frac{q(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)})}{q(\alpha_{(t)}, \eta_{(t)} \mid \alpha_*, \eta_*)} &= \frac{\frac{1}{\alpha_{(t)} \eta_{(t)}} \exp \Biggl\{ - \frac{\alpha_*}{\alpha_{(t)}} - \frac{\eta_*}{\eta_{(t)}} \Biggr\}}{\frac{1}{\alpha_* \eta_*} \exp \Biggl\{ - \frac{\alpha_{(t)}}{\alpha_*} - \frac{\eta_{(t)}}{\eta_*} \Biggr\}} \\
+&= \frac{\alpha_* \eta_*}{\alpha_{(t)} \eta_{(t)}} \exp \Biggl\{ - \frac{\alpha_*}{\alpha_{(t)}} - \frac{\eta_*}{\eta_{(t)}} \Biggr\} \exp \Biggl\{  \frac{\alpha_{(t)}}{\alpha_*} + \frac{\eta_{(t)}}{\eta_*} \Biggr\} \\
+&= \frac{\alpha_* \eta_*}{\alpha_{(t)} \eta_{(t)}} \exp \Biggl\{ - \alpha_*/\alpha_{(t)} - \eta_*/\eta_{(t)} \Biggr\} \exp \Biggl\{ \alpha_{(t)}/\alpha_* + \eta_{(t)}/\eta_* \Biggr\} \\
+&= \frac{\alpha_* \eta_*}{\alpha_{(t)} \eta_{(t)}} e^{- \alpha_*/\alpha_{(t)} - \eta_*/\eta_{(t)} + \alpha_{(t)}/\alpha_* + \eta_{(t)}/\eta_*} \\
+\frac{\pi(\alpha_*, \eta_* \mid X)}{\pi(\alpha_{(t)}, \eta_{(t)} \mid X)} &= \frac{ e^{-\alpha_* -c \eta_*} \eta_*^{n+\beta-1} \alpha_*^n \prod_{i=1}^n x_i^{\alpha_*-1} e^{-\eta_* x_i^{\alpha_*}}  }{ e^{-\alpha_{(t)} -c \eta_{(t)}} \eta_{(t)}^{n+\beta-1} \alpha_{(t)}^n \prod_{i=1}^n x_i^{\alpha_{(t)}-1} e^{-\eta_{(t)} x_i^{\alpha_{(t)}}} } \\
+&= e^{ \alpha_{(t)} +c \eta_{(t)} -\alpha_* -c \eta_*} \frac{\eta_*^{n+\beta-1} \alpha_*^n}{\eta_{(t)}^{n+\beta-1} \alpha_{(t)}^n}  \prod_{i=1}^n x_i^{\alpha_* - \alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}} -\eta_* x_i^{\alpha_*}}   \\
+\rho(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)} ) &= \min \Biggl\{ \frac{\alpha_* \eta_*}{\alpha_{(t)} \eta_{(t)}} e^{- \alpha_*/\alpha_{(t)} - \eta_*/\eta_{(t)} + \alpha_{(t)}/\alpha_* + \eta_{(t)}/\eta_*} e^{ \alpha_{(t)} +c \eta_{(t)} -\alpha_* -c \eta_*} \frac{\eta_*^{n+\beta-1} \alpha_*^n}{\eta_{(t)}^{n+\beta-1} \alpha_{(t)}^n}  \prod_{i=1}^n x_i^{\alpha_* - \alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}} -\eta_* x_i^{\alpha_*}} , 1 \Biggr\} \\
+&= \min \Biggl\{ e^{- \alpha_*/\alpha_{(t)} - \eta_*/\eta_{(t)} + \alpha_{(t)}/\alpha_* + \eta_{(t)}/\eta_* + \alpha_{(t)} +c \eta_{(t)} -\alpha_* -c \eta_*} \frac{\eta_*^{n+\beta} \alpha_*^{n+1}}{\eta_{(t)}^{n+\beta} \alpha_{(t)}^{n+1}}  \prod_{i=1}^n x_i^{\alpha_* - \alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}} -\eta_* x_i^{\alpha_*}} , 1 \Biggr\} \\
+\end{aligned}
+$$
+```{R}
+log_p = function(a2,n2,a1,n1, b,c,x)
+{
+  n = length(x)
+  p1 = -a2/a1 - n2/n1 + a1/a2 + n1/n2 + a1 + c*n1 -a2 -c*n2
+  p2 = (n+b)*log(n2) + (n+1)*log(a2) - (n+b)*log(n1) - (n+1)*log(a1)
+  p3 = sum((a2-a1)*log(x) + ((n1*(x^a1)) - (n2*(x^a2))))
+  return(min(p1+p2+p3,0))
+}
+
+p = function(a2,n2,a1,n1, b,c,x)
+{
+  n = length(x)
+  p1 = exp(-a2/a1 - n2/n1 + a1/a2 + n1/n2 + a1 + c*n1 -a2 -c*n2)
+  p2 = ((n2^(n+b)) * (a2^(n+1))) / ((n1^(n+b)) * (a1^(n+1)))
+  p3 = prod(((x^(a2-a1)) * exp(((n1*(x^a1)) - (n2*(x^a2))))))
+  return(min(p1*p2*p3, 1))
+}
+```
+
+## c)
+
+Explain how to generate the chain:
+
+1. Initialize $n = 0$ and $\alpha_n, \eta_n$.
+
+2. sample $\alpha_*, \eta_* \sim q(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)})$ and $u \sim U(0,1)$
+
+3. if $u \leq \rho(\alpha_*, \eta_* \mid \alpha_{(t)}, \eta_{(t)} )$ set $\alpha_{n+1} = \alpha_*, \eta_{n+1} = \eta_*$. else $\alpha_{n+1} = \alpha_n, \eta_{n+1} = \eta_n$
+
+4. set $n = n + 1$ and goto step 2.
+
+```{R}
+run = function(b,c,x, NN = 50000, plot_graf=F)
+{
+  chain = matrix(nrow=NN, ncol=2)
+  chain[1,] = c(1,1)
+  
+  for (i in 2:NN)
+  {
+    a1 = chain[i-1,1]
+    n1 = chain[i-1,2]
+    
+    a2 = rexp(1, 1/a1)
+    n2 = rexp(1, 1/n1)
+    
+    if (log(runif(1)) <= log_p(a2,n2,a1,n1, b,c,x))
+      chain[i,] = c(a2,n2)
+    else 
+      chain[i,] = chain[i-1,]
+  }
+  
+  if (plot_graf) # plot graphs
+  {
+    par(mfrow = c(3,2))
+    hist(chain[,1], main=paste0("(b=", b, " :: c=", c, ")"))
+    hist(chain[,2])
+    plot(chain[,1],type='l')
+    plot(chain[,2],type='l')
+    acf(chain[,1])
+    acf(chain[,2])
+  }
+  
+  return(chain)
+}
+
+if (F) # iterate over possible values of b,c to monitor 
+{
+  MM = 15
+  params = rep(1, MM)
+  for (i in 2:MM) params[i] = 1.4*params[i-1]
+  params
+  for (i in params)
+  {
+    for (j in params)
+    {
+      tryCatch({
+        run(b=i, c=j, x, NN=10000, T)
+      }, warning = function(w) {
+        print(paste(i,j,e))
+      }, error = function(e) {
+        print(paste(i,j,e))
+      }, finally = {
+      })
+    }
+  }
+}
+```
+
+## d)
+
+```{R}
+# posterior mean
+b = 5
+c = 5
+x = c(0.56, 2.26, 1.90, 0.94, 1.40, 1.39, 1.00, 1.45, 2.32, 2.08, 0.89, 1.68)
+NN = 50000
+chain = run(b,c,x,NN,T)
+c(alpha=mean(chain[,1]),eta=mean(chain[,2]))
+```
+
+## e)
+
+```{R}
+# MAP estimate
+MAPs = rep(NA, NN)
+for (i in 1:NN) MAPs[i] = post_pi(chain[i,1],chain[i,2],b,c,x)
+map_idx = which(MAPs == max(MAPs))[1]
+c(chain[map_idx,1],chain[map_idx,2])
+
+# 95% credible interval
+quantile(chain[,1], probs = c(0.025, 0.975))
+quantile(chain[,2], probs = c(0.025, 0.975))
+```
+
+

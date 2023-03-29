@@ -1,0 +1,95 @@
+---
+title: "GRADUATE STUDENT STAT 840 A1"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 7
+
+## (a)
+
+```{r}
+d = function(x)
+{
+  return((x^3)*exp(x))
+}
+
+get_SE = function(x) # return variance of sample mean
+{
+  n = length(x)
+  mu = sum(x) / n
+  s_sq = sum((x - mu)^2) / ((n-1)*n) # notes p 30
+  return(sqrt(s_sq))
+}
+
+get_CI = function(xbar, se, conf=.95)
+{
+  a = 1 - conf
+  L = xbar + qnorm(a/2)*se
+  U = xbar + qnorm(1 - a/2)*se
+  return(c(L,U))
+}
+
+n = 100000
+z = rnorm(n)
+
+deltas = d(z)
+theta_hat = mean(deltas)
+SE = get_SE(deltas)
+CI = get_CI(theta_hat, SE)
+# whenever reporting a MC estimate, report n, SE of estimate, and CI
+c(n, theta_hat, SE, CI)
+```
+
+## (b)
+
+This is adapted from example 22 in the notes. It yields the exact values produced there. In this problem, the correlation seems to be negligible.
+
+```{R}
+# antithetic
+n = 100000
+z = rnorm(n/2)
+deltas = (d(z) + d(-z))/2
+theta_as = mean(deltas)
+se_as = get_SE(deltas)
+ci_as = get_CI(theta_as, se_as)
+c(n, theta_as, se_as, ci_as)
+cor(d(z), d(-z))
+```
+
+## (c)
+
+We see that the variances are about the same. In this case, we do not get any variance reduction using antithetic sampling because the correlation between the estimators theta_1 and theta_2 is near 0. 
+
+```{R}
+nn = 1000
+mc_simple = rep(0, nn)
+mc_as = rep(0, nn)
+
+for (i in 1:nn)
+{
+  n = 10000
+
+  # standard
+  z1 = rnorm(n)
+  theta_hat = mean(d(z1))
+  
+  # antithetic
+  z2 = rnorm(n/2)
+  theta_as = mean((d(z2) + d(-z2))/2)
+  
+  mc_simple[i] = theta_hat
+  mc_as[i] = theta_as
+}
+par(mfrow = c(2,2))
+p1 = hist(mc_simple)
+p2 = hist(mc_as)
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,10))
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,10), add=T)
+
+c(var(mc_simple), var(mc_as))
+```

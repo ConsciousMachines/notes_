@@ -1,0 +1,4 @@
+#! /bin/bash
+
+iverilog -g2012 test.sv test_tb.sv
+vvp a.out

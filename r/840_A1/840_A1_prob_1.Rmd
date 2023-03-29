@@ -1,0 +1,71 @@
+---
+title: "GRADUATE STUDENT STAT 840 A1"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+
+## (a) + (b)
+
+A likelihood:
+
+$$
+f_A(x) = \frac{\beta^{\alpha}}{\Gamma(\alpha)} x^{\alpha-1}e^{-\beta x} = \frac{\beta^{3}}{\Gamma(3)} x^{3-1}e^{-\beta x} = \frac{\beta^{3}}{2} x^{2}e^{-\beta x} = \frac{\theta^{3}}{2} x^{2}e^{-\theta x}
+$$
+$$
+f_A(2) = 2 \theta^3 e^{-2\theta}
+$$
+
+B likelihood:
+
+$$
+f_B(x) = \frac{\lambda^x e^{-\lambda}}{x!} = \frac{2^x \theta^x e^{-2\theta}}{x!}
+$$
+$$
+f_B(3) = \frac{8}{6} \theta^3 e^{-2 \theta}
+$$
+In particular,
+
+$$
+f_A(2) = \frac{6}{4} f_B(3)
+$$
+
+```{r}
+n = 100
+results1 = rep(0, n)
+results2 = rep(0, n)
+theta = seq(from = 0, to = 10, length.out = n)
+
+for (i in 1:n)
+{
+  results1[i] = dgamma(2, 3, theta[i])
+  results2[i] = dpois(3, theta[i]*2)
+}
+
+plot(theta, results1, type='l', col='red')
+lines(theta, results2, col='green')
+legend(x = 'topright', 
+       legend=c('A gam', 'B pois'), 
+       fill = c('red','green'))
+```
+
+## (c)
+
+Comparing the likelihoods, we see that $L_A$ is proportional to $L_B$ as a function of $\theta$. The MLE will thus be the same, yielding $\theta^{\star} = 3/2$.
+
+$$
+\begin{aligned}
+loglik &= c + 3 log \theta - 2 \theta \\
+\frac{d}{d\theta} (c + 3 log \theta - 2 \theta) &= 0 \\
+\frac{3}{\theta} &= 2 \\ 
+\theta &= \frac{3}{2}
+\end{aligned}
+$$
+
+### Discussion:
+According to the Strong Likelihood Principle, the likelihood function contains all information $x$ has about $\theta$. If $x$, $y$ are two observations (possibly from different models) satisfying $L_A = c L_B$, for every $\theta$, they carry the same information about $\theta$ and must lead to identical inference. The constraints are satisfied in this situation, meaning both experimenters A and B have the same inference about $\theta$, given their chosen models and the observations $x$, $y$. Their likelihood functions are proportional. So A and B make identical inferences about $\theta$.

@@ -1,0 +1,762 @@
+
+- chapter 1.1: vectors
+
+	two vectors A,B have the same direction if A = cB for some constant c > 0
+		they have opposite directions if c < 0
+		that means A is stretched to become B.
+	
+- chapter 1.2: located vectors
+	
+	LOCATED VECTOR := ordered pair of points (A,B) and we draw a vector from the end of A towards the end of B.
+	
+		two located vectors AB, CD are EQUIVALENT if (B-A) = (D-C)
+			(they differ by starting positions)
+			each located vector AB is equivalent to O(B-A), since it just shifts the start point to the origin
+			
+		two located vectors AB, PQ are PARALLEL if (B-A) = c(Q-P), meaning they are in the same direction but w diff offsets
+		
+- chapter 1.3: scalar product
+
+	dot product := A.B = sum_i ai * bi 
+
+	["vectors" can be replaced by other things that can be added and multiplied by numbers, like functions]
+	
+	[the dot product is a thing that satisfies: f(A,B)=f(B,A) [symmetry], f(A,B+C)=f(A,B)+f(A,C) [distributivity?],
+		f(xA,B)=xf(A,B) [linearity? scalar?], f(0,0)=0, f(A,A)>0 [positive?]
+		this thing is called a norm and we will have other norms for other objects, 
+		we can replace vectors by functions and dot-prod by integral of 2 functions and it satisfies this stuff] 
+		
+	if dot prod = 0, two vectors are perpendicular / orthogonal
+	
+	A = (a1, a2, a3)
+		then ai = A.Ei 
+		Ei is ith unit vector. (projected onto it)
+		if ai=0, they are orthogonal
+			[which means A does not have any component in the ith dimension]
+			
+	[sometimes we get A.B=0 when A,B both have only non-zero numbers in their vectors. 
+		this can be seen as the same exact dot product of 0s and 1s, 
+		only after a matrix transformation (scale + rotation)]	
+	
+	SP 3
+		(xA).B = x(A.B)
+		sum_i (x ai) bi ;; def
+		sum_i x (ai bi) ;; associativity of multiplication of real numbers
+		x sum_i (ai bi) ;; factor out common x from sum of reals
+		x (A.B)         ;; def 
+		
+		A.(xB) = x(A.B)
+		sum_i ai (x bi) ;; def
+		sum_i ai (bi x) ;; commutativity
+		sum_i (ai bi) x ;; associativity
+		sum_i x (ai bi) ;; commutativity
+		x sum_i (ai bi) ;; factor out common x from sum of reals
+		x(A.B)          ;; def
+		
+	
+	ex 3. 
+		(A + B)(A + B)
+		A(A + B) + B(A + B) ;; SP2
+		AA + AB + BA + BB   ;; SP2
+		AA + AB + AB + BB   ;; SP1
+		AA + 2 AB + BB      ;; since AB is a number
+		
+		(A - B)(A - B)
+			let C = (-1)B
+		(A + C)(A + C)    
+		AA + 2 AC + CC      ;; from previous part 
+		AA + 2 A(-1)B + (-1)B(-1)B ;; def of C
+		AA + 2(-1)AB + (-1)(-1)BB ;; SP3
+		AA - 2 AB + BB
+		
+	ex 5. 
+		for unit vectors Ei, we know that A.Ei = ai
+		since A is perpendicular to all vectors, A.Ei = 0 = ai forall i
+		
+- chapter 1.4: norm of a vector
+
+	NORM of vector A := ||A|| = sqrt(A.A)
+	
+		also called magnitude
+		
+	DISTANCE between A,B := ||A-B||
+		= ||B-A||	
+	
+	OPEN DISC := some point P, a>0, then the set of points X st ||X-P|| < a 
+		is the open disc of radius a centered at P. 
+		
+	Thm 4.1
+		x is number
+		||xA|| = |x| ||A||
+		
+	proof:
+		||xA||^2
+		(xA).(xA) ;; def 
+		x^2 (A.A) ;; dot product properties
+		
+		take square root, 
+		||xA|| = sqrt( x^2 (A.A) )
+		= |x| sqrt(A.A)
+		= |x| ||A||
+		
+	a vector is a UNIT VECTOR if it has norm/magnitude 1
+	
+	PERPENDICULARITY:
+	
+		||A+B|| = ||A-B|| means A,B perpendicular 
+		
+			because A is midway between -B,B meaning its at 0 but also along the perpendicular line.
+			
+		Theorem?
+			||A+B|| = ||A-B|| iff (A.B) = 0
+			
+		proof:
+			||A+B|| = ||A-B||
+			||A+B||^2 = ||A-B||^2
+			AA + 2AB + BB = AA -2AB + BB
+			4AB = 0
+			AB = 0
+			
+	General Pythagoras Theorem
+		A,B perpendicular, ||A+B||^2 = ||A||^2 + ||B||^2
+		
+	proof:
+		||A+B||^2
+		(A+B)(A+B)
+		AA + 2AB + BB
+		||A||^2 + ||B||^2    since A.B = 0 since perpendicular
+		
+	PROJECTION
+	
+		A,B vecs
+		
+		P is the point on B such that PA perpendicular to B.
+		
+		P = cB since it's on B
+		
+		since PA perpendicular ot B, (A-P) perpendicular to B:
+			(A-P).B = 0
+			(A - cB).B = 0
+			A.B - cB.B = 0
+			c = A.B / B.B
+			
+		the COMPONENT of A along B is the number c.
+			that means the part of A that is in the B direction.
+			
+			in PCA, for an oval of data, we would rotate the axes so that the components are maximized:
+			meaning the direction which has the largest magnitude
+			so if the oval is tilted, the direction would be oval's own axes versus the smaller x,y axes
+	
+		projection of A along B is cB 
+		
+		angle: now looking at the angle between A,B we see cos theta = c||B||/||A||
+		
+	Thm 4.2   Cauchy-Schwarz inequality
+	
+		|A.B| <= ||A|| ||B||
+		
+	proof
+	
+		B =/= 0
+		c is component of A along B
+		
+		A = A - cB + cB
+		
+		by Pythagoras, ||A||^2 = ||A-cB||^2 + ||cB||^2 = ||A-cB||^2 + c^2 ||B||^2
+		
+		thus c^2 ||B||^2 <= ||A||^2
+		
+		|A.B|^2 / ||B||^2 <= ||A||^2
+		
+	so due to this theorem, we can bound:
+	
+		-1 <= A.B / ||A|| ||B|| <= 1
+		
+		which means there is a unique cos theta in this range, for 0 <= theta <= pi
+		
+			[because when theta is between 0 and pi, cos theta has the range -1,1 
+				and can be 1-1 mapped to A.B/... ]
+				
+	NOTE:
+
+		cos theta = A.B / ||A|| ||B||
+		
+		cos theta = A.B / len(A) len(B)
+		
+		cos theta = (1/len(A)) (1/len(B)) A.B
+		
+		cos theta = (A/len(A)).(B/len(B))
+		
+			which means we normalize A and B then take the dot product (projection) 
+			
+			at that point, it is back to high school unit circle: one vector is an axis, the other is the hypotenuse of a triangle
+			
+			at this point projection is literally sine/cosine as defined in high school.
+			
+	Thm 4.3   Triangle inequality
+	
+		||A+B|| <= ||A|| + ||B||
+		
+	proof
+	
+		since both sides are positive or 0, we can just prove the square: 
+				
+				a,b >= 0
+				a <= b
+				ab <= bb
+				aa <= ab
+				thus aa <= bb
+				
+			(A + B)(A + B) <= (||A|| + ||B||)^2
+			
+			LHS: AA + 2AB + BB 
+				
+				<= AA + 2 ||A|| ||B|| + BB   [cauchy schwarz]
+				
+				= (||A|| + ||B||)^2   as desired
+				
+	[basically the hypotenuse is always shorter than the sum of the sides]
+	[actually any one side is less than sum of the 2 others]
+	[since they can at most be equal]
+	
+	apparently all these proofs do not use coordinates so they are good for general settings?
+		only require properties of dot product
+		in n-space they give us non-trivial inequalities.
+		
+	ex 7.
+	
+		sum_i ci Ai = 0 
+		
+		WTS ci = 0 forall i
+		
+		dot both sides by Aj, get
+		
+		sum_i ci Ai.Aj = 0
+		
+			Ai.Aj = 0   when i =/= j
+			
+		cj Aj.Aj = 0 
+		
+			know Aj.Aj >= 0 since Aj is non-zero
+			
+		thus cj = 0.
+		
+	ex 8.
+	
+		a.
+		
+			||A+B||^2 + ||A-B||^2 = 2||A||^2 + 2||B||^2
+			
+			(A+B)(A+B) + (A-B)(A-B) = 2AA + 2BB
+			
+			AA + 2AB + BB + AA - 2AB + BB = 2AA + 2BB
+			
+			this is the parallelogram law because if A and B are 2 sides, then A+B is one diagonal, A-B is another diagonal.
+			thus we get 2*side1^2 + 2*side2^2 = diag1^2 + diag2^2 [which is the statement of the law on wikipedia]
+			
+		b.
+		
+			||A+B||^2 = ||A||^2 + ||B||^2 + 2AB
+			
+			(A+B)(A+B) = AA + BB + 2AB
+			
+			AA + 2AB + BB = ...
+			
+		c.
+		
+			||A+B||^2 - ||A-B||^2 = 4AB
+			
+			(A+B)(A+B) - (A-B)(A-B) = 4AB
+			
+			AA + 2AB + BB - (AA - 2AB + BB) = 4AB
+			
+			AA + 2AB + BB - AA + 2AB - BB = 4AB
+		
+	ex 9.
+	
+		||A-B||^2 = ||A||^2 + ||B||^2 - 2 ||A|| ||B|| cos theta
+		
+		cos theta = A.B / ||A|| ||B||
+		
+		RHS:
+		
+		||A||^2 + ||B||^2 - 2 ||A|| ||B|| A.B / ||A|| ||B||
+		
+		||A||^2 + ||B||^2 - 2 A.B
+		
+		AA - 2AB + BB
+		
+		LHS:
+		
+		(A-B)(A-B)
+		
+		AA - 2AB + BB
+		
+	ex 10.
+	
+		A = [1,0]
+		
+		B = [0,1]
+		
+		C = [0,2]
+		
+		AB = 0 = AC
+		
+		B =/= C
+		
+- chapter 1.5: parametric lines
+
+	PARAMETRIC EQUATION: 
+		starting at P, we move in direction A.
+		this forms a line.
+		
+			X = P + tA 
+				
+	also describe points between 2 vectors P,Q
+	
+		S = P + t(Q-P)   for 0 <= t <= 1
+		
+	(x,y) = (p,q) + t(a,b)
+	x = p + ta
+	y = q + tb
+	if we combine the 2 equations such that t cancels out, we get the usual equation of the line.
+	(x-p)/a = t
+	(y-q)/b = t
+	(x-p)/a = (y-q)/b
+	x-p = (y-q)a/b
+		point slope form?
+		
+	ax + by = c
+	x = t
+	at + by = c
+	by = c - at
+	y = c/b -a/b t
+	
+	we basically made y a function of t, then used the line equation to solve for x as a function of t
+		now (x,y) is a function of t
+		this is identical to (x,y) being a function of x as (f1(x), f2(x))
+		except we made f1 be something that's not the identity. 
+		so for non-linear parametrizations, we'd do just that. set each coordinate as a function of t, this defines a path.
+		for the linear case, the parametrization takes the form (x,y) = P + tA
+			from the 2 functions:
+				y = t
+				x = c/a -b/a t
+			we get that P = (c/a, 0) from the above equations, and A = (-b/a, t) 
+				[we just combined the 2 separate equations into a vector equation]
+			this way, we can write y as any function of t, and derive x accoringly, and that will decide P,A
+			
+		we can even use non-linear equations like y = sqrt(t) which will make the point move with non-linear speed,
+			y = sqrt(t)
+			x = c/a - b/a sqrt(t) 
+			this is still linear in "sqrt(t)"
+			
+		we write y as a function of t
+		we use the linear relation to write x as a function of t
+		thus picking any t will create a pair (x,y) satisfying the linear relation
+		
+		we are basically generating points (x,y) that satisfy the linear relation. 
+		first generate y (make a function y of t)
+		then use the linear relation to figure out x of t
+		this way for any t, (x,y) satisfies the line.
+		
+		that actually seems boring - pick a random t, generate y
+		then figure out x based on the linear relation.
+		of course the linear relation will be satisfied.
+		but now we have (x,y) as a function of t.
+		
+		ok its not that hard
+		y is any function of t
+		x is determined based on the linear relation
+		then when you pick any t, it creates a point (x,y) satisfying the linear relation
+			
+	we cannot eliminate t in higher dimensions (since there are many equations) 
+		so we must use parametric representation to describe a line.
+		
+	ex 5.
+		
+		P + 0.5(Q-P)
+		Q + 0.5(P-Q)
+		
+- chapter 1.6: planes
+
+	P is a point, N is a vec, we make a plane passing through P that's perpendicular to N.
+		collection of all points X such that PX is perpendiculat to N
+		
+		(X-P)N = 0
+		
+			[think of it as points X get "normalized" back to the origin before being dotted with N]
+			[this makes the plane pass thru the origin rather than P]
+			
+		(X-P)tN = 0
+		
+			since tN is in the same direction as N.
+			so our plane passes thru P and is perpendicular to the line in the direction of N.
+			so the equation of the plane works for any tN.
+			
+		in 2-space, choose P=[0,0] N=[1,1] we get XN=0 -> x + y = 0 -> x=-y
+			which is the line perpendicular to [1,1] 
+			i think this formula yields a (n-1) dimensional subspace 
+			the set of all points that are perpendicular to N. 
+			so of course in 2-space it would be a line.
+			
+	in any equation:
+	
+		ax + by = c
+		
+		(a,b) is the vector perpendicular to the line determined by this equation.
+		
+			(it's just N from XN = PN)
+			
+		ax + by = 0
+		
+			here it is clear that (a,b) and (x,y) are perpendicular
+			to satisfy this, if x increases by 1, LHS increases by a, y must increase by -a/b and this corresponds to the line.
+			
+		ax + by = 1
+		
+			here we have the same set of points as above except all x are greater by 1/a, or equivalently, y are greater by 1/b
+			
+		ax + by = c
+		
+			same points except all x are greater by c/a, or equivalently y are greater by c/b
+			the c just offsets the points by a constant amount, it does not change their relationship
+	
+	two planes are parallel if their normal vectors are parallel.
+		
+		they are perpendicular if their normal vectors are perpendicular.
+		
+		the angle between 2 planes is the angle between their normal vectors.
+		
+	[fun fact: so if we have 3 points on a plane P1, P2, P3, we can "normalize" the plane by any of them, and it refers to the same plane???
+		yes. we can "normalize" the plane by subtracting the shortest vector. 
+		or we can subtract any other vector that is on the plane. 
+		the difference between these 2 vectors will be a segment in the plane.
+		that segment dotted with N is 0. 
+		thus XN = P1 N
+			XN = P2 N
+			XN = P3 N
+			... and so on for any Pi in the plane.
+			XN = P2 N = (P1 + (P2-P1))N = P1 N since (P2-P1) is in the plane, thus (P2-P1)N = 0.]
+		additionally, the dot product of all points in the plane is then 
+			c = the dot product of the shortest vector from the plane to the origin. (which is orthogonal)		
+			all other points on the plane add segments whose dot products are 0.
+			
+	in example 6, we only use 2 segments since the 3rd is a linear combination.
+		then we have free variables so we give them arbitrary values.
+		
+	ex 1.
+	
+		the lines perpendicular to them, (2,3) and (5,-5) are not perpendicular. 
+		
+	ex 2.
+	
+		y = mx + b
+		-mx + y = b
+		(-m, 1)
+		
+		y = m'x + c
+		-m'x + y = c
+		(-m', 1)
+		
+		(-m, 1)(-m', 1) = 0
+		mm' + 1 = 0
+		mm' = -1
+		
+	ex 10.
+	
+		2x - y + z = 1
+		3x + y + z = 2
+		
+		5x + 2z = 3
+		5x = 3 - 2z
+		x = 3/5 -2/5 z
+		
+		z = 1
+		x = 1/5
+		y = 2/5
+		
+		z = 2 - 3x - y
+		2x -y + 2 -3x - y = 1
+		-x -2y = -1
+		x + 2y = 1
+		2y = 1 - x
+		y = 1/2 -1/2 x
+		
+		z = t
+		x = 3/5 - 2/5 t
+		y = 1/2 - 1/2 (3/5 - 2/5 t)
+		y = 5/10 - 3/10 + 2/10 t
+		y = 2/10 + 2/10 t 
+		
+		P = (3/5, 2/10, 0)
+		A = (-2/5, 2/10, 1)
+		
+		t = 0, X = P
+		t = 1, X = (2/10, 4/10, 1)
+		t = 2, X = (-2/10, 6/10, 2)
+		
+- chapter 2.1: matrices
+
+	ex 5.
+		
+		t(A + B) = tA + tB
+		
+		A,B are mxn
+		
+		A + B
+			mxn matrix with element_ij = (aij + bij)
+		
+		t(A + B)
+			nxm matrix where element_ij = (aji + bji)
+		
+		tA
+			nxm matrix where element_ij = aji
+			
+		tB
+			nxm matrix where element_ij = bji
+			
+		tA + tB
+			nxm matrix where elememt_ij = (aji + bji)
+			= t(A + B)
+			
+	ex 6.
+	
+		A 
+			mxn, ij = aij
+		cA
+			mxn, ij = c aij
+		t(cA)
+			nxm, ij = c aji
+			
+		tA
+			nxm, ij = aji
+		c(tA)
+			ncm, ij = c aji
+			= t(cA)
+			
+	ex 7.
+		
+		they are the same since if i=j, aij = aji = aii = ajj
+		
+	ex 10.
+	
+		a.
+		
+			the element in position ij becomes aij + aji
+			the element in position ji becomes aji + aij
+			they are equal.
+			for diagonals, its 2 aii 
+			
+		b.
+			
+			the element in position ij becomes aij - aji
+			the element in position ji becomes aji - aij
+			thus ij = -ji since
+				aij - aji = -(aji - aij)
+				
+			[so basically the mirror elements are negative]
+			
+		c.
+		
+			they are 0 because aii = -aii
+		
+	ex 11.
+	
+		sum xi Ei = (x1, x2, ... xn)
+		
+		already showed it before. 
+		sum xi Ei = 0
+			dot both sides by Ej
+		xi Ej.Ej = 0
+			know Ej not zero vector, so Ej.Ej > 0
+			thus xi = 0
+			
+- chapter 2.2: multiplication of matrices
+
+	markov matrix:
+	
+		aij is the element in row i, column j, 
+		
+		it means state j moving to state i. 
+		
+		so each column sums to 1 because it represents the population in state j going to different places.
+		
+		the row represents incoming population for the next state, AX, when multiplied by current population in each state X
+		
+	define A^0 = Identity
+	
+	AB =/= BA 
+	
+		but powers of A commute, A^r A^s = A^s A^r
+		
+	Distributive Law
+	
+		A(B + C) = AB + AC
+		
+		A(xB) = x(AB)
+		
+	proof:
+	
+		1)
+		
+		Ai is ith row of A, Bk Ck are kth columns of B and C.
+		
+		Bk + Ck is kth column of B+C
+		
+		consider element ik of result.
+		
+		by def, ik-component of A(B+C) is 
+			
+			Ai(Bk + Ck)
+			
+			sum_j aij (bjk + cjk)
+			
+			sum_J aij bjk + aij cjk
+			
+			(sum_j aij bjk) + (sum_j aij cjk)
+			
+			AiBk + AiCk
+			
+		2)
+		
+		kth column of xB is xBk
+		
+		consider ik element of result.
+		
+		Ai xBk 
+		
+		sum_j aij x bjk
+		
+		x sum_j aij bjk
+		
+		x(Ai Bk)
+		
+	Associative Law
+	
+		(AB)C = A(BC)
+		
+	proof
+	
+		(AB)ik component is sum_j aij bjk 
+		
+		(AB)C il component is sum_k [sum_j aij bjk] ckl 
+			
+			sum_k sum_j aij bjk ckl
+			
+		(BC) jl component is sum_k bjk ckl
+		
+		A(BC) il component is sum_j aij [sum_k bjk ckl]
+		
+			sum_j sum_k aij bjk ckl
+			
+		same thing.
+		
+	Transpose of Product
+	
+		t(AB) = tB tA 
+		
+	proof
+			
+		the transposed elements are 
+			taij = aji
+			tbjk = bkj
+			
+		(AB) ik element is:
+			sum_j aij bjk 
+			sum_j bjk aij
+			sum_j tbkj taji
+			
+		this is the ki element of (tB tA) 
+	
+	INVERSE
+
+		inverse for A is a matrix B such that 
+		
+			AB = BA = I
+			
+		it is unique.
+		
+		proof:
+		
+			B,C are inverses.
+				AB = BA = I
+				AC = CA = I
+			BAC = IC = C
+				but AC = I,
+			BI = C
+			B = C
+	
+		later we will prove that if AB = I, then BA = I, 
+			meaning a right inverse is also a left inverse.
+			thus to verify an inverse, we only need to check one side.
+			(inverse is defined as both sides, so i guess one side is still up for debate?)
+			meaning that if we don't know B is the inverse of A, we'd need to check both sides
+			but with this assumed proof, we only check one.
+			
+	SCALAR MATRIX: cI
+	
+	Transpose of inverse is inverse of transpose:
+	
+		t(Ainv) = (tA)inv 
+		
+	proof:
+	
+		AAinv = I
+			now take transpose:
+		t(A Ainv) = tI = I
+		t(Ainv) tA = I
+		
+		Ainv A = I
+		tA t(Ainv) = I
+		
+		thus t(Ainv) is the inverse for tA
+	
+		thus we write tAinv since it doesnt matter whether you transpose or invert first.
+		
+	ROTATIONS
+	
+		R(0) = | cos0 -sin0 |
+			   | sin0  cos0 |
+			   
+		then if (x,y) is on the unit circle, we can write
+			x = cos phi
+			y = sin phi
+			
+		then multiplying by R, we get [cos(0+phi) sin(0+phi)]
+		
+			[addition formula for sin/cos]
+			
+			cos(A + B) = cos A cos B - sin A sin B
+			
+			sin(A + B) = sin A cos B + cos A sin B
+	
+		an arbitrary point in R2 can be written rX = [ r cos phi, r sin phi]
+		
+			R(0) r X = r R(0) X
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

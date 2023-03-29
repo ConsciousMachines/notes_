@@ -1,0 +1,60 @@
+---
+title: "GRADUATE STUDENT STAT 840 A1"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 4
+
+## (i)
+
+$$
+\begin{aligned}
+\sum_{i=1}^n (x_i - \bar{x}_n)^2 &= \sum_{i=1}^n (x_i^2 - 2 x_i \bar{x}_n + \bar{x}_n^2) \\
+&= \sum_{i=1}^n x_i^2 - 2 \bar{x}_n \sum_{i=1}^n x_i + \sum_{i=1}^n \bar{x}_n^2 \\
+&= \sum_{i=1}^n x_i^2 - 2 \bar{x}_n \sum_{i=1}^n x_i + n \bar{x}_n^2 \\
+& \qquad \texttt{since } n \bar{x}_n = \sum_{i=1}^n x_i \\
+&= \sum_{i=1}^n x_i^2 - 2 n \bar{x}_n^2 + n \bar{x}_n^2 \\
+&= \sum_{i=1}^n x_i^2 - n \bar{x}_n^2
+\end{aligned}
+$$
+
+## (ii)
+
+$$
+\begin{aligned}
+\bar{x}_{n+1} &= \frac{1}{n+1} \sum_{i=1}^{n+1} x_i \\
+&= \frac{1}{n+1} \left( x_{n+1} + \sum_{i=1}^{n} x_i \right ) \\
+&= \frac{1}{n+1} \left( x_{n+1} + n \bar{x}_n \right ) \\
+&= \frac{1}{n+1} x_{n+1} + \frac{n}{n+1} \bar{x}_n \\
+&= \frac{1}{n+1} x_{n+1} + \bar{x}_n - \frac{1}{n+1} \bar{x}_n \\
+&= \bar{x}_n + \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right )
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\sum_{i=1}^{n+1} (x_i - \bar{x}_{n+1})^2 &= \sum_{i=1}^{n+1} x_i^2 - (n+1) \bar{x}_{n+1}^2 \\
+& \qquad \texttt{by part (i)} \\
+&= x_{n+1}^2 + \sum_{i=1}^{n} x_i^2 - (n+1) \bar{x}_{n+1}^2 \\
+(n+1) \bar{x}_{n+1}^2 &= (n+1) \left( \bar{x}_n + \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) \right )^2 \\
+& \qquad \texttt{from the previous part} \\
+&= (n+1) \left( \bar{x}_n^2 + \frac{2 \bar{x}_n}{n+1} \left( x_{n+1} - \bar{x}_n \right ) + \frac{1}{(n+1)^2} \left( x_{n+1} - \bar{x}_n \right ) ^2 \right ) \\
+&= (n+1) \bar{x}_n^2 + 2 \bar{x}_n \left( x_{n+1} - \bar{x}_n \right ) + \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&= n \bar{x}_n^2 + \bar{x}_n^2 + 2 \bar{x}_n \left( x_{n+1} - \bar{x}_n \right ) + \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&= n \bar{x}_n^2 + \epsilon \\
+& \qquad \texttt{where } \epsilon = \bar{x}_n^2 + 2 \bar{x}_n \left( x_{n+1} - \bar{x}_n \right ) + \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+\sum_{i=1}^{n+1} (x_i - \bar{x}_{n+1})^2 &= x_{n+1}^2 + \sum_{i=1}^{n} x_i^2 - n \bar{x}_n^2 - \epsilon \\
+&= \sum_{i=1}^n (x_i - \bar{x}_n)^2 + x_{n+1}^2 - \epsilon \\
+x_{n+1}^2 - \epsilon &= x_{n+1}^2 - \bar{x}_n^2 - 2 \bar{x}_n \left( x_{n+1} - \bar{x}_n \right ) - \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&= x_{n+1}^2 - \bar{x}_n^2 - 2 \bar{x}_n x_{n+1} + 2 \bar{x}_n^2 - \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&= x_{n+1}^2 - 2 \bar{x}_n x_{n+1} + \bar{x}_n^2 - \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&=  (x_{n+1} - \bar{x}_n)^2 - \frac{1}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+&=  \frac{n}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2 \\
+\sum_{i=1}^{n+1} (x_i - \bar{x}_{n+1})^2 &= \sum_{i=1}^n (x_i - \bar{x}_n)^2 + \frac{n}{n+1} \left( x_{n+1} - \bar{x}_n \right ) ^2
+\end{aligned}
+$$

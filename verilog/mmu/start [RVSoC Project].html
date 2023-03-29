@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html dir="ltr" class="js desktop" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>start [RVSoC Project]</title>
+    <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+    <meta name="generator" content="DokuWiki">
+<meta name="theme-color" content="#008800">
+<meta name="robots" content="index,follow">
+<meta name="keywords" content="start">
+<link rel="search" type="application/opensearchdescription+xml" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/opensearch.php" title="RVSoC Project">
+<link rel="start" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/">
+<link rel="contents" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=index" title="サイトマップ">
+<link rel="manifest" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/manifest.php">
+<link rel="alternate" type="application/rss+xml" title="最近の変更" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/feed.php">
+<link rel="alternate" type="application/rss+xml" title="現在の名前空間" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/feed.php?mode=list&amp;ns=">
+<link rel="alternate" type="text/html" title="プレーンHTML" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?do=export_xhtml&amp;id=start">
+<link rel="alternate" type="text/plain" title="Wikiマークアップ" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?do=export_raw&amp;id=start">
+<link rel="canonical" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/">
+<link rel="stylesheet" type="text/css" href="start%20[RVSoC%20Project]_files/css.css">
+<!--[if gte IE 9]><!-->
+<script type="text/javascript">/*<![CDATA[*/var NS='';var JSINFO = {"id":"start","namespace":"","ACT":"show","useHeadingNavigation":0,"useHeadingContent":0};
+/*!]]>*/</script>
+<script type="text/javascript" charset="utf-8" src="start%20[RVSoC%20Project]_files/jquery.php"></script>
+<script type="text/javascript" charset="utf-8" src="start%20[RVSoC%20Project]_files/js.php"></script><style id="iris-css">.iris-picker{display:block;position:relative}.iris-picker,.iris-picker *{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input+.iris-picker{margin-top:4px}.iris-error{background-color:#ffafaf}.iris-border{border-radius:3px;border:1px solid #aaa;width:200px;background-color:#fff}.iris-picker-inner{position:absolute;top:0;right:0;left:0;bottom:0}.iris-border .iris-picker-inner{top:10px;right:10px;left:10px;bottom:10px}.iris-picker .iris-square-inner{position:absolute;left:0;right:0;top:0;bottom:0}.iris-picker .iris-square,.iris-picker .iris-slider,.iris-picker .iris-square-inner,.iris-picker .iris-palette{border-radius:3px;box-shadow:inset 0 0 5px rgba(0,0,0,.4);height:100%;width:12.5%;float:left;margin-right:5%}.iris-picker .iris-square{width:76%;margin-right:10%;position:relative}.iris-picker .iris-square-inner{width:auto;margin:0}.iris-ie-9 .iris-square,.iris-ie-9 .iris-slider,.iris-ie-9 .iris-square-inner,.iris-ie-9 .iris-palette{box-shadow:none;border-radius:0}.iris-ie-9 .iris-square,.iris-ie-9 .iris-slider,.iris-ie-9 .iris-palette{outline:1px solid rgba(0,0,0,.1)}.iris-ie-lt9 .iris-square,.iris-ie-lt9 .iris-slider,.iris-ie-lt9 .iris-square-inner,.iris-ie-lt9 .iris-palette{outline:1px solid #aaa}.iris-ie-lt9 .iris-square .ui-slider-handle{outline:1px solid #aaa;background-color:#fff;-ms-filter:"alpha(Opacity=30)"}.iris-ie-lt9 .iris-square .iris-square-handle{background:0;border:3px solid #fff;-ms-filter:"alpha(Opacity=50)"}.iris-picker .iris-strip{margin-right:0;position:relative}.iris-picker .iris-strip .ui-slider-handle{position:absolute;background:0;margin:0;right:-3px;left:-3px;border:4px solid #aaa;border-width:4px 3px;width:auto;height:6px;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.2);opacity:.9;z-index:5;cursor:ns-resize}.iris-strip .ui-slider-handle:before{content:" ";position:absolute;left:-2px;right:-2px;top:-3px;bottom:-3px;border:2px solid #fff;border-radius:3px}.iris-picker .iris-slider-offset{position:absolute;top:11px;left:0;right:0;bottom:-3px;width:auto;height:auto;background:transparent;border:0;border-radius:0}.iris-picker .iris-square-handle{background:transparent;border:5px solid #aaa;border-radius:50%;border-color:rgba(128,128,128,.5);box-shadow:none;width:12px;height:12px;position:absolute;left:-10px;top:-10px;cursor:move;opacity:1;z-index:10}.iris-picker .ui-state-focus .iris-square-handle{opacity:.8}.iris-picker .iris-square-handle:hover{border-color:#999}.iris-picker .iris-square-value:focus .iris-square-handle{box-shadow:0 0 2px rgba(0,0,0,.75);opacity:.8}.iris-picker .iris-square-handle:hover::after{border-color:#fff}.iris-picker .iris-square-handle::after{position:absolute;bottom:-4px;right:-4px;left:-4px;top:-4px;border:3px solid #f9f9f9;border-color:rgba(255,255,255,.8);border-radius:50%;content:" "}.iris-picker .iris-square-value{width:8px;height:8px;position:absolute}.iris-ie-lt9 .iris-square-value,.iris-mozilla .iris-square-value{width:1px;height:1px}.iris-palette-container{position:absolute;bottom:0;left:0;margin:0;padding:0}.iris-border .iris-palette-container{left:10px;bottom:10px}.iris-picker .iris-palette{margin:0;cursor:pointer}.iris-square-handle,.ui-slider-handle{border:0;outline:0}</style>
+<!--<![endif]-->
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=favicon.ico">
+<link rel="apple-touch-icon" href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/tpl/dokuwiki/images/apple-touch-icon.png">
+    </head>
+
+<body class="vsc-initialized">
+    <div id="dokuwiki__site"><div id="dokuwiki__top" class="site dokuwiki mode_show tpl_dokuwiki   home  ">
+
+        
+<!-- ********** HEADER ********** -->
+<div id="dokuwiki__header"><div class="pad group">
+
+    
+    <div class="headings group">
+        <ul class="a11y skip">
+            <li><a href="#dokuwiki__content">内容へ移動</a></li>
+        </ul>
+
+        <h1><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start" accesskey="h" title="[H]"><img src="start%20[RVSoC%20Project]_files/logo.png" alt="" width="100" height="100"> <span>RVSoC Project</span></a></h1>
+            </div>
+
+    <div class="tools group">
+        <!-- USER TOOLS -->
+                    <div id="dokuwiki__usertools">
+                <h3 class="a11y">ユーザ用ツール</h3>
+                <ul>
+                    <li class="action login"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=login&amp;sectok=" title="ログイン" rel="nofollow"><span>ログイン</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 17.25V14H3v-4h7V6.75L15.25 12 10 17.25M8 2h9a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4h2v4h9V4H8v4H6V4a2 2 0 0 1 2-2z"></path></svg></a></li>                </ul>
+            </div>
+        
+        <!-- SITE TOOLS -->
+        <div id="dokuwiki__sitetools">
+            <h3 class="a11y">サイト用ツール</h3>
+            <form action="/wk/rvsoc/doku.php?id=start" method="get" role="search" class="search doku_form" id="dw__search" accept-charset="utf-8"><input type="hidden" name="do" value="search"><input type="hidden" name="id" value="start"><div class="no"><input name="q" type="text" class="edit" title="[F]" accesskey="f" placeholder="検索" autocomplete="on" id="qsearch__in"><button value="1" type="submit" title="検索">検索</button><div id="qsearch__out" class="ajax_qsearch JSpopup" style="display: none;"></div></div></form>            <div class="mobileTools">
+                <form action="/wk/rvsoc/doku.php" method="get" accept-charset="utf-8"><div class="no"><input type="hidden" name="id" value="start"><select name="do" class="edit quickselect" title="ツール"><option value="" selected="selected">ツール</option><optgroup label="ページ用ツール"><option value="edit">ソースの表示</option><option value="revisions">以前のリビジョン</option><option value="backlink">バックリンク</option></optgroup><optgroup label="サイト用ツール"><option value="recent">最近の変更</option><option value="media">メディアマネージャー</option><option value="index">サイトマップ</option></optgroup><optgroup label="ユーザ用ツール"><option value="login">ログイン</option></optgroup></select><button type="submit" style="display: none;">&gt;</button></div></form>            </div>
+            <ul>
+                <li class="action recent"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=recent" title="最近の変更 [r]" rel="nofollow" accesskey="r">最近の変更</a></li><li class="action media"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=media&amp;ns=" title="メディアマネージャー" rel="nofollow">メディアマネージャー</a></li><li class="action index"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=index" title="サイトマップ [x]" rel="nofollow" accesskey="x">サイトマップ</a></li>            </ul>
+        </div>
+
+    </div>
+
+    <!-- BREADCRUMBS -->
+            <div class="breadcrumbs">
+                                        <div class="trace"><span class="bchead">トレース:</span> <span class="bcsep">•</span> <span class="curid"><bdi><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start" class="breadcrumbs" title="start">start</a></bdi></span></div>
+                    </div>
+    
+
+
+    <hr class="a11y">
+</div></div><!-- /header -->
+
+        <div class="wrapper group">
+
+            
+            <!-- ********** CONTENT ********** -->
+            <div id="dokuwiki__content"><div class="pad group">
+                
+                <div class="pageId"><span>start</span></div>
+
+                <div class="page group">
+                                                            <!-- wikipage start -->
+                    <!-- TOC START -->
+<div id="dw__toc" class="dw__toc">
+<h3 class="toggle open" style="cursor: pointer;"><strong><span>−</span></strong>目次</h3>
+<div style="" aria-expanded="true">
+
+<ul class="toc">
+<li class="level1"><div class="li"><a href="#rvsoc_project_a_portable_and_linux_capable_risc-v_computer_system_on_an_fpga">RVSoC Project, a portable and Linux capable RISC-V computer system on an FPGA</a></div>
+<ul class="toc">
+<li class="level2"><div class="li"><a href="#what_s_new">What's new</a></div></li>
+<li class="level2"><div class="li"><a href="#download_source_file_and_binary">Download source file and binary</a></div></li>
+<li class="level2"><div class="li"><a href="#recommended_environment">Recommended environment</a></div></li>
+<li class="level2"><div class="li"><a href="#getting_started_guide">Getting started guide</a></div></li>
+<li class="level2"><div class="li"><a href="#how_to_build_the_risc-v_cross_compiler_and_risc-v_linux_binary_files_that_works_with_rvsoc">How to build the RISC-V cross compiler and RISC-V Linux binary files that works with RVSoC</a></div></li>
+<li class="level2"><div class="li"><a href="#publication">Publication</a></div></li>
+<li class="level2"><div class="li"><a href="#contact">Contact</a></div></li>
+<li class="level2"><div class="li"><a href="#other_project">Other Project</a></div></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<!-- TOC END -->
+
+
+
+<p>
+This page has been accessed for
+Today: 23, Yesterday: 51, Until now: 28942
+</p>
+
+<p>
+<img src="start%20[RVSoC%20Project]_files/welcom2.png" class="media" alt="" width="1200">
+</p>
+
+<h1 class="sectionedit1" id="rvsoc_project_a_portable_and_linux_capable_risc-v_computer_system_on_an_fpga">RVSoC Project, a portable and Linux capable RISC-V computer system on an FPGA</h1>
+<div class="level1">
+
+<p>
+The RVSoC Project is a research and development project of the RISC-V 
+computer system targeting FPGAs in Verilog HDL at Arch Lab, Tokyo Tech.
+</p>
+
+<p>
+<strong>RVSoC</strong> (<strong>R</strong>ISC-<strong>V</strong> <strong>S</strong>ystem <strong>o</strong>n <strong>C</strong>hip) is a portable and Linux capable RISC-V computer system on an FPGA.
+</p>
+
+<p>
+This system can be implemented on an FPGA with fewer hardware resources,
+and can be implemented on low cost FPGAs or customized by introducing an accelerator.
+</p>
+
+<p>
+The source code of this system is written in Verilog HDL.
+</p>
+
+<p>
+RVSoC includes
+</p>
+<ul>
+<li class="level1"><div class="li">RVCoreM: 12-steps <strong>multi cycle</strong> processor (<strong>Not Pipelined</strong>)</div>
+</li>
+<li class="level1"><div class="li">RVuc: 4-steps <strong>multi cycle</strong> processor for I/O (<strong>Not Pipelined</strong>)</div>
+</li>
+<li class="level1"><div class="li">MMU: Sv32 address translation unit and TLB</div>
+</li>
+<li class="level1"><div class="li">Others</div>
+</li>
+</ul>
+
+<p>
+<strong>RVSoC supports the following FPGA boards and can run Linux!</strong>
+</p>
+<ul>
+<li class="level1"><div class="li"><a href="https://reference.digilentinc.com/reference/programmable-logic/nexys-a7/reference-manual" class="urlextern" title="https://reference.digilentinc.com/reference/programmable-logic/nexys-a7/reference-manual">Nexys A7 board</a> with Xilinx Artix-7 FPGA</div>
+</li>
+<li class="level1"><div class="li"><a href="https://reference.digilentinc.com/reference/programmable-logic/arty-a7/reference-manual" class="urlextern" title="https://reference.digilentinc.com/reference/programmable-logic/arty-a7/reference-manual">Arty A7-35T board</a> with Xilinx Artix-7 FPGA</div>
+</li>
+</ul>
+
+<p>
+<img src="start%20[RVSoC%20Project]_files/sit3-shine.7.gif" class="media" alt="" width="50">
+</p>
+
+</div>
+
+<h2 class="sectionedit2" id="what_s_new">What's new</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li">2020/08/24 : Released Ver.0.5.3 that can execute Verilog simulation using Verilator</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=old6" class="wikilink1" title="old6">2020/08/24</a> : Released Ver.0.5.2 that can execute Verilog simulation using Synopsys VCS simulator</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=old5" class="wikilink1" title="old5">2020/06/24</a> : Released Ver.0.5.1 and support the Arty A7-35T FPGA board</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=old3" class="wikilink1" title="old3">2020/06/11</a> : Update <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=binary" class="wikilink1" title="binary">the page</a> about RISC-V Linux binary files</div>
+</li>
+<li class="level1"><div class="li">2020/05/20 : Add <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=binary" class="wikilink1" title="binary">the page</a> how to build the RISC-V cross compiler and RISC-V Linux binary files</div>
+</li>
+<li class="level1"><div class="li">2020/05/18 : Change of web page structure and release of Ver.0.4.6</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=old1" class="wikilink1" title="old1">2020/03/06</a> : Ver.0.4.5 is released in this page</div>
+</li>
+<li class="level1"><div class="li">2020/02/29 : The comming soon page is released !</div>
+</li>
+</ul>
+
+</div>
+
+<h2 class="sectionedit3" id="download_source_file_and_binary">Download source file and binary</h2>
+<div class="level2">
+
+<p>
+The latest version of RVSoC is Ver.0.5.3.
+</p>
+<ul>
+<li class="level1 node"><div class="li">The archive file containing the bitstream files and the memory initialization file : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver053.zip" class="media mediafile mf_zip" title="rvsoc_bin_ver053.zip (5.6&nbsp;MB)">rvsoc_bin_ver053.zip</a></div>
+<ul>
+<li class="level2"><div class="li">The bitstream files for Nexys A7 FPGA board and Arty A7-35T board</div>
+</li>
+<li class="level2"><div class="li">The memory initialization file including Berkeley Boot Loader, device tree, Linux binary, and disk image</div>
+</li>
+<li class="level2"><div class="li">The Python program to send the memory initialization file by serial communication
+</div>
+</li>
+</ul>
+</li>
+<li class="level1 node"><div class="li">The source code including the project files of Xilinx Vivado : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver053.zip" class="media mediafile mf_zip" title="rvsoc_src_ver053.zip (16.9&nbsp;MB)">rvsoc_src_ver053.zip</a></div>
+<ul>
+<li class="level2"><div class="li">The bitstream files and the memory initialization file</div>
+</li>
+<li class="level2"><div class="li">The Verilog source code files of RVSoC that can be simulated using some simulators</div>
+</li>
+<li class="level2"><div class="li">The project files of Xilinx Vivado and some IP source file for Nexys A7 FPGA board and Arty A7-35T board</div>
+</li>
+<li class="level2"><div class="li">The source code files for the program executed by RVuc</div>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+The other old versions are as follows:
+</p>
+<ul>
+<li class="level1"><div class="li">Ver.0.5.2 : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver052.zip" class="media mediafile mf_zip" title="rvsoc_bin_ver052.zip (5.6&nbsp;MB)">rvsoc_bin_ver052.zip</a>, <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver052.zip" class="media mediafile mf_zip" title="rvsoc_src_ver052.zip (16.9&nbsp;MB)">rvsoc_src_ver052.zip</a></div>
+</li>
+<li class="level1"><div class="li">Ver.0.5.1 : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver051.zip" class="media mediafile mf_zip" title="rvsoc_bin_ver051.zip (5.6&nbsp;MB)">rvsoc_bin_ver051.zip</a>, <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver051.zip" class="media mediafile mf_zip" title="rvsoc_src_ver051.zip (16.9&nbsp;MB)">rvsoc_src_ver051.zip</a></div>
+</li>
+<li class="level1"><div class="li">Ver.0.4.6 : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver046.zip" class="media mediafile mf_zip" title="rvsoc_bin_ver046.zip (7.5&nbsp;MB)">rvsoc_bin_ver046.zip</a>, <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver046.zip" class="media mediafile mf_zip" title="rvsoc_src_ver046.zip (10.2&nbsp;MB)">rvsoc_src_ver046.zip</a></div>
+</li>
+<li class="level1"><div class="li">Ver.0.4.5 : <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver045.zip" class="media mediafile mf_zip" title="rvsoc_bin_ver045.zip (7.5&nbsp;MB)">rvsoc_bin_ver045.zip</a>, <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver045.zip" class="media mediafile mf_zip" title="rvsoc_src_ver045.zip (10.2&nbsp;MB)">rvsoc_src_ver045.zip</a></div>
+</li>
+</ul>
+
+<p>
+These published files are released under the MIT License, see LICENSE.txt.
+</p>
+<dl class="outliner outliner-open outliner-nopopup outliner-js"><dt>Change log </dt><dd>
+<ul>
+<li class="level1"><div class="li">Ver.0.5.3 : The version that can execute Verilog simulation using Verilator</div>
+</li>
+<li class="level1"><div class="li">Ver.0.5.2 : The version that can execute Verilog simulation using Synopsys VCS simulator</div>
+</li>
+<li class="level1"><div class="li">Ver.0.5.1 : The version that supports Arty A7-35T and fixes some bugs</div>
+</li>
+<li class="level1"><div class="li">Ver.0.4.6 : The version supporting pySerial, Vivado 2019.2</div>
+</li>
+<li class="level1"><div class="li">Ver.0.4.5 : The version used in our submitted manuscript</div>
+</li>
+</ul>
+</dd></dl>
+
+</div>
+
+<h2 class="sectionedit4" id="recommended_environment">Recommended environment</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li">Ubuntu 18.04 LTS</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.xilinx.com/products/design-tools/vivado.html" class="urlextern" title="https://www.xilinx.com/products/design-tools/vivado.html">Xilinx Vivado Design Suite</a> 2019.2 for logic synthesis</div>
+</li>
+<li class="level1"><div class="li"><a href="https://reference.digilentinc.com/reference/programmable-logic/nexys-a7/reference-manual" class="urlextern" title="https://reference.digilentinc.com/reference/programmable-logic/nexys-a7/reference-manual">Nexys A7 board</a> or <a href="https://reference.digilentinc.com/reference/programmable-logic/arty-a7/reference-manual" class="urlextern" title="https://reference.digilentinc.com/reference/programmable-logic/arty-a7/reference-manual">Arty A7-35T board</a> with Xilinx Artix-7 FPGA for placement and routing</div>
+</li>
+<li class="level1"><div class="li">Python 3.6.9</div>
+</li>
+<li class="level1"><div class="li"><a href="https://pythonhosted.org/pyserial/" class="urlextern" title="https://pythonhosted.org/pyserial/">pySerial</a> for sending the binary file by serial communication with FPGA board</div>
+</li>
+<li class="level1"><div class="li">GTKTerm for sending and receiving console screens by serial communication</div>
+</li>
+<li class="level1"><div class="li"><a href="https://www.veripool.org/wiki/verilator" class="urlextern" title="https://www.veripool.org/wiki/verilator">Verilator</a> or Synopsys VCS simulator Version M-2017.03-SP2_Full64 for Verilog simulation of RVSoC</div>
+</li>
+</ul>
+<dl class="outliner outliner-nopopup outliner-js outliner-closed"><dt>Install command </dt><dd style="left: 68.8px; top: 2250.58px;">
+Install pySerial by the following command.
+<pre class="code">$ sudo apt install python3-pip
+$ pip3 install pyserial</pre>
+
+<p>
+Install GTKTerm by the following command.
+</p>
+<pre class="code">$ sudo apt install gtkterm</pre>
+
+<p>
+Install verilator by the following command.
+</p>
+<pre class="code">$ sudo apt install verilator</pre>
+</dd></dl>
+
+</div>
+
+<h2 class="sectionedit5" id="getting_started_guide">Getting started guide</h2>
+<div class="level2">
+<dl class="outliner outliner-nopopup outliner-js outliner-closed"><dt>Execution of Linux on a FPGA board using the downloaded bitstream file and memory initialization file </dt><dd style="left: 68.8px; top: 2326.37px;">
+(1) Download the archive file containing the bitstream file and the memory initialization file<pre class="code">$ wget https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_bin_ver053.zip -O rvsoc_bin_ver053.zip</pre>
+
+<p>
+(2) Extract the downloaded zip file
+</p>
+<pre class="code">$ unzip rvsoc_bin_ver053.zip
+$ cd rvsoc_bin_ver053</pre>
+
+<p>
+(3) Open Xilinx Vivado to write the bitstream file
+</p>
+<pre class="code">$ vivado &amp;</pre>
+<ul>
+<li class="level1"><div class="li">Click “Open Hardware Manager” in “Task” at the top page</div>
+</li>
+</ul>
+
+<p>
+(4) Write the bitstream file to a FPGA board
+</p>
+<ul>
+<li class="level1"><div class="li">Click “Open target” and “Auto Connect” to recognize a FPGA board
+</div>
+</li>
+<li class="level1 node"><div class="li">Click “Program device” and a specify Bitstream file</div>
+<ul>
+<li class="level2"><div class="li">When using Nexys A7 board : <code>nexys4.bit</code></div>
+</li>
+<li class="level2"><div class="li">When using Arty A7-35T board : <code>arty35t.bit</code>
+</div>
+</li>
+</ul>
+</li>
+<li class="level1"><div class="li">Click “Program” to write bitstream to a FPGA board</div>
+</li>
+</ul>
+
+<p>
+When the bitstream data is correctly written to the Nexys A7 board,
+the DONE LED lights up and “ArchProc” is displayed on the 8-digit 7-segment LEDs.
+Also, the lower right LED will blink at regular intervals, 
+</p>
+
+<p>
+The right RGB LED shines brightly immediately after writing the bitstream file.
+<strong>After this right RGB LED turns off, you can write the memory initialization file.</strong>
+</p>
+
+<p>
+(5) Prepare for 8M baud serial communication
+</p>
+
+<p>
+For sending the binary file by serial communication, the pySerial program <code>serial_sendfile.py</code> is used.
+</p>
+
+<p>
+For sending and receiving console screens by serial communication, GTKTerm is used.
+</p>
+
+<p>
+First, make settings for GTKTerm.
+</p>
+<ul>
+<li class="level1"><div class="li">Execute the following command to start GTKTerm</div>
+</li>
+</ul>
+<pre class="code">$ gtkterm &amp;</pre>
+<ul>
+<li class="level1"><div class="li">Click “Configuration”→“Port”</div>
+</li>
+<li class="level1"><div class="li">Change the Port of Serial port to the appropriate USB Serial Port like <code>/dev/ttyUSB1</code></div>
+</li>
+<li class="level1"><div class="li">Change the Baud Rate of Serial port to “8000000” and click “OK”</div>
+</li>
+<li class="level1"><div class="li">Click “Configuration”→“CR LF auto” for New-line code</div>
+</li>
+</ul>
+
+<p>
+Second, check the setting of the port used for serial communication in the pySerial program <code>serial_sendfile.py</code>.
+</p>
+
+<p>
+By default, <code>/dev/ttyUSB1</code> is set.
+</p>
+
+<p>
+The usage of this program is as follows:
+</p>
+<pre class="code">$ python3 serial_sendfile.py [serial baud rate (Mbaud)] [binary file name]</pre>
+
+<p>
+(6) Send the memory initialization file to the FPGA board by serial communication and execute the Linux 
+</p>
+
+<p>
+To send the memory initialization file and execute the Linux, execute one of the following commands.
+</p>
+<pre class="code">$ python3 serial_sendfile.py 8 "initmem.bin"</pre>
+
+<p>
+or
+</p>
+<pre class="code">$ python3 serial_sendfile.py</pre>
+<ul>
+<li class="level1"><div class="li">Send the memory initialization file to the FPGA board via serial communication for about 40 seconds</div>
+</li>
+</ul>
+
+<p>
+The program is automatically terminated when the transmission is completed.
+</p>
+
+<p>
+Confirm that “finished!” is displayed on the console of the terminal.
+</p>
+
+<p>
+Linux starts up and a Linux startup message is displayed on the GTKTerm console.
+</p>
+
+<p>
+When using Nexys A7 board, the 7-segment LED shows the value obtained by dividing the value of the mtime register by 1024.
+</p>
+
+<p>
+(7) Enjoy the Linux 
+</p>
+
+<p>
+After a while, the following message is displayed.
+</p>
+<pre class="code">Welcome to Buildroot
+localhost login:</pre>
+<ul>
+<li class="level1"><div class="li">Log in with the username <code>root</code></div>
+</li>
+</ul>
+
+<p>
+After successful login, you can execute standard Linux commands, some games, and a benchmark
+like top, sleep, vi, em (uemacs), micropython, sl, ascii_invaders, nyancat, dhrystone.
+</p>
+
+<p>
+Enjoy!!
+</p>
+
+<p>
+<strong> (An EXT4-fs error may occur when the first command is executed after login,
+but there is no problem because the subsequent commands are executed correctly.) </strong>
+</p>
+</dd></dl>
+<dl class="outliner outliner-nopopup outliner-js outliner-closed"><dt>Logic synthesis and placement and routing from source code using Xilinx Vivado project file </dt><dd>
+(1) Download the source code including the project files of Xilinx Vivado
+<pre class="code">$ wget https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver053.zip -O rvsoc_src_ver053.zip</pre>
+
+<p>
+(2) Extract the downloaded zip file
+</p>
+<pre class="code">$ unzip rvsoc_src_ver053.zip
+$ cd rvsoc_src_ver053</pre>
+
+<p>
+(3) Open a project file using Xilinx Vivado
+</p>
+
+<p>
+The following project files are prepared depending on the FPGA board.
+</p>
+<ul>
+<li class="level1"><div class="li">When using Nexys A7 board : <code>nexys4.xpr</code></div>
+</li>
+<li class="level1"><div class="li">When using Arty A7-35T board : <code>arty35t.xpr</code></div>
+</li>
+</ul>
+
+<p>
+Execute the following command according to the executed project file
+</p>
+<pre class="code">$ vivado [FPGA board name].xpr &amp;</pre>
+
+<p>
+(4) Perform logic synthesis, placement and routing, and generating bitstream using Xilinx Vivado
+</p>
+
+<p>
+By default, the operating frequency of the system on chip is set to 104MHz.
+</p>
+
+<p>
+In the project file of Arty A7 board,
+the following command is added to the option of the strategy of logic synthesis.
+</p>
+<ul>
+<li class="level1"><div class="li"><code>-verilog_define ARTYA7=1</code></div>
+</li>
+</ul>
+
+<p>
+The source code is switched for Arty A7 board by the definition of this macro <code>ARTYA7</code>,
+so please be careful when changing the logic synthesis strategy yourself.
+</p>
+<ul>
+<li class="level1"><div class="li">Click “Generate Bitstream” in Vivado project manager</div>
+</li>
+</ul>
+
+<p>
+When you have finished generating the bitstream, you open the hardware manager.
+</p>
+<ul>
+<li class="level1"><div class="li">Click “Open Hardware Manager” in Vivado project manager</div>
+</li>
+</ul>
+
+<p>
+Subsequent operations are the same as those from step (4) of “Getting started guide”.
+</p>
+
+<p>
+The Linux binary file <code>initmem.bin</code> sent to the FPGA and the program <code>serial_sendfile.py</code> that sends the binary file
+are located in the <code>binary/</code> directory.
+</p>
+
+<p>
+The generated bitstream file is stored in the <code>bitstream/</code> directory.
+</p>
+
+<p>
+The system source and constraint files are located in the <code>src/</code> and <code>constrs/</code> directories, respectively.
+</p>
+
+<p>
+The used Xilinx IP source file is stored in <code>[FPGA board name].srcs/</code>.
+</p>
+
+<p>
+The source code of the program executed by RVuc which is a microcontroller is stored in <code>ucimage/</code>.
+</p>
+</dd></dl>
+<dl class="outliner outliner-nopopup outliner-js outliner-closed"><dt>How to execute Verilog simulation using Verilator or Synopsys VCS simulator </dt><dd>
+(1) Download the source code including the project files of Xilinx Vivado
+<pre class="code">$ wget https://www.arch.cs.titech.ac.jp/wk/rvsoc/lib/exe/fetch.php?media=rvsoc_src_ver053.zip -O rvsoc_src_ver053.zip</pre>
+
+<p>
+(2) Extract the downloaded zip file
+</p>
+<pre class="code">$ unzip rvsoc_src_ver053.zip
+$ cd rvsoc_src_ver053</pre>
+
+<p>
+(3) Generate the text image file to initialize memory for Verilog simulation
+</p>
+
+<p>
+You can generate memory initialization files for Verilog simulation by using initmem_gen2 program
+released on <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=binary" class="wikilink1" title="binary">this page</a> that summarizes how to build Linux binaries for RVSoC.
+</p>
+
+<p>
+Please execute a shell script <code>initmem_gen.sh</code> that generates memory initialization files using this initmem_gen2 program.
+</p>
+
+<p>
+The initmem_gen2 program uses three binary files, <code>bbl.bin</code>, <code>root.bin</code>, <code>devicetree.dtb</code> to generate a memory initialization file.
+</p>
+
+<p>
+If you want to use three Linux binary files built by yourself, please put them in the same directory as the shell script <code>initmem_gen.sh</code>.
+</p>
+<pre class="code">$ cd binary/
+$ ./initmem_gen.sh
+$ cd ../</pre>
+
+<p>
+If the shell script is executed correctly, two text memory initialization files,
+<code>init_kernel.txt</code> and <code>init_disk.txt</code>, are generated.
+</p>
+
+<p>
+<code>init_kernel.txt</code> is the hex file with <code>bbl.bin</code> and <code>devicetree.dtb</code> properly placed.<br>
+
+<code>init_disk.txt</code> is the hex file with <code>root.bin</code> properly placed.
+</p>
+
+<p>
+(4) Prepare for Verilog simulation of RVSoC
+</p>
+
+<p>
+The source files needed for Verilog simulation of RVSoC are in <code>src/</code> directory.
+</p>
+<pre class="code">$ cd src/</pre>
+
+<p>
+Two text memory initialization files generated earlier are specified in <code>define.vh</code>.
+</p>
+
+<p>
+In <code>define.vh</code>, specify <code>init_kernel.txt</code> in the macro <code>HEXFILE</code> and <code>init_disk.txt</code> in the macro <code>IMAGE_FILE</code>.<br>
+
+If <code>init_kernel.txt</code> or <code>init_disk.txt</code> is not placed in the <code>binary/</code> directory,
+change the path specified in <code>HEXFILE</code> or <code>IMAGE_FILE</code> appropriately.
+</p>
+
+<p>
+The macro <code>TIMEOUT</code> in <code>define.vh</code> specifies the number of executed instructions to end the Verilog simulation.<br>
+
+The macro <code>DEBUG</code> in <code>define.vh</code> specifies whether to output debug information during Verilog simulation.
+</p>
+
+<p>
+(5) Execute Verilog simulation using Verilator or VCS simulator
+</p>
+
+<p>
+You can execute Verilog simulations using either Verilator or VCS simulator.
+</p>
+
+<p>
+To use Verilator for RVSoC simulation, execute the following command.
+</p>
+<pre class="code">$ make veri
+$ make run</pre>
+
+<p>
+To use VCS simulator for RVSoC simulation, execute the following command.
+</p>
+<pre class="code">$ make vcs
+$ make run</pre>
+
+<p>
+<strong> Because Verilog simulation running the Linux on RVSoC takes much longer than running Linux on an FPGA,
+please be careful when executing the simulation. </strong>
+</p>
+
+<p>
+Please see <code>Makefile</code> for detailed command line options for simulating using Verilator or VCS simulator.
+</p>
+
+<p>
+When executing Verilog simulation, it is necessary to specify the macro <code>SIM_MODE</code> when executing <code>make</code> command.
+</p>
+</dd></dl>
+
+</div>
+
+<h2 class="sectionedit6" id="how_to_build_the_risc-v_cross_compiler_and_risc-v_linux_binary_files_that_works_with_rvsoc">How to build the RISC-V cross compiler and RISC-V Linux binary files that works with RVSoC</h2>
+<div class="level2">
+
+<p>
+Please refer the fllowing page: <a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=binary" class="wikilink1" title="binary">How to build the RISC-V cross compiler and RISC-V Linux binary files that works with RVSoC</a>
+</p>
+
+</div>
+
+<h2 class="sectionedit7" id="publication">Publication</h2>
+<div class="level2">
+
+<p>
+This System on Chip RVSoC is explicated in a preprint paper of arXiv.
+</p>
+
+<p>
+Junya Miura, Hiromu Miyazaki, Kenji Kise:
+A portable and Linux capable RISC-V computer system in Verilog HDL,
+<a href="https://arxiv.org/abs/2002.03576" class="urlextern" title="https://arxiv.org/abs/2002.03576">arXiv:2002.03576 [cs.AR]</a> (2020-02-10).
+</p>
+
+</div>
+
+<h2 class="sectionedit8" id="contact">Contact</h2>
+<div class="level2">
+
+<p>
+<a href="http://www.arch.cs.titech.ac.jp/" class="urlextern" title="http://www.arch.cs.titech.ac.jp/">Kise Laboratory</a>, Department of Computer Science, School of Computing, <a href="https://www.titech.ac.jp/english/" class="urlextern" title="https://www.titech.ac.jp/english/">Tokyo Institute of Technology</a> (Tokyo Tech)
+</p>
+
+<p>
+Maintainer : (E-mail) riscv-support (at) arch.cs.titech.ac.jp
+</p>
+
+<p>
+Contributor : Junya Miura (a major designer), Hiromu Miyazaki, Kenji Kise
+</p>
+
+</div>
+
+<h2 class="sectionedit9" id="other_project">Other Project</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"><a href="http://www.arch.cs.titech.ac.jp/wk/rvcore/doku.php" class="urlextern" title="http://www.arch.cs.titech.ac.jp/wk/rvcore/doku.php">RVCore</a></div>
+</li>
+<li class="level1"><div class="li">SimRV, a RISC-V processor simulator</div>
+</li>
+</ul>
+
+<p>
+Copyright © 2020 Kise Laboratory, Tokyo Institute of Technology
+</p>
+
+</div>
+
+                    <!-- wikipage stop -->
+                                    </div>
+
+                <div class="docInfo"><bdi>start.txt</bdi> · 最終更新: 2021/03/31 13:11 by <bdi>miyazaki</bdi></div>
+
+                            </div></div><!-- /content -->
+
+            <hr class="a11y">
+
+            <!-- PAGE ACTIONS -->
+            <div id="dokuwiki__pagetools">
+                <h3 class="a11y">ページ用ツール</h3>
+                <div class="tools">
+                    <ul>
+                        <li class="source"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=edit" title="ソースの表示 [v]" rel="nofollow" accesskey="v"><span>ソースの表示</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5V9M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5l3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41-3.74 3.74m11.16 0l-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41 3.74-3.74z"></path></svg></a></li><li class="revs"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=revisions" title="以前のリビジョン [o]" rel="nofollow" accesskey="o"><span>以前のリビジョン</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11 7v5.11l4.71 2.79.79-1.28-4-2.37V7m0-5C8.97 2 5.91 3.92 4.27 6.77L2 4.5V11h6.5L5.75 8.25C6.96 5.73 9.5 4 12.5 4a7.5 7.5 0 0 1 7.5 7.5 7.5 7.5 0 0 1-7.5 7.5c-3.27 0-6.03-2.09-7.06-5h-2.1c1.1 4.03 4.77 7 9.16 7 5.24 0 9.5-4.25 9.5-9.5A9.5 9.5 0 0 0 12.5 2z"></path></svg></a></li><li class="backlink"><a href="https://www.arch.cs.titech.ac.jp/wk/rvsoc/doku.php?id=start&amp;do=backlink" title="バックリンク" rel="nofollow"><span>バックリンク</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10.59 13.41c.41.39.41 1.03 0 1.42-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0 5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24 2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0 5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24 2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24.973.973 0 0 1 0-1.42z"></path></svg></a></li><li class="top"><a href="#dokuwiki__top" title="文書の先頭へ [t]" rel="nofollow" accesskey="t"><span>文書の先頭へ</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path></svg></a></li>                    </ul>
+                </div>
+            </div>
+        </div><!-- /wrapper -->
+
+        
+<!-- ********** FOOTER ********** -->
+<div id="dokuwiki__footer"><div class="pad">
+    
+    <div class="buttons">
+                <a href="https://www.dokuwiki.org/donate" title="Donate"><img src="start%20[RVSoC%20Project]_files/button-donate.gif" alt="Donate" width="80" height="15"></a>
+        <a href="https://php.net/" title="Powered by PHP"><img src="start%20[RVSoC%20Project]_files/button-php.gif" alt="Powered by PHP" width="80" height="15"></a>
+        <a href="https://validator.w3.org/check/referer" title="Valid HTML5"><img src="start%20[RVSoC%20Project]_files/button-html5.png" alt="Valid HTML5" width="80" height="15"></a>
+        <a href="https://jigsaw.w3.org/css-validator/check/referer?profile=css3" title="Valid CSS"><img src="start%20[RVSoC%20Project]_files/button-css.png" alt="Valid CSS" width="80" height="15"></a>
+        <a href="https://dokuwiki.org/" title="Driven by DokuWiki"><img src="start%20[RVSoC%20Project]_files/button-dw.png" alt="Driven by DokuWiki" width="80" height="15"></a>
+    </div>
+</div></div><!-- /footer -->
+
+    </div></div><!-- /site -->
+
+    <div class="no"><img src="start%20[RVSoC%20Project]_files/indexer.gif" alt="" width="2" height="1"></div>
+    <div id="screen__mode" class="no"></div>
+
+</body><style data-source="base" class="dblt-ykjmwcnxmi"><br>:root {<br>  --dark-background-light-text-add-on-foreground-color: #e1cc8c !important;<br>  --dark-background-light-text-add-on-background-color: #5b1a38 !important;<br>  --dark-background-light-text-add-on-link-color: #7fd7ff !important;<br>  --dark-background-light-text-add-on-visited-color: #ffafff !important;<br>  --dark-background-light-text-add-on-active-color: #ff0000 !important;<br>  --dark-background-light-text-add-on-selection-color: #8080ff !important;<br>}<br><br>html {<br>  background-color: #5b1a38;<br>  color: #e1cc8c;<br>}<br><br>*:link,<br>*:link * {<br>  color: #7fd7ff !important;<br>}<br><br>*:visited,<br>*:visited * {<br>  color: #ffafff !important;<br>}<br><br>input[type="range"] {<br>  -moz-appearance: none;<br>}<br><br>button,<br>input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),<br>textarea,<br>select,<br>[contenteditable="true"] {<br>  -moz-appearance: none !important;<br>  color: #e1cc8c !important;<br>  background-color: #5b1a38;<br>  border-radius: 4px;<br>  border-width: 1px;<br>  border-color: #e1cc8c;<br>  border-style: solid;<br>  transition-duration: 0.3s;<br>  transition-property: border-color, box-shadow;<br>}<br><br>input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="color"]):not([type="image"]):not([type="reset"]):not([type="submit"]),<br>textarea,<br>[contenteditable="true"] {<br>  background-image: none !important;<br>}<br><br>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="button"]):not([type="color"]):not([type="image"]):not([type="reset"]):not([type="submit"]),<br>textarea:focus,<br>[contenteditable="true"]:focus {<br>  box-shadow: inset 0 0 0.15em 0.15em #8080ff !important;<br>  border-color: #8080ff !important;<br>}<br><br>button,<br>input[type="button"],<br>input[type="color"],<br>input[type="image"],<br>input[type="reset"],<br>input[type="submit"],<br>select {<br>  box-shadow: 0 0 0.15em 0.15em transparent !important;<br>}<br><br>button:focus,<br>input[type="button"]:focus,<br>input[type="color"]:focus,<br>input[type="image"]:focus,<br>input[type="reset"]:focus,<br>input[type="submit"]:focus,<br>select:focus {<br>  box-shadow: 0 0 0.15em 0.15em #8080ff !important;<br>  border-color: #8080ff !important;<br>}<br><br>select {<br>  background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><path stroke="%23e1cc8c" fill="transparent" stroke-width="40" d="M 100 175 L 250 350 L 400 175"/></svg>') !important;<br>  background-position: right center !important;<br>  background-repeat: no-repeat !important;<br>  padding-right: 1em !important;<br>  background-size: 1em !important;<br>}<br><br>*::-moz-selection {<br>  color: #e1cc8c !important;<br>  background: #8080ff !important;<br>  text-shadow:<br>    #5b1a38 0 0 1pt,<br>    #5b1a38 0 0 2pt,<br>    #5b1a38 0 0 3pt,<br>    #5b1a38 0 0 4pt,<br>    #5b1a38 0 0 5pt,<br>    #5b1a38 0 0 5pt,<br>    #5b1a38 0 0 5pt !important;<br>}<br><br>img[alt="inline_formula"],<br>.mwe-math-fallback-image-inline,<br>.highcharts-container {<br>  filter: invert(1) hue-rotate(180deg) !important;<br>}<br>.catalog-content .i-checkbox__faux::before {<br>  filter: invert(1);<br>}<br>#gs_bdy .gsc_g_a[style*="height"] {<br>  background-color: rgb(119, 119, 119) !important;<br>}<br><br>.awradio label::after {<br>  background-color: #e1cc8c !important;<br>}<br>.jfk-button-img {<br>  filter: invert(1);<br>}<br><br>#kix-current-user-cursor-caret[style*="border-color: rgb(0, 0, 0)"] {<br>  border-color: #e1cc8c !important;<br>}<br></style><style data-source="stylesheet-processor" class="dblt-ykjmwcnxmi"><br>html {<br>  background-color: #5b1a38 !important;<br>  color: #e1cc8c !important;<br>}<br><br>[bgcolor] {<br>  background-color: #5b1a38 !important;<br>}<br>[text],<br>[color] {<br>  color: #e1cc8c !important;<br>}<br><br>[alink]:link:active {<br>  color: #ff0000 !important;<br>}<br>[vlink]:visited {<br>  color: #ffafff !important;<br>}<br>[link]:link {<br>  color: #7fd7ff !important;<br>}<br><br>.qrCode > canvas {<br>  border: 10px white solid;<br>}<br></style></html>

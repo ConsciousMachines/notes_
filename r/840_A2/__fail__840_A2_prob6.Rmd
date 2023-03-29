@@ -1,0 +1,209 @@
+---
+title: "GRADUATE STUDENT STAT 840 A2"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 6
+
+## a)
+
+$$
+\begin{aligned}
+\pi (\theta \mid \mathbb{X}) &\propto f(\mathbb{X} \mid \theta) \pi(\theta) \\
+\pi (\alpha, \eta \mid \mathbb{X}) &\propto f(\mathbb{X} \mid \alpha, \eta) \pi(\alpha, \eta) \\
+f(x \mid \alpha,  \eta) &\propto \alpha \eta x^{\alpha - 1} e^{-\eta x^{\alpha}} \\
+f(\mathbb{X} \mid \alpha,  \eta) &= \prod_{i=1}^n f(x_i \mid \alpha,  \eta) \\
+&\propto \prod_{i=1}^n \alpha \eta x_i^{\alpha - 1} e^{-\eta x_i^{\alpha}} \\
+&\propto \alpha^n \eta^n \prod_{i=1}^n x_i^{\alpha - 1} e^{-\eta x_i^{\alpha}} \\
+\pi(\alpha, \eta) &\propto e^{-\alpha} \eta^{\beta - 1} e^{-c \eta} \\
+&\propto e^{-\alpha -c \eta} \eta^{\beta - 1} \\
+\pi (\alpha, \eta \mid \mathbb{X}) &\propto e^{-\alpha -c \eta} \eta^{\beta - 1} \alpha^n \eta^n \prod_{i=1}^n x_i^{\alpha - 1} e^{-\eta x_i^{\alpha}} \\
+&\propto e^{-\alpha -c \eta} \eta^{n + \beta - 1} \alpha^n \prod_{i=1}^n x_i^{\alpha - 1} e^{-\eta x_i^{\alpha}} \\
+\end{aligned}
+$$
+
+```{R}
+log_post_pi = function(alp, eta, x, c,b)
+{
+  n = length(x)
+  p1 = (-alp - c*eta)
+  p2 = (n+b-1)*log(eta)
+  p3 = n*log(alp)
+  p4 = (alp-1)*log(x) + (-eta * x^alp)
+  return(p1 + p2 + p3 + sum(p4))
+}
+
+post_pi = function(alp, eta, x, c,b)
+{
+  n = length(x)
+  p1 = exp(-alp - c*eta)
+  p2 = eta^(n+b-1)
+  p3 = alp^n
+  p4 = x^(alp-1) * exp(-eta * x^alp)
+  return(p1 * p2 * p3 * prod(p4))
+}
+
+q = function(a2,n2,a1,n1)
+{
+  p1 = 1 / (a1 * n1)
+  p2 = exp(-a2/a1 -n2/n1)
+  return(p1*p2)
+}
+```
+
+
+## b)
+
+$$
+\begin{aligned}
+\alpha( \theta_n, \theta^*) &= \min \biggl\{ \frac{\pi(\theta^* \mid \mathbb{X}) q(\theta^*, \theta_n)}{\pi(\theta_n \mid \mathbb{X}) q(\theta_n, \theta^*)}, 1 \biggr\} \qquad \texttt{notes 4 p 19}\\
+\rho(\alpha^*, \eta^*  \mid \alpha_{(t)}, \eta_{(t)} ) &= \min \biggl\{ \frac{\pi(\alpha^*, \eta^* \mid \mathbb{X}) q(\alpha^*, \eta^* \mid \alpha_{(t)}, \eta_{(t)})}{\pi(\alpha_{(t)}, \eta_{(t)} \mid \mathbb{X}) q(\alpha_{(t)}, \eta_{(t)} \mid \alpha^*, \eta^*)}, 1 \biggr\} \\
+\pi (\alpha^*, \eta^* \mid \mathbb{X}) &\propto e^{-\alpha^* -c \eta^*} \eta^{* n + \beta - 1} \alpha^{*n} \prod_{i=1}^n x_i^{\alpha^* - 1} e^{-\eta^* x_i^{\alpha^*}} \\
+\pi (\alpha_{(t)}, \eta_{(t)} \mid \mathbb{X}) &\propto e^{-\alpha_{(t)} -c \eta_{(t)}} \eta_{(t)}^{n + \beta - 1} \alpha_{(t)}^n \prod_{i=1}^n x_i^{\alpha_{(t)} - 1} e^{-\eta_{(t)} x_i^{\alpha_{(t)}}} \\
+\frac{\pi (\alpha^*, \eta^* \mid \mathbb{X})}{\pi (\alpha_{(t)}, \eta_{(t)} \mid \mathbb{X}) } &= \frac{e^{-\alpha^* -c \eta^*} \eta^{* n + \beta - 1} \alpha^{*n} \prod_{i=1}^n x_i^{\alpha^* - 1} e^{-\eta^* x_i^{\alpha^*}}}{e^{-\alpha_{(t)} -c \eta_{(t)}} \eta_{(t)}^{n + \beta - 1} \alpha_{(t)}^n \prod_{i=1}^n x_i^{\alpha_{(t)} - 1} e^{-\eta_{(t)} x_i^{\alpha_{(t)}}}} \\
+&= e^{\alpha_{(t)} +c \eta_{(t)} -\alpha^* -c \eta^*} \frac{ \eta^{* n + \beta - 1} \alpha^{*n} \prod_{i=1}^n x_i^{\alpha^* - 1} e^{-\eta^* x_i^{\alpha^*}}}{ \eta_{(t)}^{n + \beta - 1} \alpha_{(t)}^n \prod_{i=1}^n x_i^{\alpha_{(t)} - 1} e^{-\eta_{(t)} x_i^{\alpha_{(t)}}}} \\
+&= e^{\alpha_{(t)} +c \eta_{(t)} -\alpha^* -c \eta^*} \frac{ \eta^{* n + \beta - 1} \alpha^{*n} }{ \eta_{(t)}^{n + \beta - 1} \alpha_{(t)}^n } \prod_{i=1}^n x_i^{\alpha^*-\alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}}-\eta^* x_i^{\alpha^*}} \\
+q(\alpha^*, \eta^* \mid \alpha_{(t)}, \eta_{(t)}) &= \frac{1}{\alpha_{(t)} \eta_{(t)}} \exp \biggl\{ - \frac{\alpha^*}{\alpha_{(t)}} - \frac{\eta^*}{\eta_{(t)}} \biggr\} \\
+q(\alpha_{(t)}, \eta_{(t)} \mid \alpha^*, \eta^*) &= \frac{1}{\alpha^* \eta^*} \exp \biggl\{ - \frac{\alpha_{(t)}}{\alpha^*} - \frac{\eta_{(t)}}{\eta^*} \biggr\}\\
+\frac{q(\alpha^*, \eta^* \mid \alpha_{(t)}, \eta_{(t)})}{q(\alpha_{(t)}, \eta_{(t)} \mid \alpha^*, \eta^*)} &= \frac{\alpha^* \eta^*}{\alpha_{(t)} \eta_{(t)}} \exp \biggl\{ - \frac{\alpha^*}{\alpha_{(t)}} - \frac{\eta^*}{\eta_{(t)}} + \frac{\alpha_{(t)}}{\alpha^*} + \frac{\eta_{(t)}}{\eta^*} \biggr\} \\
+&= \frac{\alpha^* \eta^*}{\alpha_{(t)} \eta_{(t)}} e^{ - \frac{\alpha^*}{\alpha_{(t)}} - \frac{\eta^*}{\eta_{(t)}} + \frac{\alpha_{(t)}}{\alpha^*} + \frac{\eta_{(t)}}{\eta^*}} \\
+\rho(\alpha^*, \eta^*  \mid \alpha_{(t)}, \eta_{(t)} ) &= \min \biggl\{ \frac{\alpha^* \eta^*}{\alpha_{(t)} \eta_{(t)}} e^{ - \frac{\alpha^*}{\alpha_{(t)}} - \frac{\eta^*}{\eta_{(t)}} + \frac{\alpha_{(t)}}{\alpha^*} + \frac{\eta_{(t)}}{\eta^*}  +\alpha_{(t)} +c \eta_{(t)} -\alpha^* -c \eta^*} \frac{ \eta^{* n + \beta - 1} \alpha^{*n} }{ \eta_{(t)}^{n + \beta - 1} \alpha_{(t)}^n } \prod_{i=1}^n x_i^{\alpha^*-\alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}}-\eta^* x_i^{\alpha^*}}, 1 \biggr\} \\
+&= \min \biggl\{ e^{ - \frac{\alpha^*}{\alpha_{(t)}} - \frac{\eta^*}{\eta_{(t)}} + \frac{\alpha_{(t)}}{\alpha^*} + \frac{\eta_{(t)}}{\eta^*}  +\alpha_{(t)} +c \eta_{(t)} -\alpha^* -c \eta^*} \frac{ \eta^{* n + \beta} \alpha^{*n+1} }{ \eta_{(t)}^{n + \beta} \alpha_{(t)}^{n+1} } \prod_{i=1}^n x_i^{\alpha^*-\alpha_{(t)}} e^{\eta_{(t)} x_i^{\alpha_{(t)}}-\eta^* x_i^{\alpha^*}}, 1 \biggr\} \\
+\end{aligned}
+$$
+
+## c)
+
+How to generate the chain:
+
+1. initialize $n = 0$ and $\alpha_n, \eta_n$
+
+2. sample $\alpha^*, \eta^*$ from $q(\alpha^*, \eta^* \mid \alpha_n, \eta_n)$, $u$ from $U(0,1)$
+
+3. if $u \leq \rho(\alpha^*, \eta^*  \mid \alpha_n, \eta_n )$ then set $\alpha_{n+1} = \alpha^*$ and $\eta_{n+1} = \eta^*$, else $\alpha_{n+1} = \alpha_n$ and $\eta_{n+1} = \eta_n$
+
+4. set $n = n + 1$ and goto step 2.
+
+```{R, error = TRUE}
+p = function(as, at, ns, nt, c, b, n, x)
+{
+  p1 = exp(-as/at -ns/nt +at/as + nt/ns +at +c*nt -as -c*ns)
+  p2 = (ns/nt)^(n+b) * (as/at)^(n+1)
+  p3 = prod(x^(as-at) * exp(nt*x^at - ns * x^as))
+  return(min(p1*p2*p3, 1))
+}
+
+run = function(x,len,c,b)
+{
+  NN = 1000
+  alp_n = rep(NA,NN)
+  eta_n = rep(NA,NN)
+  
+  # step 1
+  alp_n[1] = 1 # initial alpha
+  eta_n[1] = 1 # initial eta 
+  
+  for (i in 2:NN)
+  {
+    alpha = alp_n[i-1]
+    eta = eta_n[i-1]
+    
+    # step 2
+    alpha_star = rexp(1, 1/alpha)
+    eta_star = rexp(1, 1/eta)
+    u = runif(1)
+    
+    # step 3
+    if (u <= p(alpha_star, alpha, eta_star, eta, c, b, len, x))
+    {
+      alp_n[i] = alpha_star
+      eta_n[i] = eta_star
+    } else 
+    {
+      alp_n[i] = alpha
+      eta_n[i] = eta
+    }
+  }
+  
+  par(mfrow=c(3,2))
+  hist(alp_n)
+  hist(eta_n)
+  plot(alp_n, type='l')
+  plot(eta_n, type='l')
+  acf(alp_n)
+  acf(eta_n)
+}
+
+# hyper params
+x = c(0.56, 2.26, 1.90, 0.94, 1.40, 1.39, 1.00, 1.45, 2.32, 2.08, 0.89, 1.68)
+len = length(x)
+
+run(x,len,c=0.1,b=1)
+run(x,len,c=4,b=1)
+run(x,len,c=4,b=0.1)
+run(x,len,c=10,b=0.1)
+run(x,len,c=0.1,b=0.1)
+run(x,len,c=0.1,b=4)
+run(x,len,c=0.1,b=10)
+```
+
+## d + e)
+
+```{R, error = TRUE}
+NN = 1000
+alp_n = rep(NA,NN)
+eta_n = rep(NA,NN)
+
+# step 1
+alp_n[1] = 1 # initial alpha
+eta_n[1] = 1 # initial eta 
+
+for (i in 2:NN)
+{
+  alpha = alp_n[i-1]
+  eta = eta_n[i-1]
+  
+  # step 2
+  alpha_star = rexp(1, 1/alpha)
+  eta_star = rexp(1, 1/eta)
+  u = runif(1)
+  
+  # step 3
+  if (u <= p(alpha_star, alpha, eta_star, eta, c, b, len, x))
+  {
+    alp_n[i] = alpha_star
+    eta_n[i] = eta_star
+  } else 
+  {
+    alp_n[i] = alpha
+    eta_n[i] = eta
+  }
+}
+
+mean(alp_n)
+
+mean(eta_n)
+
+quantile(alp_n, probs = c(0.025, 0.975)) 
+
+quantile(eta_n, probs = c(0.025, 0.975)) 
+
+
+post_pi = function(alp, eta)
+{
+  n = length(x)
+  p1 = exp(-alp - c*eta)
+  p2 = eta^(n+b-1)
+  p3 = alp^n
+  p4 = x^(alp-1) * exp(-eta * x^alp)
+  return(p1 * p2 * p3 * prod(p4))
+}
+
+max(post_pi(alp_n))
+
+```

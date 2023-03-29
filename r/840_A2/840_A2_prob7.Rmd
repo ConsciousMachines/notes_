@@ -1,0 +1,151 @@
+---
+title: "GRADUATE STUDENT STAT 840 A2"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 7
+
+## a)
+
+$$
+\begin{aligned}
+\pi(x,y) &\propto x^2 \exp(-xy^2 -y^2 +2y -4x) \\
+& \qquad \text{where } x > 0, -\infty < y < \infty \\
+\pi(x \mid y) &= \frac{\pi(x,y)}{\pi(y)} \\
+&\propto \pi(x,y) \\
+&\qquad \text{since } y \text{ given, } \pi(y) \text{ is constant} \\
+&\propto x^2 \exp(-xy^2 -4x) \exp(-y^2 +2y) \\
+&\propto x^2 \exp(-xy^2 -4x) \\
+&\propto x^2 \exp(-x(y^2 + 4)) \\
+&\propto x^2 \exp(-(y^2 + 4)x) \\
+&\propto x^2 e^{-(y^2 + 4)x} \\
+&\propto x^{\alpha-1} e^{-\beta x} \\
+&\sim \text{Gamma}(\alpha = 3, \beta = y^2 + 4)
+\end{aligned}
+$$
+
+
+
+$$
+\begin{aligned}
+\pi(y \mid x) &= \frac{\pi(x,y)}{\pi(x)} \\
+&\propto \pi(x,y) \\
+&\qquad \text{since } x \text{ given, } \pi(x) \text{ is constant} \\
+&\propto x^2 \exp(-xy^2 -y^2 +2y) \exp( -4x) \\
+&\propto \exp(-xy^2 -y^2 +2y) \\
+& \qquad \text{since } x > 0 \\
+&\propto \exp \Biggl\{ y^2(-x -1) +2y \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} (-2) \Biggl( y^2(-x -1) +2y \Biggr) \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( y^2 2 (x+1) -4y \Biggr) \Biggr\} \\
+& \qquad \text{now complete the square:} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( y^2 2 (x+1) -4y \Biggr) \Biggr\} \exp \Biggl\{ -\frac{1}{2} \frac{2}{x+1} \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( y^2 2 (x+1) -4y \Biggr) -\frac{1}{2} \frac{2}{x+1} \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( y^2 2 (x+1) -4y + \frac{2}{x+1} \Biggr) \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( y \sqrt{2} \sqrt{x+1} - \frac{ \sqrt{2} }{ \sqrt{x+1} }\Biggr)^2 \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( \frac{\frac{1}{\sqrt{2} \sqrt{x+1}}}{\frac{1}{\sqrt{2} \sqrt{x+1}}} y \sqrt{2} \sqrt{x+1} - \frac{\frac{1}{\sqrt{2} \sqrt{x+1}}}{\frac{1}{\sqrt{2} \sqrt{x+1}}} \frac{ \sqrt{2} }{ \sqrt{x+1} }\Biggr)^2 \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( \frac{y}{\frac{1}{\sqrt{2} \sqrt{x+1}}} - \frac{\frac{1}{\sqrt{2} \sqrt{x+1}} \frac{ \sqrt{2} }{ \sqrt{x+1} } }{\frac{1}{\sqrt{2} \sqrt{x+1}}} \Biggr)^2 \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( \frac{y - \frac{1}{\sqrt{2} \sqrt{x+1}} \frac{ \sqrt{2} }{ \sqrt{x+1} } }{\frac{1}{\sqrt{2} \sqrt{x+1}}} \Biggr)^2 \Biggr\} \\
+&\propto \exp \Biggl\{ -\frac{1}{2} \Biggl( \frac{y - \frac{1}{x+1} }{\frac{1}{\sqrt{2} \sqrt{x+1}}} \Biggr)^2 \Biggr\} \\
+&\sim N( \mu = \frac{1}{x+1}, \sigma = \frac{1}{\sqrt{2} \sqrt{x+1}})
+\end{aligned}
+$$
+
+\newpage 
+
+## b)
+
+Let us rename the variables to $x_1$ and $x_2$. At time $n$, they will be $x_1^{(n)}$ and $x_2^{(n)}$. The Gibbs sampler steps are:
+
+1. Initialize:
+
+$$
+\begin{aligned}
+\mathbf{x}^{(0)} &= (x_1^{(0)}, x_2^{(0)})^T \\
+n &= 0
+\end{aligned}
+$$
+
+2. Generate:
+
+$$
+\begin{aligned}
+x_1^{(n+1)} &\sim \pi(x_1 \mid x_2^{(n)}) &&= \text{Gamma}(\alpha=3, \beta = (x_2^{(n)})^2 +4) \\
+x_2^{(n+1)} &\sim \pi(x_2 \mid x_1^{(n+1)}) &&= N( \mu = \frac{1}{x_1^{(n+1)}+1}, \sigma = \frac{1}{\sqrt{2} \sqrt{x_1^{(n+1)}+1}}) \\
+\mathbf{x}^{(n+1)} &= (x_1^{(n+1)}, x_2^{(n+1)})^T
+\end{aligned}
+$$
+
+3. Increment $n$ and goto step 2.
+
+According to the notes chapter 4 page 24, the stationary distribution of this Gibbs Sampler will be $\pi$.
+
+\newpage 
+
+## c)
+
+```{R, fig.width=7, fig.height=8}
+n = 10000
+chain = matrix(ncol=2, nrow=n)
+chain[1,] = c(1,1)
+
+for (i in 2:n)
+{
+  x2_old = chain[i-1, 2]
+  
+  x1_new = rgamma(n=1, shape=3, rate=(x2_old^2 + 4))
+  x2_new = rnorm(n=1, mean=(1/(x1_new + 1)), sd=(1 / (sqrt(2) * sqrt(x1_new + 1))))
+  
+  chain[i,] = c(x1_new, x2_new) 
+}
+
+par(mfrow=c(3,2))
+# 1. plot chain as time series	
+plot(chain[,1], type='l')
+plot(chain[,2], type='l')
+# 2. check that it is stationary using acf(), 1 bar ok
+acf(chain[,1])
+acf(chain[,2])
+# 3. Q7: marginal histograms
+hist(chain[,1])
+hist(chain[,2])
+```
+
+To monitor for convergence, we plot the chain as a time series and look at its autocorrelation. As expected, there is a small autocorrelation at $T=1$ since this is a Markov Chain. The rest of the correlations are negligible, agreeing with the fact that a Markov Chain contains dependency only on the previous time point.
+
+Looking at the marginal histograms, the distributions look smooth. Because the time series of the chain itself are exhibiting consistent behavior, we can assume that the draws from the marginal distributions are also consistent. 
+
+\newpage 
+
+## d)
+
+```{R, fig.width=7, fig.height=4}
+d = function(chain)
+{
+  x = chain[,1]
+  y = chain[,2]
+  return((x^2) * (y^3) * exp(-(x^2)))
+}
+
+# monitor theta_hat
+theta_hat = rep(NA,n)
+for (i in 2:n)
+{
+  theta_hat[i] = mean(d(chain[1:i,]))
+}
+
+# 4. plot estimator as n increases, does it converge?
+par(mfrow=c(1,1))
+plot(theta_hat, type='l')
+
+# calculate estimate after burn-in  
+burn = 1000
+chain_b = chain[burn:n,]
+mean(d(chain_b))
+```
+
+Plotting the estimator at each time point $n$, we see that it appears to converge around 2000 steps. This is further evidence that the chain has reached its stationary distribution. 

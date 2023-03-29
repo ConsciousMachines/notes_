@@ -1,0 +1,60 @@
+---
+title: "GRADUATE STUDENT STAT 840 A1"
+author: "Vsevolod Ladtchenko 20895137"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 2
+
+## (a)
+
+We know that if $X \sim N(\theta, 1)$ then $\bar{X}_n \sim N(\theta,\frac{1}{n})$
+
+Likelihood of $\bar{X}_{10}$:
+
+$$
+f(x) = \frac{\sqrt{10}}{\sqrt{2 \pi}} e^{- \frac{1}{2} \left (\sqrt{10} (x - \theta) \right )^2}
+$$
+
+```{r}
+thetas = seq(from = -1, to = 6, length.out = 100)
+lik_a = dnorm(3.5, thetas, 1/sqrt(10))
+```
+
+## (b)
+
+We know $\sqrt{n} (\bar{x} - \theta) \sim N(0,1)$, which allows us to express the given condition as a probability statement:
+
+$$
+\begin{aligned}
+0 &< \bar{x}_{10} < 5 \\
+0 - \theta &< \bar{x}_{10} - \theta < 5 - \theta \\
+ - \sqrt{10} \theta &< \sqrt{10} (\bar{x}_{10} - \theta) < \sqrt{10}(5 - \theta) \\
+&\Phi(\sqrt{10}(5 - \theta)) - \Phi(- \sqrt{10} \theta)
+\end{aligned}
+$$
+
+```{R}
+lik_b = pnorm(sqrt(10)*(5 - thetas)) - pnorm(-sqrt(10)*thetas)
+```
+
+
+## (c)
+
+For part A, the likelihood is highest when $\theta = \bar{x}$, which is the usual MLE. It decreases around 3.5 in accordance to the sample mean's variance, which is $1/\sqrt{10} \approx 0.31$
+
+For part B, we only know that the mean is in an interval. Standardizing this inequality gives us a probability statement. If $\theta$ was $0$ then we have $50$% chance the mean is to the right, and if $\theta$ is 5, $50$% chance it is to the left. Since $\sigma = 0.31$, $3$ standard deviations is approximately $1$, we see that we quickly climb to $1$ in the interval $(0,5)$. This shows that if $\theta$ is here, then we are almost guaranteed to have $\bar{x}$ in $(0,5)$, except near the individual points $0$ and $5$. 
+
+Naturally, having more precise information about $\bar{x}$ makes the likelihood that much more informative. 
+
+```{R}
+plot(thetas, lik_a, type='l', col='red')
+lines(thetas, lik_b, col='green')
+legend(x = 'topright', 
+       legend=c('A', 'B'), 
+       fill = c('red','green'))
+```
