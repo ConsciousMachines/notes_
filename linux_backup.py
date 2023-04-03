@@ -30,6 +30,7 @@ _bakdir = '/home/chad/Desktop/_backups'
 copy_dir('/home/chad/.vscode-oss',             _bakdir)                         # codium prefs
 copy_dir('/home/chad/.librewolf',              _bakdir)                         # librewolf prefs
 copy_dir('/home/chad/.mozilla',                _bakdir)                         # firefox prefs
+copy_dir('/home/chad/.config/BraveSoftware',   _bakdir)                         # brave prefs
 
 # move desktop items to _backups, then zip it for saving, then move back
 #mov_dir('/home/chad/Bitwig Studio',            _bakdir)                         # bitwig projects
@@ -45,7 +46,7 @@ shutil.make_archive('/home/chad/Desktop/_backups', 'zip', '/home/chad/Desktop/_b
 
 # move the dirs back
 movbak_dir('/home/chad/Desktop', os.path.join(_bakdir, 'skool'))                   # skool
-movbak_dir('/home/chad/Desktop',       os.path.join(_bakdir, '2023.txt'))          # notes
+movbak_dir('/home/chad/Desktop', os.path.join(_bakdir, '2023.txt'))                # notes
 #movbak_dir('/home/chad',               os.path.join(_bakdir, 'hello'))            # Sedgewick Java
 #movbak_dir('/home/chad',               os.path.join(_bakdir, 'Bitwig Studio'))    # bitwig projects
 #movbak_dir('/home/chad/.Rack',         os.path.join(_bakdir, '_Rack/.Rack'))      # VCV

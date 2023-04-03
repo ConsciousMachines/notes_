@@ -11,6 +11,8 @@ git push
 
 # conda usage
 
+(dont use sudo when installing conda or it will install in root directory)
+
 (if it activates automativally)
 
 conda config --set auto_activate_base false
