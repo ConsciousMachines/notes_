@@ -1,16 +1,23 @@
 ---
 title: "STAT 840 Chapter 1 Exercises"
 author: "Vsevolod Ladtchenko 20895137"
-output: pdf_document
-editor_options: 
-  chunk_output_type: console
+output:
+  pdf_document
+#    latex_engine: xelatex
+#mainfont: "DejaVu Sans"
+#mainfont: "NotoSans-Light"
+
+#mainfont: "Symbola"
+#mainfont: "NotoSerif-Regular"
+#mainfont: "NotoSansMono-Medium"
+#mainfont: "NotoSansDisplay-Regular"
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# TODO
 
 [1] 1
 [1] 2
@@ -23,9 +30,6 @@ knitr::opts_chunk$set(echo = TRUE)
 [1] 9
 [1] 10
 [1] 11
-[1] 12
-[1] 13
-[1] 14
 
 # TRICKS TO REMEMBER
 
@@ -37,11 +41,399 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # PROBABLY CORRECT BUT I SHOULD ASK ANYWAYS
 
+11, probably requires Rao Blackwell?
 18
 
+\newpage
+# Problem 1.1
+
+```{r}
+# R script
+library(ggplot2)
+
+# Define likelihood functions
+likelihood_a <- function(theta) {
+  (1 - theta)^(53 - 1) * theta
+}
+
+likelihood_b <- function(theta) {
+  choose(552 - 1, 5 - 1) * theta^5 * (1 - theta)^(552 - 5)
+}
+
+# Create a sequence of theta values between 0 and 1
+theta_vals <- seq(0, 1, 0.001)
+
+# Calculate likelihoods for each theta value
+likelihoods_a <- sapply(theta_vals, likelihood_a)
+likelihoods_b <- sapply(theta_vals, likelihood_b)
+
+# Create a data frame for plotting
+plot_data <- data.frame(
+  Theta = rep(theta_vals, 2),
+  Likelihood = c(likelihoods_a, likelihoods_b),
+  Scenario = factor(rep(c("a", "b"), each = length(theta_vals)))
+)
+
+# Plot likelihoods
+ggplot(plot_data, aes(x = Theta, y = Likelihood, color = Scenario)) +
+  geom_line() +
+  theme_minimal() +
+  labs(title = "Likelihood Functions",
+       subtitle = "Comparing likelihoods for scenarios a and b",
+       x = "Prevalence Probability (theta)",
+       y = "Likelihood",
+       color = "Scenario")
+
+theta <- seq(0, 1, length.out = 1000)
+
+likelihood_a <- (1 - theta)^(53 - 1) * theta
+likelihood_b <- choose(552 - 1, 5 - 1) * theta^5 * (1 - theta)^(552 - 5)
+
+plot(theta, likelihood_a, type = "l", col = "blue", xlab = "Theta", ylab = "Likelihood", main = "Likelihood Comparison")
+lines(theta, likelihood_b, col = "red")
+
+legend("topright", legend = c("Scenario A", "Scenario B"), col = c("blue", "red"), lty = 1)
+
+```
+
+# - - - GPT-4 ANSWER START
+
+a. If the genotype makes its first appearance on the 53rd subject analyzed, then the first 52 subjects do not have the genotype, and the 53rd subject has the genotype. Assuming the subjects are independent and have the same prevalence probability $\theta$, the likelihood function can be modeled using a geometric distribution. The probability mass function (PMF) of a geometric distribution is:
+
+$P(X = k) = (1 - \theta)^{(k - 1)} \cdot \theta$
+
+In this case, $k = 53$. So the likelihood function $L(\theta)$ is:
+
+$L(\theta) = (1 - \theta)^{(53 - 1)} \cdot \theta$
+
+b. If the scientists had planned to stop when they found five subjects with the genotype of interest, and they analyzed 552 subjects, we can model this using a negative binomial distribution. The PMF of a negative binomial distribution is:
+
+$P(X = k) = C(k - 1, r - 1) \cdot \theta^r \cdot (1 - \theta)^{(k - r)}$
+
+In this case, $r = 5$ (the number of successes or genotypes of interest), and $k = 552$ (the number of trials). So the likelihood function $L(\theta)$ is:
+
+$L(\theta) = C(552 - 1, 5 - 1) \cdot \theta^5 \cdot (1 - \theta)^{(552 - 5)}$
+
+c. We can plot both likelihood functions in R:
+
+The plot will show the likelihood functions for both scenarios a and b. You will notice that the likelihood function in scenario a, where the genotype appears on the 53rd subject, is more spread out with a lower peak than the likelihood function in scenario b, where the scientists stop after finding five subjects with the genotype. This indicates that the data in scenario b provides more information about the prevalence probability $\theta$, resulting in a more concentrated likelihood function around the most likely value of $\theta$.
+
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.2
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.3
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.4
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.5
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.6
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.7
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.8
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.9
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.10
+
+# - - - GPT-4 ANSWER START
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.11
+
+# - - - GPT-4 ANSWER START
+
+Given that $X_1, ..., X_n$ are n Bernoulli(p) trials, we can model the joint distribution of $X_i$'s and $T$ as a binomial distribution. Recall that $T = \sum X_i$, which means $T$ follows a binomial distribution with parameters $n$ and $p$.
+
+Conditional expectation $E[X_1 | T]$:
+
+To find the conditional expectation $E[X_1 | T]$, we can use the following property of conditional expectation:
+
+$E[X_1 | T] = \sum (x * P(X_1 = x | T))$ for $x$ in ${0, 1}$
+
+We need to find the conditional probabilities $P(X_1 = 0 | T)$ and $P(X_1 = 1 | T)$. Using the definition of conditional probability and properties of binomial distribution, we get:
+
+$P(X_1 = 1 | T) = \frac{P(X_1 = 1, T = t)}{P(T = t)} = \frac{P(T - X_1 = t - 1)}{P(T = t)}$
+
+Since $T$ follows a binomial distribution with parameters $n$ and $p$, $(T - X_1)$ will follow a binomial distribution with parameters $(n - 1)$ and $p$:
+
+$P(T - X_1 = t - 1) = C(n - 1, t - 1) * p^{(t - 1)} * (1 - p)^{(n - t)}$
+
+$P(T = t) = C(n, t) * p^t * (1 - p)^{(n - t)}$
+
+Therefore,
+
+$P(X_1 = 1 | T) = \frac{C(n - 1, t - 1) * p^{(t - 1)} * (1 - p)^{(n - t)}}{C(n, t) * p^t * (1 - p)^{(n - t)}}$
+
+$P(X_1 = 1 | T) = \frac{t}{n}$
+
+Since $X_1$ is a Bernoulli random variable, $P(X_1 = 0 | T) = 1 - P(X_1 = 1 | T) = \frac{(n - t)}{n}$.
+
+Now, we can find $E[X_1 | T]$:
+
+$E[X_1 | T] = \sum (x * P(X_1 = x | T)) = 0 * P(X_1 = 0 | T) + 1 * P(X_1 = 1 | T) = \frac{t}{n}$
+
+Compare variance:
+
+The variance of the estimator $E[X_1 | T]$ can be calculated as:
+
+$\text{Var}(X_1 | T) = E[(X_1 - E[X_1 | T])^2 | T] = E[X_1^2 | T] - (E[X_1 | T])^2$
+
+Since $X_1$ is a Bernoulli random variable, $X_1^2 = X_1$. Thus,
+
+$E[X_1^2 | T] = E[X_1 | T] = \frac{t}{n}$
+
+So,
+
+$\text{Var}(X_1 | T) = \frac{t}{n} - \left(\frac{t}{n}\right)^2$
+
+Now let's find the variance of $X_1$:
+
+$\text{Var}(X_1) = E[X_1^2] - (E[X_1])^2 = p - p^2 = p(1 - p)$
+
+Comparing the variances, we can see that $\text{Var}(X_1 | T)$ is generally different from $\text{Var}(X_1)$. However, the variance of the estimator $E[X_1 | T]$ depends on the observed value of $T$, while the variance of $X_1$ depends on the unknown parameter $p$. In some cases, the conditional variance $\text{Var}(X_1 | T)$ can be smaller than $\text{Var}(X_1)$, indicating that conditioning on $T$ provides additional information that reduces the uncertainty about $X_1$.
+
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.12
+
+$$
+\begin{aligned}
+Lik &= \prod_{i=1}^n \theta^{x_i} (1 - \theta)^{1-x_i} \\
+&= \theta^{\sum_{i=1}^n x_i} (1 - \theta)^{n - \sum_{i=1}^n x_i} \\
+lik &= \sum_{i=1}^n x_i \log (\theta)  + (n - \sum_{i=1}^n x_i) \log(1 - \theta) \\
+s &= \sum_{i=1}^n x_i \\ 
+\partial_\theta lik &= \frac{s}{\theta}  - \frac{n-s}{1-\theta} = 0 \\
+\frac{s}{\theta} &= \frac{n-s}{1-\theta} \\
+s (1-\theta) &= (n-s) \theta \\
+s - s \theta &= n \theta - s \theta \\
+\theta_{MLE} &= s / n \\
+\theta_{MLE}^2 &= (s/n)^2 \\
+\end{aligned}
+$$
+
+We know that the MLE of a function is the function of the MLE, by the invariance property of the MLE.
+
+# - - - GPT-4 ANSWER START
+
+To find the maximum likelihood estimate (MLE) of $\theta$², we first need to find the likelihood function, then its derivative with respect to $\theta$, and finally set the derivative equal to 0 and solve for $\theta$.
+
+Likelihood function:
+
+Since $X_1, ..., X_n$ are independent and identically distributed (i.i.d.) random variables, the likelihood function $L(\theta)$ is given by the product of probabilities:
+
+$L(\theta) = P(X_1 = x_1, ..., X_n = x_n | \theta) = \prod_{i} P(X_i = x_i | \theta)$
+
+Given that $Pr(X_i = 1) = \theta$ and $Pr(X_i = 0) = 1 - \theta$, the likelihood function can be written as:
+
+$L(\theta) = \theta^s \cdot (1 - \theta)^{(n - s)}$
+
+where $s$ is the number of successes (i.e., the number of 1's) in the sample.
+
+Log-likelihood function:
+
+It's easier to work with the log-likelihood function, so let's take the natural logarithm of $L(\theta)$:
+
+$\log L(\theta) = s \cdot \log(\theta) + (n - s) \cdot \log(1 - \theta)$
+
+Derivative of log-likelihood function:
+
+To find the MLE of $\theta$, we'll first take the derivative of the log-likelihood function with respect to $\theta$:
+
+$\frac{d(\log L(\theta))}{d\theta} = \frac{s}{\theta} - \frac{n - s}{1 - \theta}$
+
+Set the derivative equal to 0 and solve for $\theta$:
+
+$\frac{s}{\theta} - \frac{n - s}{1 - \theta} = 0$
+
+Solving this equation for $\theta$, we get the MLE of $\theta$:
+
+$\hat{\theta} = \frac{s}{n}$
+
+MLE of $\theta$²:
+
+Now we have the MLE of $\theta$, we can find the MLE of $\theta$²:
+
+$(\hat{\theta})^2 = \left(\frac{s}{n}\right)^2$
+
+So, the maximum likelihood estimate of $\theta$² is $\left(\frac{s}{n}\right)^2$.
+
+# - - - GPT-4 ANSWER END
+
+\newpage
+# Problem 1.13
+
+$$
+\begin{aligned}
+f(\theta \mid x) &\propto f(x \mid \theta) f(\theta) \\
+f(\theta) &= 60 \theta^2 (1 - \theta)^3 \\
+f(x \mid \theta) &= {10 \choose 3} \theta^3 (1 - \theta)^7 \\
+f(\theta \mid x) &\propto \theta^3 (1 - \theta)^7 \theta^2 (1 - \theta)^3\\
+&\propto \theta^5 (1 - \theta)^{10} \\
+\end{aligned}
+$$
+
+This is Beta 6, 11 which has mean 6/(6+11) so the Bayes estimator is 6/17.
+
+# - - - GPT-4 ANSWER START
+
+To find the Bayes estimate of $\theta$ with respect to the squared error loss function (i.e., the posterior mean), we'll first compute the likelihood of the observed data and then use Bayes' theorem to find the posterior pdf of $\theta$. Finally, we'll compute the posterior mean.
+
+Prior pdf of $\theta$:
+
+$\pi(\theta) = 60\theta^2(1 - \theta)^3$ for $0 < \theta < 1$
+
+$\pi(\theta) = 0$ otherwise
+
+Observed data: A random sample of 10 apples, 3 of which are bad. This follows a binomial distribution with n = 10 trials and k = 3 successes (bad apples).
+
+Likelihood P(x|$\theta$): Binomial distribution with parameters n = 10, k = 3, and $\theta$.
+
+$P(x=3|\theta) = C(10, 3) \cdot \theta^3 \cdot (1 - \theta)^{(10 - 3)}$
+
+Posterior pdf P($\theta$|x): Use Bayes' theorem.
+
+$P(\theta|x) \propto P(x|\theta) \cdot \pi(\theta) = C(10, 3) \cdot \theta^3 \cdot (1 - \theta)^{(10 - 3)} \cdot 60\theta^2(1 - \theta)^3$
+
+Simplifying, we get:
+
+$P(\theta|x) \propto \theta^5 \cdot (1 - \theta)^6$ for $0 < \theta < 1$
+
+Normalize the posterior pdf by finding the constant of proportionality (denoted by c):
+
+To do this, we need to integrate $P(\theta|x)$ over the interval [0, 1] and set the integral equal to 1.
+
+$c \cdot \int_{0}^{1} \theta^5 \cdot (1 - \theta)^6 , d\theta = 1$
+
+Compute the posterior mean (Bayes estimate):
+
+$E(\theta|x) = \int_{0}^{1} \theta \cdot P(\theta|x) , d\theta = c \cdot \int_{0}^{1} \theta^6 \cdot (1 - \theta)^6 , d\theta$
+
+At this point, we need to calculate the integrals in steps 5 and 6 numerically. You can use numerical integration methods (e.g., the trapezoidal rule or Simpson's rule) or a computational tool like R or WolframAlpha to find the values.
+
+Once you have the value of c from step 5, substitute it back into step 6 to find the Bayes estimate of $\theta$ with respect to the squared error loss function (the posterior mean).
+
+# - - - GPT-4 ANSWER END
+
+\newpage
 # Problem 1.14
 
+$$
+\begin{aligned}
+f(\theta \mid x) &\propto f(x \mid \theta) f(\theta) \\
+f(x \mid \theta) &= {8 \choose 2} \theta^2 (1 - \theta)^6 \\
+f(\theta = 0.1 \mid x) &\propto f(x \mid \theta = 0.1) 0.7 \\
+&= 0.5418274 \\ 
+f(\theta = 0.2 \mid x) &\propto f(x \mid \theta = 0.2) 0.3 \\
+&= 0.4581726 \\ 
+\theta_{Bayes} = \mathbb{E} [ \theta \mid x] &= 0.1 f(\theta = 0.1 \mid x) + 0.2 f(\theta = 0.2 \mid x) \\
+&= 0.1458173 \\
+\theta_{MAP} &= \arg\max_\theta \{ f(\theta = 0.1 \mid x), f(\theta = 0.2 \mid x) \} \\
+&= \arg\max_\theta \{ 0.5418274, 0.4581726 \} \\
+&= 0.1 \\
+\end{aligned}
+$$
 
+theta is a discrete variable. Its expectation will be a discrete expectation (no integral) and the MAP estimate will be the larger of two possible values, because there is no density to maximize. 
+
+the posterior distribution of theta will be discrete, so there will be only two values. don't forget the normalization values, which we can get using the law of total probability.
+
+# - - - GPT-4 ANSWER START
+
+To derive the posterior probability density function (pdf) of $\theta$ and find the Bayes and Maximum a Posteriori (MAP) estimators, we can use Bayes' theorem. In this problem, we have two possible values for $\theta$: 0.1 and 0.2, with prior probabilities $\pi(0.1) = 0.7$ and $\pi(0.2) = 0.3$. We observed that 2 out of 8 items are defective.
+
+Let X denote the number of defective items in the sample of 8 items. We want to find the posterior probabilities $P(\theta=0.1|X=2)$ and $P(\theta=0.2|X=2)$. Using Bayes' theorem:
+
+$P(\theta|x) = \frac{P(x|\theta) \cdot \pi(\theta)}{P(x)}$
+
+First, we need to compute the likelihood $P(x|\theta)$, which follows a binomial distribution because we have a fixed number of trials (n=8) with two possible outcomes (defective or non-defective) and a known probability of success (defective) $\theta$.
+
+$P(x=2|\theta=0.1) = C(8, 2) \cdot (0.1)^2 \cdot (1 - 0.1)^{(8-2)} = 28 \cdot 0.01 \cdot 0.9^6$
+
+$P(x=2|\theta=0.2) = C(8, 2) \cdot (0.2)^2 \cdot (1 - 0.2)^{(8-2)} = 28 \cdot 0.04 \cdot 0.8^6$
+
+Now, we can find the posterior probabilities:
+
+$P(\theta=0.1|X=2) = \frac{P(X=2|\theta=0.1) \cdot \pi(0.1)}{P(X=2|\theta=0.1) \cdot \pi(0.1) + P(X=2|\theta=0.2) \cdot \pi(0.2)}$
+
+$P(\theta=0.2|X=2) = \frac{P(X=2|\theta=0.2) \cdot \pi(0.2)}{P(X=2|\theta=0.1) \cdot \pi(0.1) + P(X=2|\theta=0.2) \cdot \pi(0.2)}$
+
+For the Bayes estimator, we compute the expected value of $\theta$ given the data:
+
+$E(\theta|X=2) = \theta_1 \cdot P(\theta=0.1|X=2) + \theta_2 \cdot P(\theta=0.2|X=2)$
+
+The MAP estimator is the value of $\theta$ that maximizes the posterior probability, which is the one with the highest posterior probability:
+
+$MAP(\theta|X=2) = \arg\max {P(\theta=0.1|X=2), P(\theta=0.2|X=2)}$
+
+Compute the values using the formulas above to find the Bayes and MAP estimators of $\theta$.
+
+# - - - GPT-4 ANSWER END
+
+```{r}
+problem_1_14 = function()
+{
+  lik = function(theta)
+  {
+    ret = choose(8, 2) * theta^2 * (1 - theta)^6
+    return(ret)
+  }
+  
+  f01_ = lik(theta = 0.1) * 0.7 # unnormalized posterior probabilities
+  f02_ = lik(theta = 0.2) * 0.3
+  norm = f01_ + f02_ # normalization constant is their sum in discrete case
+  
+  f01 = f01_ / norm # normalized posterior probabilities 
+  f02 = f02_ / norm
+  
+  print(f01)
+  print(f02)
+  
+  bayes = 0.1 * f01 + 0.2 * f02
+  print(bayes)
+}
+
+problem_1_14()
+```
+
+\newpage
 # Problem 1.15
 
 $$
@@ -95,6 +487,7 @@ problem_1_15 = function()
 problem_1_15()
 ```
 
+\newpage
 # Problem 1.16
 
 $$
@@ -159,6 +552,7 @@ $$
 \end{aligned}
 $$
 
+\newpage
 # Problem 1.17
 
 $$
@@ -217,6 +611,7 @@ $$
 \end{aligned}
 $$
 
+\newpage
 # Problem 1.18
 
 $$
@@ -259,6 +654,7 @@ p_{MLE} &= 2 X/n - 0.5 \\
 \end{aligned}
 $$
 
+\newpage
 # Problem 1.19
 
 ## i)

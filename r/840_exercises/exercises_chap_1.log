@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2023.2.25)  7 MAR 2023 02:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2023.4.9)  10 APR 2023 16:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -486,72 +486,94 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-25.
+21.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 144.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 144.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 144.
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-58.
+40.
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 159.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-168.
-(/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf, id=35, 469.755pt x 
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 145.
+<exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf, id=18, 469.755pt x 
 325.215pt>
 File: exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (t
 ype pdf)
 <use exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf>
 Package pdftex.def Info: exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.
-pdf  used on input line 197.
+pdf  used on input line 179.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[2] [3 <./exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf>] [4]
+[2]
+<exercises_chap_1_files/figure-latex/unnamed-chunk-1-2.pdf, id=28, 469.755pt x 
+325.215pt>
+File: exercises_chap_1_files/figure-latex/unnamed-chunk-1-2.pdf Graphic file (t
+ype pdf)
+<use exercises_chap_1_files/figure-latex/unnamed-chunk-1-2.pdf>
+Package pdftex.def Info: exercises_chap_1_files/figure-latex/unnamed-chunk-1-2.
+pdf  used on input line 195.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[3 <./exercises_chap_1_files/figure-latex/unnamed-chunk-1-1.pdf>]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 207.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 207.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 207.
+[4 <./exercises_chap_1_files/figure-latex/unnamed-chunk-1-2.pdf>] [5] [6] [7] [
+8] [9] [10] [11] [12] [13] [14] [15] [16] [17]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 287.
+(amsmath)                 on input line 523.
 
-[5] [6] [7] [8] (./exercises_chap_1.aux) ) 
+[18] [19] [20]
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+727.
+(/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+<exercises_chap_1_files/figure-latex/unnamed-chunk-3-1.pdf, id=212, 469.755pt x
+ 325.215pt>
+File: exercises_chap_1_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (t
+ype pdf)
+<use exercises_chap_1_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: exercises_chap_1_files/figure-latex/unnamed-chunk-3-1.
+pdf  used on input line 756.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[21] [22 <./exercises_chap_1_files/figure-latex/unnamed-chunk-3-1.pdf>] [23] [2
+4] [25] [26] [27] [28] (./exercises_chap_1.aux) ) 
 Here is how much of TeX's memory you used:
- 13543 strings out of 481252
- 198943 string characters out of 5915888
- 540118 words of memory out of 5000000
- 30165 multiletter control sequences out of 15000+600000
- 455664 words of font info for 102 fonts, out of 8000000 for 9000
+ 13779 strings out of 481252
+ 202372 string characters out of 5915889
+ 541901 words of memory out of 5000000
+ 30259 multiletter control sequences out of 15000+600000
+ 457459 words of font info for 121 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 85i,11n,88p,578b,373s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/
-lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fon
-ts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/
-usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-mathsy.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/s
-hare/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/share/t
-exmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/lm
-r10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fon
-ts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb><
-/usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/p
-ublic/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/sha
-re/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/
-lm/lmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbol
-s/msbm10.pfb>
-Output written on exercises_chap_1.pdf (8 pages, 259851 bytes).
+ 85i,11n,88p,578b,368s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dv
+ips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/shar
+e/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/l
+m-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/f
+onts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb>
+</usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type
+1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/
+share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/publi
+c/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/te
+xmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr
+5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/
+type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb></
+usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/p
+ublic/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/sh
+are/texmf/fonts/type1/public/lm/lmtti10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on exercises_chap_1.pdf (28 pages, 335839 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 155 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
- 30814 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 515 PDF objects out of 1000 (max. 8388607)
+ 457 compressed objects within 5 object streams
+ 134 named destinations out of 1000 (max. 500000)
+ 31144 words of extra memory for PDF output out of 35830 (max. 10000000)
 
