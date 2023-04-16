@@ -169,8 +169,104 @@ x = c(24, 18, 21, 5, 5, 11, 11, 17, 6, 7, 20, 13, 4, 16, 19, 21, 4, 22, 8, 17)
 grid_search(x)
 
 # check implementation
-for (n in c(20,100,1000))
-  print(grid_search(generate_data(n)))
+#for (n in c(20,100,1000))
+#  print(grid_search(generate_data(n)))
 ```
+
+# d)
+
+Compute the Hessian. Note the mixed partials are all zero. This makes the Hessian diagonal, so to invert it we simply take the inverse of the diagonal elements.
+
+$$
+\begin{aligned}
+\partial_p Q &= \sum_{i=1}^n  \frac{w_i^{(k)}}{p} -  \frac{(1- w_i^{(k)})}{1 - p} \\
+&= \frac{s}{p} - \frac{n-s}{1-p} \\
+\partial_{pp} Q &= \frac{-s}{p^2} - \frac{n-s}{(1-p)^2} \\
+\partial_{\lambda_1 \lambda_1} Q  &= \frac{-1}{\lambda_1^2} \sum_{i=1}^n   w_i^{(k)} x_i\\
+\partial_{\lambda_2 \lambda_2} Q  &= \frac{-1}{\lambda_2^2} \sum_{i=1}^n   (1-w_i^{(k)}) x_i\\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+l_{obs} &= \sum \log ( p Pois(x_i, \lambda_1) + (1-p) Pois(x_i, \lambda_2) ) \\
+\end{aligned}
+$$
+
+Due to the difficulty in computing the observed likelihood, we will try using numerical methods. Note that this may be a good use case for automatic differentiation. Nevertheless, we will compute the Hessian of the observed likelihood function numerically, using parameter estimates from our previous EM algorithm run. The results look believable, and make sense as to the error we got from the true values of the parameters.
+
+```{r}
+library(numDeriv)
+
+p = 0.5
+lam1 = 1
+lam2 = 10
+
+x = c(24, 18, 21, 5, 5, 11, 11, 17, 6, 7, 20, 13, 4, 16, 19, 21, 4, 22, 8, 17)
+
+lik = -Inf
+
+while (TRUE)
+{
+  # E step
+  pois1 =     p * dpois(x, lam1)
+  pois2 = (1-p) * dpois(x, lam2)
+  w     = pois1 / (pois1 + pois2)
+  
+  # M step
+  p    = mean(w)
+  lam1 = sum(w     * x) / sum(w)
+  lam2 = sum((1-w) * x) / sum(1-w)
+  
+  # check convergence 
+  lik_new = sum(log(p * dpois(x, lam1) + (1-p) * dpois(x, lam2)))
+  if (abs(lik_new - lik) < 1e-8)
+    break
+  
+  lik = lik_new
+}
+
+observed_lik = function(params)
+{
+  p = params[1]
+  lam1 = params[2]
+  lam2 = params[3]
+  
+  pois1 = dpois(x, lam1)
+  pois2 = dpois(x, lam2)
+  
+  lik = sum(log(p*pois1 + (1-p)*pois2))
+  
+  return(lik)
+}
+
+# https://www.rdocumentation.org/packages/numDeriv/versions/2016.8-1.1/topics/hessian
+H = hessian(observed_lik, c(p,lam1,lam2))
+
+var_cov_matrix = solve(-H)
+
+err = sqrt(diag(var_cov_matrix))
+
+c(p=p,lam1=lam1,lam2=lam2)
+c(std_p=err[1], std_lam1=err[2], std_lam2=err[3])
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

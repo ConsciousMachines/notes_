@@ -1,0 +1,148 @@
+\documentclass[twoside,11pt]{article}
+
+\usepackage{blindtext}
+
+% Any additional packages needed should be included after jmlr2e.
+% Note that jmlr2e.sty includes epsfig, amssymb, natbib and graphicx,
+% and defines many common macros, such as 'proof' and 'example'.
+%
+% It also sets the bibliographystyle to plainnat; for more information on
+% natbib citation styles, see the natbib documentation, a copy of which
+% is archived at http://www.jmlr.org/format/natbib.pdf
+
+% Available options for package jmlr2e are:
+%
+%   - abbrvbib : use abbrvnat for the bibliography style
+%   - nohyperref : do not load the hyperref package
+%   - preprint : remove JMLR specific information from the template,
+%         useful for example for posting to preprint servers.
+%
+% Example of using the package with custom options:
+%
+% \usepackage[abbrvbib, preprint]{jmlr2e}
+
+\usepackage{jmlr2e}
+\usepackage{amsmath}
+
+% Definitions of handy macros can go here
+
+\newcommand{\dataset}{{\cal D}}
+\newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+
+% Heading arguments are {volume}{year}{pages}{date submitted}{date published}{paper id}{author-full-names}
+
+\usepackage{lastpage}
+\jmlrheading{23}{2022}{1-\pageref{LastPage}}{1/21; Revised 5/22}{9/22}{21-0000}{Author One and Author Two}
+
+% Short headings should be running head and authors last names
+
+\ShortHeadings{Sample JMLR Paper}{One and Two}
+\firstpageno{1}
+
+\begin{document}
+
+\title{Label Alignment for Multiclass Domain Adaptation}
+
+\author{\name Vsevolod Ladtchenko \email vladtche@uwaterloo.ca \\
+       \addr Department of Statistics\\
+       University of Waterloo\\
+       200 University Ave W, Waterloo ON N2L 3G1, Canada}
+
+\editor{}
+
+\maketitle
+
+\begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+TODO
+\end{abstract}
+
+\begin{keywords}
+  label alignment, domain adaptation
+\end{keywords}
+
+\section{Introduction}
+
+Domain adaptation is the problem of training a model on one set of data, called the source data, and then applyng the trained model on a second set of data, called the target data. The reason for doing this is because in a supervised setting, we have labels for the source data, but we do not have labels for the target data. So a model trained using supervision from the source labels should extrapolate that knowledge to the target data, which has a different distribution. For example, letters drawn by one group of people have a different distribution than letters drawn by a different group of people. We have labels only for the first group, and after our model learns from the first group, we would like it to generalize to the second group. There is no general way to describe the transformation between these distributions. Previously used methods attempt to learn representations that are invariant to the transformation between distributions, and this works for specific cases, see Section 1 of \cite{imani2022label}. 
+
+The method we investigate is a novel approach that relies on a property of the dataset itself. A dataset has the \emph{label alignment} property when the label vector is mostly in the span of the top singular vectors of the data matrix. This means that for a dataset with $n$ samples and $d$ features represented by a matrix of shape $(n, d)$, we can take the Singular Value Decomposition (SVD) of the data matrix, project the label vector on the resulting $d$ singular vectors, and find that a small number $k \ll d$ of singular vectors will contain a majority of the norm of the projection. This label alignment property emerges as a result of columns of the data matrix being correlated to the label vector (see Appendix A of \cite{imani2022label}). This property also emerges in hidden representations of neural networks, meaning the label vector is in the span of the top few singular vectors of the SVD of a weight matrix of a hidden layer of a neural network \cite{imani2022representation}. In particular this happens towards the topmost layers, showing that neural networks transform the input data until it is correlated to the label vector. 
+
+In a linear regression setting, we can show that the label alignment property implies a certain structure on the weights (later we will reverse this phenomenon by imposing this structure on the weights to force label alignment with the target domain). If we have a data matrix $\mathbf{X}$ which has $n$ data points, $d$ features, and thus shape $(n,d)$, and a label vector $\mathbf{y}$ of length $n$, the usual linear regression problem is to find weights to minimize the square error:
+
+$$
+\begin{aligned}
+\mathbf{w}^* &= \operatorname*{arg\,min}_{\mathbf{w}} MSE(\mathbf{w}) \\
+&= \operatorname*{arg\,min}_{\mathbf{w}} \lVert \mathbf{X} \mathbf{w} - \mathbf{y} \rVert^2 \\
+\end{aligned}
+$$
+
+First, replace $\mathbf{X}$ by its SVD. Then left-multiply by $\mathbf{U}^T$ which is a unitary matrix (a rotation), meaning it does not change the norm, nor its square, and $\mathbf{U}^T \mathbf{U} = \mathbf{I}$. 
+
+$$
+\begin{aligned}
+&= \operatorname*{arg\,min}_{\mathbf{w}} \lVert \mathbf{U \Sigma V}^T \mathbf{w} - \mathbf{y} \rVert^2 \\
+&= \operatorname*{arg\,min}_{\mathbf{w}} \lVert \mathbf{\Sigma V}^T \mathbf{w} - \mathbf{U}^T \mathbf{y} \rVert^2 \\
+\end{aligned}
+$$
+
+Since $\mathbf{w}$ is a vector of length $d$, and $\mathbf{V}$ is a basis for $\mathbb{R}^d$, then $\mathbf{V}^T \mathbf{w}$ is a projection of $\mathbf{w}$ on the basis spanned by $\mathbf{V}$. Since $\mathbf{\Sigma}$ is a diagonal matrix, we multiply the $i^{th}$ element of $\mathbf{V}^T \mathbf{w}$, or $\mathbf{v}_i^T \mathbf{w}$, by $\sigma_i$. Similarly, $\mathbf{U}^T \mathbf{y}$ is a projection of $\mathbf{y}$ on the $d$ singular vectors $\mathbf{u}_i$. Altogether, this is vector notation for the following sum:
+
+$$
+\begin{aligned}
+&= \sum_{i=1}^d (\sigma_i \mathbf{v}_i^T \mathbf{w} - \mathbf{u}_i \mathbf{y})^2
+\end{aligned}
+$$
+
+It is at this point that we invoke the label alignment property of $\mathbf{y}$. Because $\mathbf{y}$ is spanned mostly by the top $k$ singular vectors $\mathbf{u}_i$, we have $\mathbf{u}_i \mathbf{y} \approx 0$ for $i>k$. This is approximate due to noise. Now we can remove $\mathbf{u}_i \mathbf{y}$ from the above sum for terms $i>k$, yielding: 
+
+$$
+\begin{aligned}
+&= \sum_{i=1}^k (\sigma_i \mathbf{v}_i^T \mathbf{w} - \mathbf{u}_i \mathbf{y})^2 + \sum_{i=k+1}^d (\sigma_i \mathbf{v}_i^T \mathbf{w} )^2
+\end{aligned}
+$$
+
+REWRITE: Keep in mind we got this by assuming the linear regression problem, and a dataset that follows the label alignment property. The second term does not involve the labels $\mathbf{y}$. Since we do not have labels for our target dataset, we can compute its SVD as $(\mathbf{\tilde{U}}, \mathbf{\tilde{\Sigma}}, \mathbf{\tilde{V}}^T)$ and derive a similar term:
+
+$$
+\begin{aligned}
+\sum_{i=k+1}^d (\tilde{\sigma}_i \tilde{\mathbf{v}}_i^T \mathbf{w} )^2
+\end{aligned}
+$$
+
+This is called the \emph{label alignment regularizer}. It imposes structure on $\mathbf{w}$, which, based on the previous derivation, would again imply the linear regression problem and the label alignment property of the target dataset, except we do not need to know the label this time. [Imani 2] has shown promise in using this method to transfer knowledge from the source domain to the target domain. It only assumes the target domain has the label alignment property (which is fair if it is similar to the source domain), and a specific $k^\prime$ which may differ from $k$ of the source domain. 
+
+For some derivations of $k$ on real world datasets, see  [Imani 2 Table 1]. The metric used there to derive $k$ is to see how many vectors we need until the norm of the projection is at least 0.9 (we normalize $\mathbf{y}$ so we can compare between datasets). If we define $\texttt{norm}_k(\mathbf{y})$ as the norm of the first $k$ components of the vector, the metric can be expressed as:
+
+$$
+\begin{aligned}
+\texttt{norm}_k(\mathbf{x}) &= \sqrt{\sum_{i=1}^k x_i } \qquad k \leq \texttt{length}(\mathbf{x}) \\
+k^*(0.9) &= \min_k \biggl\{ k \,\, \bigg| \,\, \texttt{norm}_k(\mathbf{\mathbf{U}^T y}) > 0.9\biggr\} \\
+\end{aligned}
+$$
+
+
+% Manual newpage inserted to improve layout of sample file - not
+% needed in general before appendices/bibliography.
+
+\newpage
+
+\appendix
+\section{}
+\label{app:theorem}
+
+% Note: in this sample, the section number is hard-coded in. Following
+% proper LaTeX conventions, it should properly be coded as a reference:
+
+%In this appendix we prove the following theorem from
+%Section~\ref{sec:textree-generalization}:
+
+\noindent
+
+\section{}
+
+\noindent
+
+
+\vskip 0.2in
+\bibliography{sample}
+
+\end{document}

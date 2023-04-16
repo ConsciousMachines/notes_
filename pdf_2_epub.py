@@ -198,38 +198,38 @@ print(x_left, x_right, y_up, y_down)
 ########################################### TEST ZONE ############################
 ########################################### TEST ZONE ############################
 
-out_dir = r'/home/chad/Desktop'
-one_pdf                                     = [os.path.join(out_dir, i) for i in os.listdir(out_dir) if i[-4:] == '.pdf'][0]
-pdf_title                                   = os.path.basename(one_pdf).split('.')[0]
-print(f"Starting:\n{pdf_title}")
-data = p2i.convert_from_path(one_pdf, fmt='jpg', thread_count=os.cpu_count(), dpi = 300)
-success, avg_page = render_average_page(data)
+# out_dir = r'/home/chad/Desktop'
+# one_pdf                                     = [os.path.join(out_dir, i) for i in os.listdir(out_dir) if i[-4:] == '.pdf'][0]
+# pdf_title                                   = os.path.basename(one_pdf).split('.')[0]
+# print(f"Starting:\n{pdf_title}")
+# data = p2i.convert_from_path(one_pdf, fmt='jpg', thread_count=os.cpu_count(), dpi = 300)
+# success, avg_page = render_average_page(data)
 
 
-v  = Viewer()
-v.start(avg_page)
-x_left                 = int(v.vals[0].get())
-x_right                = int(v.vals[2].get())
-y_up                   = int(v.vals[1].get())
-y_down                 = int(v.vals[3].get())
-print(x_left, x_right, y_up, y_down)
+# v  = Viewer()
+# v.start(avg_page)
+# x_left                 = int(v.vals[0].get())
+# x_right                = int(v.vals[2].get())
+# y_up                   = int(v.vals[1].get())
+# y_down                 = int(v.vals[3].get())
+# print(x_left, x_right, y_up, y_down)
 
-######################################################
+# ######################################################
 
-i = len(data) // 2 + 10
-width, height = data[i].size
-_cropped = data[i].convert('L').crop((x_left + 1, y_up + 1, width - x_right, height - y_down))
-_enhanced = ImageEnhance.Contrast(_cropped).enhance(4.)
-_rot = _enhanced.transpose(im.ROTATE_90)
+# i = len(data) // 2 + 10
+# width, height = data[i].size
+# _cropped = data[i].convert('L').crop((x_left + 1, y_up + 1, width - x_right, height - y_down))
+# _enhanced = ImageEnhance.Contrast(_cropped).enhance(4.)
+# _rot = _enhanced.transpose(im.ROTATE_90)
 
-leniance = 20
-width, height = _rot.size
-_one_slice = _rot.crop((0,0,width // 2 + leniance + 1,height))
-_two_slice = _rot.crop((width // 2 - leniance,0,width,height))
+# leniance = 20
+# width, height = _rot.size
+# _one_slice = _rot.crop((0,0,width // 2 + leniance + 1,height))
+# _two_slice = _rot.crop((width // 2 - leniance,0,width,height))
 
-_one_slice = im.fromarray(255-np.array(_one_slice))
-_pic = _one_slice.transpose(im.ROTATE_270)
-resize_to_EQ_dims(_pic).show()
+# _one_slice = im.fromarray(255-np.array(_one_slice))
+# _pic = _one_slice.transpose(im.ROTATE_270)
+# resize_to_EQ_dims(_pic).show()
 
 
 
