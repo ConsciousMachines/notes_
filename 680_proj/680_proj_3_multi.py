@@ -4,6 +4,7 @@ import pickle
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import integrate
 from time import sleep
 
 
@@ -149,20 +150,334 @@ labels                         = labels.to(device)
 U_s, S_s, Vt_s, U_t, S_t, Vt_t = get_svd(x_s, x_t)
 
 
-# METHOD = 'LINEAR'          # simple linear regression
-# METHOD = 'REGULARIZE'      # use regularizer from paper
-METHOD = 'GENERAL'         # my generalized regularizer
+# Figure 1: project one-hot vectors on the singular vectors
+if False:
+        
+    # normalize the one-hot vectors
+    labels_n = labels / torch.linalg.vector_norm(labels, dim=0)
 
-ks                             = list(range(5,100,10))
-lams                           = [10**i for i in range(7)]
+    # project them onto U, to get their components in each singular vector
+    components = U_s.T @ labels_n
+
+    # list of specific k values at which to cutoff/zero-out regularization (instead of a general k)
+    _specific_k_values = []
+
+    cmap = plt.cm.get_cmap('coolwarm', 10)
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 3.75))
+    for i in range(10):
+
+        # components for the i^th one-hot vector
+        components_i = components[:,i]
+
+        # how much of the label is actually in the span of U (norm of components, say .95)
+        comp_norm_i = torch.linalg.vector_norm(components_i).item()
+
+        # find k so that first k singular vecs span 90% of the component norm
+        k = 1
+        while torch.linalg.vector_norm(components_i[:k]) < 0.9*comp_norm_i:
+            k = k + 1
+        _specific_k_values.append(k)
+
+        print(f'label {i} has .9 of its projection norm in the top {k} singular vectors')
+
+        cumulative_norm = torch.sqrt(torch.cumsum(torch.square(components_i), dim=0)).cpu()
+        abs_components = torch.abs(components_i).cpu()
+
+        _ = axes[0].plot(cumulative_norm[:50], label=str(i), color=cmap(i))
+        _ = axes[1].plot(abs_components[:50], label=str(i), color=cmap(i))
+    _ = axes[0].set_title('cumulative norm of $U^T y_i$')
+    _ = axes[1].set_title('absolute value of $U^T y_i$')
+    _ = axes[0].set_ylabel('norm of $U^T y_i$')
+    _ = axes[1].set_ylabel('dot product with $y_i$')
+    _ = axes[0].set_xlabel('projected on top $k$ vectors')
+    _ = axes[1].set_xlabel('singular vector index')
+    _ = plt.tight_layout()
+    _ = axes[0].legend()
+    _ = axes[1].legend()
+    plt.savefig('680_proj/draft/img/cumulative_norm.png')
+    plt.show()
+
+    # create a mask we can multiply by our answer to zero-out imporant vectors
+    # this allows us to use a different k for each label, rather than a single k
+    mask = torch.ones([785, len(digits)]).to(device)
+    for _i, _k in enumerate(_specific_k_values):
+        mask[:_k,_i] = 0
+
+
+# optimal hard thresholding (Gavish & Donoho) -> k_target = 96
+if False:
+    # https://github.com/erichson/optht
+
+    def optht(beta, sv, sigma=None):
+        """Compute optimal hard threshold for singular values.
+        Off-the-shelf method for determining the optimal singular value truncation
+        (hard threshold) for matrix denoising.
+        The method gives the optimal location both in the case of the known or
+        unknown noise level.
+        Parameters
+        ----------
+        beta : scalar or array_like
+            Scalar determining the aspect ratio of a matrix, i.e., ``beta = m/n``,
+            where ``m >= n``.  Instead the input matrix can be provided and the
+            aspect ratio is determined automatically.
+        sv : array_like
+            The singular values for the given input matrix.
+        sigma : real, optional
+            Noise level if known.
+        Returns
+        -------
+        k : int
+            Optimal target rank.
+        Notes
+        -----
+        Code is adapted from Matan Gavish and David Donoho, see [1]_.
+        References
+        ----------
+        .. [1] Gavish, Matan, and David L. Donoho.
+        "The optimal hard threshold for singular values is 4/sqrt(3)"
+            IEEE Transactions on Information Theory 60.8 (2014): 5040-5053.
+            http://arxiv.org/abs/1305.5870
+        """
+        # Compute aspect ratio of the input matrix
+        if isinstance(beta, np.ndarray):
+            m = min(beta.shape)
+            n = max(beta.shape)
+            beta = m / n
+
+        # Check ``beta``
+        if beta < 0 or beta > 1:
+            raise ValueError('Parameter `beta` must be in (0,1].')
+
+        if sigma is None:
+            # Sigma is unknown
+            # Approximate ``w(beta)``
+            coef_approx = _optimal_SVHT_coef_sigma_unknown(beta)
+            # Compute the optimal ``w(beta)``
+            coef = (_optimal_SVHT_coef_sigma_known(beta)
+                    / np.sqrt(_median_marcenko_pastur(beta)))
+            # Compute cutoff
+            cutoff = coef * np.median(sv)
+        else:
+            # Sigma is known
+            # Compute optimal ``w(beta)``
+            coef = _optimal_SVHT_coef_sigma_known(beta)
+            # Compute cutoff
+            cutoff = coef * np.sqrt(len(sv)) * sigma
+        # Log cutoff and ``w(beta)``
+        # Compute and return rank
+        greater_than_cutoff = np.where(sv > cutoff)
+        if greater_than_cutoff[0].size > 0:
+            k = np.max(greater_than_cutoff) + 1
+        else:
+            k = 0
+        return k
+
+
+    def _optimal_SVHT_coef_sigma_known(beta):
+        """Implement Equation (11)."""
+        return np.sqrt(2 * (beta + 1) + (8 * beta)
+                    / (beta + 1 + np.sqrt(beta**2 + 14 * beta + 1)))
+
+
+    def _optimal_SVHT_coef_sigma_unknown(beta):
+        """Implement Equation (5)."""
+        return 0.56 * beta**3 - 0.95 * beta**2 + 1.82 * beta + 1.43
+
+
+    def _mar_pas(x, topSpec, botSpec, beta):
+        """Implement Marcenko-Pastur distribution."""
+        if (topSpec - x) * (x - botSpec) > 0:
+            return np.sqrt((topSpec - x) *
+                        (x - botSpec)) / (beta * x) / (2 * np.pi)
+        else:
+            return 0
+
+
+    def _median_marcenko_pastur(beta):
+        """Compute median of Marcenko-Pastur distribution."""
+        botSpec = lobnd = (1 - np.sqrt(beta))**2
+        topSpec = hibnd = (1 + np.sqrt(beta))**2
+        change = 1
+
+        while change & ((hibnd - lobnd) > .001):
+            change = 0
+            x = np.linspace(lobnd, hibnd, 10)
+            y = np.zeros_like(x)
+            for i in range(len(x)):
+                yi, err = integrate.quad(
+                    _mar_pas,
+                    a=x[i],
+                    b=topSpec,
+                    args=(topSpec, botSpec, beta),
+                )
+                y[i] = 1.0 - yi
+
+            if np.any(y < 0.5):
+                lobnd = np.max(x[y < 0.5])
+                change = 1
+
+            if np.any(y > 0.5):
+                hibnd = np.min(x[y > 0.5])
+                change = 1
+
+        return (hibnd + lobnd) / 2.
+
+
+    def get_k_gavish_donoho(x_t, _sigma):
+        _x = x_t.cpu().numpy()
+        _, _s, _ = np.linalg.svd(_x, full_matrices=False)
+        _k = optht(_x, sv=_s, sigma=_sigma)
+        return _k
+
+    k = get_k_gavish_donoho(x_t, _sigma=1)
+    print('Gavish Donoho k:', k)
+
+
+# Figure 2: k1 vs k2 for different values of lam
+if False:
+
+
+    fig, axs = plt.subplots(2, 3, figsize=(14, 7))
+    cmap = plt.cm.get_cmap('coolwarm', 10)
+
+    if True:
+        with open('680_proj/scores_k1_k2_lam=10000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[0, 0].plot(acc_t, label=f'{int(diff_k1)}', color=cmap(_i))
+        _ = axs[0, 0].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^4$')
+
+    if True:
+        with open('680_proj/scores_k1_k2_lam=100000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[0, 1].plot(acc_t, label=f'{int(diff_k1)}', color=cmap(_i))
+        _ = axs[0, 1].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^5$')
+
+    if True:
+        with open('680_proj/scores_k1_k2_lam=1000000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[0, 2].plot(acc_t, label=f'{int(diff_k1)}', color=cmap(_i))
+        _ = axs[0, 2].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^6$')
+
+    if True:
+        with open('680_proj/scores_k1_k2_lam=10000000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[1,0].plot(acc_t, label=f'{diff_k1}', color=cmap(_i))
+        _ = axs[1,0].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^7$')
+
+    if True:
+            
+        with open('680_proj/scores_k1_k2_lam=100000000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[1, 1].plot(acc_t, label=f'{diff_k1}', color=cmap(_i))
+        _ = axs[1, 1].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^8$')
+
+    if True:
+        with open('680_proj/scores_k2_k2_lam=1000000000', 'rb') as f:
+            scores = pickle.load(f)
+        diff_k1s = sorted(set(scores[:,0]))
+        for _i, diff_k1 in enumerate(diff_k1s):
+            idx = scores[:,0] == diff_k1
+            scores_subset = scores[idx,:]
+            acc_t = scores_subset[:,4]
+            _ = axs[1, 2].plot(acc_t, label=f'{diff_k1}', color=cmap(_i))
+        _ = axs[1, 2].set_title('$k_t$ vs acc, for different $k_s. \lambda = 10^9$')
+
+    tick_locs = list(range(10))
+    tick_labels = list(range(5,105,10))
+
+    for _i in range(2):
+        for _j in range(3):
+            _ = axs[_i, _j].set_ylim(0,.6)
+            _ = axs[_i, _j].legend(title = '$k_s$', loc='upper right')
+            _ = axs[_i, _j].set_xlabel('$k_t$')
+            _ = axs[_i, _j].set_ylabel('target accuracy')
+            _ = axs[_i, _j].set_xticks(tick_locs)
+            _ = axs[_i, _j].set_xticklabels(tick_labels)
+
+    plt.tight_layout()
+    plt.savefig('680_proj/draft/img/k1_vs_k2.png')
+    plt.show()
+
+
+# Figure 3: data sample
+if False:
+        
+    tr_usps, te_usps = get_data('USPS', RETURN_LOADERS = True, digits=range(10))
+    tr_mnst, te_mnst = get_data('MNIST', RETURN_LOADERS = True, digits=range(10))
+
+    img_s, label_s = next(iter(tr_mnst))
+    img_s = img_s.numpy()
+    img_s = img_s[:,:-1]
+    img_s = img_s.reshape([-1,1,28,28])
+
+    img_t, label_t = next(iter(tr_usps))
+    img_t = img_t.numpy()
+    img_t = img_t[:,:-1]
+    img_t = img_t.reshape([-1,1,28,28])
+
+    fig, axes = plt.subplots(2, 8, figsize=(14, 4))
+    for i, ax in enumerate(axes.flat):
+        if i < (num_images // 2):
+            img = img_s[i].squeeze()
+            _ = ax.imshow(img, cmap='viridis')
+            _ = ax.set_title(f"source: {int(label_s[i].item())}", weight='bold')
+        else:
+            img = img_t[i].squeeze()
+            _ = ax.imshow(img, cmap='viridis')
+            _ = ax.set_title(f"target: {int(label_t[i].item())}", weight='bold')
+        _ = ax.axis('off')
+    plt.tight_layout()
+    plt.savefig('680_proj/draft/img/data_sample.png')
+    plt.show()
+
+
+
+
+
+
+
+
+# METHOD = 'LINEAR'          # simple linear regression
+METHOD = 'REGULARIZE'      # use regularizer from paper
+# METHOD = 'GENERAL'         # my generalized regularizer
+
+
+k1 = None
+k2s = list(range(5,105,10))
+lams = [10**i for i in range(10)]
 
 iii                            = 0
-scores                         = np.zeros([len(ks)*len(lams),4])
-for k in ks:
-    for lam in lams:
+scores                         = np.zeros([len(k2s)*len(lams),5])
+
+for lam in lams:
+    for k2 in k2s:
 
         # create a model and train it
-
         if (METHOD == 'LINEAR') or (METHOD == 'REGULARIZE'):
 
             class Classifier(nn.Module):
@@ -184,8 +499,22 @@ for k in ks:
                 def forward(self, x):
                     return torch.tanh(self.linear(x))
 
+            # class Classifier(nn.Module): # this nn gets .57 with no reg, .10 with reg
+            #     def __init__(self, in_dim, out_dim):
+            #         super(Classifier, self).__init__()
+            #         self.lin1   = nn.Linear(in_dim, 400, bias = False)
+            #         self.drop   = nn.Dropout(p=0.2) 
+            #         self.lin2   = nn.Linear(400, out_dim)
+                    
+            #     def forward(self, x):
+            #         x = torch.relu(self.lin1(x))
+            #         x = self.drop(x)
+            #         x = torch.tanh(self.lin2(x))
+            #         return x
+
         else:
             raise Exception('unknown method')
+
 
         model                     = Classifier(x_s.shape[1], len(digits)).to(device)
         optimizer                 = optim.Adam(model.parameters())
@@ -198,14 +527,23 @@ for k in ks:
                 loss              = sse
             elif METHOD == 'REGULARIZE':
                 W                 = model.linear.weight.T
-                label_align_s     = torch.sum(torch.square((S_s * (Vt_s @ W))[k:,:]))
-                label_align_t     = torch.sum(torch.square((S_t * (Vt_t @ W))[k:,:]))
-                loss              = sse - label_align_s + lam * label_align_t 
+
+                # MASK (different k)
+                # label_align_s     = torch.sum(torch.square((S_s * (Vt_s @ W))*mask))
+                # label_align_t     = torch.sum(torch.square((S_t * (Vt_t @ W))*mask))
+
+                # label_align_s     = torch.sum(torch.square((S_s * (Vt_s @ W))[k1:,:]))
+                label_align_t     = torch.sum(torch.square((S_t * (Vt_t @ W))[k2:,:]))
+                # loss              = sse - label_align_s + lam * label_align_t 
+                loss              = sse + lam * label_align_t 
             elif METHOD == 'GENERAL':
+
                 pred_t            = model(x_t)
-                my_idea_s         = torch.sum(torch.square(U_s.T[k:,:] @ pred_s))
-                my_idea_t         = torch.sum(torch.square(U_t.T[k:,:] @ pred_t))
-                loss              = sse - my_idea_s + lam * my_idea_t
+                # my_idea_s         = torch.sum(torch.square(U_s.T[k1:,:] @ pred_s))
+                my_idea_t         = torch.sum(torch.square(U_t.T[k2:,:] @ pred_t))
+                # loss              = sse - my_idea_s + lam * my_idea_t
+                loss              = sse + lam * my_idea_t
+
             else:
                 raise Exception('unknown method')
 
@@ -223,205 +561,13 @@ for k in ks:
         acc_t                     = evaluate(model, x_t, y_t).item()
 
         # add accuracy results to dataframe for later
-        scores[iii,:]             = [k, lam, acc_s, acc_t]
-        iii                       = iii + 1
+        # scores[iii,:]             = [k1, k2, lam, acc_s, acc_t]
+        # iii                       = iii + 1
 
         # save in case computer crashes
-        with open('680_proj/scores', 'wb') as f:
-            pickle.dump(scores, f)
+        # with open('680_proj/scores', 'wb') as f:
+            # pickle.dump(scores, f)
 
-        print(f'counter={iii}, accuracies: {acc_s:.2f} / .{acc_t:.2f}    k={k}, lam={lam}'.replace('0.','.'))
+        # sleep(60) # cool the gpu
 
-        sleep(60) # cool the gpu
-
-
-
-
-with open('data', 'rb') as f:
-    scores = pickle.load(scores)
-
-
-# EXPERIMENTS
-# - linear, no reg:     .86 / .10
-# - linear, reg:        .42 / .22    k=3, lam=1000
-
-
-
-
-
-'''
-counter=1, accuracies: .90 / .23    k=5, lam=1
-counter=2, accuracies: .88 / .17    k=5, lam=10
-counter=3, accuracies: .72 / .14    k=5, lam=100
-counter=4, accuracies: .53 / .39    k=5, lam=1000
-counter=5, accuracies: .32 / .37    k=5, lam=10000
-counter=6, accuracies: .18 / .36    k=5, lam=100000
-counter=7, accuracies: .13 / .06    k=5, lam=1000000
-counter=8, accuracies: .90 / .23    k=15, lam=1
-counter=9, accuracies: .90 / .30    k=15, lam=10
-counter=10, accuracies: .84 / .23    k=15, lam=100
-counter=11, accuracies: .71 / .46    k=15, lam=1000
-counter=12, accuracies: .62 / .46    k=15, lam=10000
-counter=13, accuracies: .41 / .49    k=15, lam=100000
-counter=14, accuracies: .19 / .13    k=15, lam=1000000
-counter=15, accuracies: .90 / .36    k=25, lam=1
-counter=16, accuracies: .90 / .35    k=25, lam=10
-counter=17, accuracies: .86 / .29    k=25, lam=100
-counter=18, accuracies: .76 / .39    k=25, lam=1000
-counter=19, accuracies: .71 / .39    k=25, lam=10000
-counter=20, accuracies: .54 / .38    k=25, lam=100000
-counter=21, accuracies: .27 / .36    k=25, lam=1000000
-counter=22, accuracies: .90 / .30    k=35, lam=1
-counter=23, accuracies: .90 / .30    k=35, lam=10
-counter=24, accuracies: .88 / .20    k=35, lam=100
-counter=25, accuracies: .80 / .33    k=35, lam=1000
-counter=26, accuracies: .74 / .38    k=35, lam=10000
-counter=27, accuracies: .61 / .31    k=35, lam=100000
-counter=28, accuracies: .31 / .24    k=35, lam=1000000
-counter=29, accuracies: .91 / .29    k=45, lam=1
-counter=30, accuracies: .90 / .32    k=45, lam=10
-counter=31, accuracies: .89 / .24    k=45, lam=100
-counter=32, accuracies: .81 / .29    k=45, lam=1000
-counter=33, accuracies: .75 / .35    k=45, lam=10000
-counter=34, accuracies: .61 / .24    k=45, lam=100000
-counter=35, accuracies: .39 / .26    k=45, lam=1000000
-counter=36, accuracies: .91 / .29    k=55, lam=1
-counter=37, accuracies: .90 / .29    k=55, lam=10
-counter=38, accuracies: .89 / .13    k=55, lam=100
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# EXPERIMENTS: source/target. keep k=3, lam=1000
-# no regularization
-# - linear             .86 / .11
-# - tanh               .91 / .40
-
-# REGULARIZER (as in paper)
-# - linear             .39 / .32 (improves, as paper implied)
-# - tanh               .42 / .39
-
-# GENERALIZED LOSS (the one that makes mathematical sense)
-# TODO: REDO EVERYTHING 
-
-# TODO: make graph of k in range(100) since we have a 53% max
-
-# TODO: nn when computer cools down. needs parameter grid search again -.-
-# TODO: basic CNN
-
-# TODO: redo basic experiments for massive lam 10**8,9,...
-
-# TODO: compare my best k against 300 by gavish donoho (because cutting off at 90% is bad)
-# https://www.youtube.com/watch?v=epoHE2rex0g&list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv&index=37
-# cite 2 more things: Brunton, and Gavish
-
-
-
-
-
-
-
-
-
-# function to copy text to clipboard (linux)
-import subprocess
-def copy_to_clipboard(text):
-    p = subprocess.Popen(['xsel', '-bi'], stdin=subprocess.PIPE)
-    p.communicate(input=text.encode())
-
-
-soy = r'''
-
-
-a. If the genotype makes its first appearance on the 53rd subject analyzed, then the first 52 subjects do not have the genotype, and the 53rd subject has the genotype. Assuming the subjects are independent and have the same prevalence probability $\theta$, the likelihood function can be modeled using a geometric distribution. The probability mass function (PMF) of a geometric distribution is:
-
-$P(X = k) = (1 - \theta)^{(k - 1)} \cdot \theta$
-
-In this case, $k = 53$. So the likelihood function $L(\theta)$ is:
-
-$L(\theta) = (1 - \theta)^{(53 - 1)} \cdot \theta$
-
-b. If the scientists had planned to stop when they found five subjects with the genotype of interest, and they analyzed 552 subjects, we can model this using a negative binomial distribution. The PMF of a negative binomial distribution is:
-
-$P(X = k) = C(k - 1, r - 1) \cdot \theta^r \cdot (1 - \theta)^{(k - r)}$
-
-In this case, $r = 5$ (the number of successes or genotypes of interest), and $k = 552$ (the number of trials). So the likelihood function $L(\theta)$ is:
-
-$L(\theta) = C(552 - 1, 5 - 1) \cdot \theta^5 \cdot (1 - \theta)^{(552 - 5)}$
-
-c. We can plot both likelihood functions in R:
-
-The plot will show the likelihood functions for both scenarios a and b. You will notice that the likelihood function in scenario a, where the genotype appears on the 53rd subject, is more spread out with a lower peak than the likelihood function in scenario b, where the scientists stop after finding five subjects with the genotype. This indicates that the data in scenario b provides more information about the prevalence probability $\theta$, resulting in a more concentrated likelihood function around the most likely value of $\theta$.
-
-'''
-
-soy = soy.replace('θ', '$\\theta$').replace('\n', '\n\n')
-
-print(soy)
-copy_to_clipboard(soy)
-
-
-
-
-
-
-
-'''
-if False: # plot the cumulative norm contained in top singular vectors
-        
-    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
-    for i in range(10):
-
-        vec = labels[:,i]
-        vec = vec / torch.linalg.vector_norm(vec)
-        comp = U.T @ vec
-
-        k = 1
-        while (torch.linalg.vector_norm(comp[:k]) < 0.9) and (k < _X_source.shape[1]):
-            k = k + 1
-        print(f'label {i} has {int(torch.linalg.vector_norm(comp[:k]) * 100)}% of its norm in the top {k} singular vecs')
-
-        _ = axes[0].plot(torch.sqrt(torch.cumsum(torch.pow(comp,2), 0))[:50])
-        _ = axes[1].plot(torch.sqrt(torch.pow(comp,2))[:50])
-    _ = plt.title('cumulative norm of label projected on top singular vecs')
-    _ = plt.tight_layout()
-    plt.show()
-'''
+        print(f'accuracies: {acc_s:.2f} / {acc_t:.2f}    k1={k1}, k2={k2}, lam={int(lam)}'.replace('0.','.'))

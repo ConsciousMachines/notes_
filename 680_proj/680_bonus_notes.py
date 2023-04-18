@@ -1010,6 +1010,44 @@ Ap = torch.cat([_X_source, xte], dim = 0) # added 10k data points from test set
 
 
 
+# EXPERIMENTS
+# general
+# no reg: accuracies: .92 / .41    k1=0, k2=96, lam=1000
+# k2 = 96, lam 1..10^7 all < .40
+# accuracies: .35 / .53    k1=0, k2=13, lam=100000
+
+#accuracies: .60 / .56    k1=15, k2=13, lam=1000000
+#accuracies: .54 / .57    k1=0, k2=13, lam=1000000
+#accuracies: .82 / .52    k1=0, k2=96, lam=10000000
+
+
+
+soy = S_t.cpu().numpy()
+plt.plot(np.log(soy))
+plt.show()
+
+
+soy = S_s.cpu().numpy()
+plt.plot(np.log(soy))
+plt.show()
+
+
+# https://www.jmlr.org/format/format.html
+# https://arxiv.org/abs/2211.14960
+# https://openreview.net/forum?id=fLIWMnZ9ij
+
+'''
+- ask pascal 
+	- i am looking at the open review website for the paper I cited, and reading reviews for inspiration. How long does it take for a person
+		to write a review like this?
+	- do you undertand the proof in appendi A?
+'''
+
+
+
+
+
+
 
 
 

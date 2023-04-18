@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex sample"] 1681609620 "sample.aux" "sample.bbl" "sample" 1681609622 0
-  "./sample.bib" 1681609619 571 a90ff4603a67532cacace1f7d7650a72 ""
+["bibtex sample"] 1681816370 "sample.aux" "sample.bbl" "sample" 1681816578 0
+  "./sample.bib" 1681699206 1104 941d74ba004a69ca7ae8f944cbf72e82 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "sample.aux" 1681609621 1307 890ca62a31f215fc9dbde6030c675bd1 "pdflatex"
+  "sample.aux" 1681816577 3934 b5393b5056d1d9adec3071f1edf7ef95 "pdflatex"
   (generated)
   "sample.bbl"
   "sample.blg"
   (rewritten before read)
-["pdflatex"] 1681609621 "/home/chad/Desktop/_backups/notes/680_proj/draft/sample.tex" "sample.pdf" "sample" 1681609622 0
-  "/home/chad/Desktop/_backups/notes/680_proj/draft/sample.tex" 1681609619 8618 4198a561aef36a5ed54445d30e2bb4b4 ""
+["pdflatex"] 1681816576 "/home/chad/Desktop/_backups/notes/680_proj/draft/sample.tex" "sample.pdf" "sample" 1681816578 0
+  "/home/chad/Desktop/_backups/notes/680_proj/draft/sample.tex" 1681816576 25817 5601e55990626eb21ffe3af4bc82e58e ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
@@ -117,11 +117,14 @@
   "/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1681095853 4643545 a69824f37b6b485fa46da16b935e4a46 ""
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1681095929 7885174 5c103ee6d060811196118fad86398603 ""
   "/usr/local/texlive/2023/texmf.cnf" 1681095847 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
+  "img/cumulative_norm.png" 1681781473 107386 1bae8f1c5b7787ebd816472e4ede40d1 ""
+  "img/data_sample.png" 1681811129 32986 96afa332398ce4921d7998fb814f35e9 ""
+  "img/k1_vs_k2.png" 1681781293 146042 82e09279e5acb29f140d6b7479e229b5 ""
   "jmlr2e.sty" 1676540690 15712 e2712b3d8283b823dc75f9962fab3193 ""
-  "sample.aux" 1681609621 1307 890ca62a31f215fc9dbde6030c675bd1 "pdflatex"
-  "sample.bbl" 1681609621 878 081f08da2beb6b8903c06d3c4c6e5d44 "bibtex sample"
-  "sample.out" 1681609621 175 fe81d9a8f8e07b4db440f6e600d076c5 "pdflatex"
-  "sample.tex" 1681609619 8618 4198a561aef36a5ed54445d30e2bb4b4 ""
+  "sample.aux" 1681816577 3934 b5393b5056d1d9adec3071f1edf7ef95 "pdflatex"
+  "sample.bbl" 1681816370 1321 3b179b36aca1a03036266608d273f77f "bibtex sample"
+  "sample.out" 1681816577 942 f5e0ab5d8a4e8e3992e918a1017c5446 "pdflatex"
+  "sample.tex" 1681816576 25817 5601e55990626eb21ffe3af4bc82e58e ""
   (generated)
   "sample.aux"
   "sample.log"

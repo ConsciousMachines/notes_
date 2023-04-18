@@ -135,5 +135,6 @@ _ = axes[2].set_ylim(x2_min, x2_max)
 _ = axes[2].set_title('target domain')
 
 _ = plt.tight_layout()
-_ = plt.savefig(r'/home/chad/Desktop/graph.png')
+# _ = plt.savefig(r'/home/chad/Desktop/graph.png')
 _ = plt.show()
+

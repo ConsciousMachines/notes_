@@ -233,6 +233,54 @@ print(x_left, x_right, y_up, y_down)
 
 
 
+
+
+
+
+
+
+
+# function to copy text to clipboard (linux)
+import subprocess
+def copy_to_clipboard(text):
+    p = subprocess.Popen(['xsel', '-bi'], stdin=subprocess.PIPE)
+    p.communicate(input=text.encode())
+
+
+soy = r'''
+
+
+a. If the genotype makes its first appearance on the 53rd subject analyzed, then the first 52 subjects do not have the genotype, and the 53rd subject has the genotype. Assuming the subjects are independent and have the same prevalence probability $\theta$, the likelihood function can be modeled using a geometric distribution. The probability mass function (PMF) of a geometric distribution is:
+
+$P(X = k) = (1 - \theta)^{(k - 1)} \cdot \theta$
+
+In this case, $k = 53$. So the likelihood function $L(\theta)$ is:
+
+$L(\theta) = (1 - \theta)^{(53 - 1)} \cdot \theta$
+
+b. If the scientists had planned to stop when they found five subjects with the genotype of interest, and they analyzed 552 subjects, we can model this using a negative binomial distribution. The PMF of a negative binomial distribution is:
+
+$P(X = k) = C(k - 1, r - 1) \cdot \theta^r \cdot (1 - \theta)^{(k - r)}$
+
+In this case, $r = 5$ (the number of successes or genotypes of interest), and $k = 552$ (the number of trials). So the likelihood function $L(\theta)$ is:
+
+$L(\theta) = C(552 - 1, 5 - 1) \cdot \theta^5 \cdot (1 - \theta)^{(552 - 5)}$
+
+c. We can plot both likelihood functions in R:
+
+The plot will show the likelihood functions for both scenarios a and b. You will notice that the likelihood function in scenario a, where the genotype appears on the 53rd subject, is more spread out with a lower peak than the likelihood function in scenario b, where the scientists stop after finding five subjects with the genotype. This indicates that the data in scenario b provides more information about the prevalence probability $\theta$, resulting in a more concentrated likelihood function around the most likely value of $\theta$.
+
+'''
+
+soy = soy.replace('θ', '$\\theta$').replace('\n', '\n\n')
+
+print(soy)
+copy_to_clipboard(soy)
+
+
+
+
+
 ########################################### END TEST ZONE ############################
 ########################################### END TEST ZONE ############################
 ########################################### END TEST ZONE ############################
