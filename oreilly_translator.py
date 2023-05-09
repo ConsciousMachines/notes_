@@ -1,23 +1,12 @@
 
 from google.cloud import translate_v2 as translate
 # make sure the private key is in the environment, for google API to work:
-# export GOOGLE_APPLICATION_CREDENTIALS="/home/chad/Downloads/symmetric-span-382608-91d2bcbfba3e.json"
+# export GOOGLE_APPLICATION_CREDENTIALS="/home/chad/Downloads/symmetric-span-382608-1947fbf1cb6a.json"
 
 import os
 import re
 import time
 import xml.etree.ElementTree as ET
-
-
-# Create a client object for the Translation API
-translate_client = translate.Client() 
-# Define the source language and target language
-source_language = 'ja' 
-target_language = 'en'
-# Compile a regular expression to match Japanese characters
-japanese_re = re.compile(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]')
-# count number of chars sent to API
-c = counter()
 
 
 # a simple counter to count the characters processed
@@ -28,9 +17,22 @@ class counter:
         self.count += n
 
 
+# Create a client object for the Translation API
+translate_client = translate.Client()
+# Define the source language and target language
+source_language = 'ja' 
+target_language = 'en'
+# Compile a regular expression to match Japanese characters
+japanese_re = re.compile(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]')
+# count number of chars sent to API
+c = counter()
+
+
+
+
 # function that sends a string to Google Cloud Translate API
 def translate_text(text):
-    if japanese_re.search(text):       # if text contains japanese 
+    if japanese_re.search(text):       # if text contains japanese      
 
         text_s = text.strip()          # remove spaces
         spaces = text.split(text_s)    # the spaces so we can restore them
@@ -39,6 +41,7 @@ def translate_text(text):
             c.add(len(text_s))         # keep count of how many chars we're processing
 
             time.sleep(1)              # wait 
+            global translate_client
             translation = translate_client.translate(text_s, source_language=source_language, target_language=target_language)
             text_tr = translation['translatedText']
             text_ret = spaces[0] + text_tr + spaces[1]
@@ -111,7 +114,7 @@ def walk_and_process(elem):
     return new_elem
 
 
-chaps_dir = r'/home/chad/Desktop/DL3/OEBPS/'
+chaps_dir = r'/home/chad/Desktop/DL4/OEBPS/'
 file_dirs = [os.path.join(chaps_dir,i) for i in os.listdir(chaps_dir) if i.split('.')[-1] == 'xhtml']
 
 for file_dir in file_dirs:
@@ -241,4 +244,7 @@ for file_dir in file_dirs:
 
 # https://cloud.google.com/translate/docs/languages
 # https://cloud.google.com/translate/docs/basic/discovering-supported-languages
+
+
+
 

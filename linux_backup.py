@@ -24,7 +24,7 @@ def movbak_dir(_to, _from):
     mov_dir(_from, _to)
 
 
-_bakdir = '/home/chad/Desktop/_backups'
+_bakdir = '/home/chad/Desktop/_backups/backups'
 
 # copy preference folders (cant move or theyll break current running app)
 copy_dir('/home/chad/.vscode-oss',             _bakdir)                         # codium prefs
@@ -38,15 +38,15 @@ copy_dir('/home/chad/.config/BraveSoftware',   _bakdir)                         
 #mov_dir('/home/chad/.Rack',                    os.path.join(_bakdir, '_Rack'))  # VCV
 #mov_dir('/home/chad/.Rack2',                   os.path.join(_bakdir, '_Rack'))
 mov_dir('/home/chad/Desktop/2023.txt', _bakdir)                                  # notes
-mov_dir('/home/chad/Desktop/skool', _bakdir)                                     # skool
+#mov_dir('/home/chad/Desktop/skool', _bakdir)                                    # skool
 
 
 # ZIP EVERYTHING UP FOR EXPORT 
 shutil.make_archive('/home/chad/Desktop/_backups', 'zip', '/home/chad/Desktop/_backups')
 
 # move the dirs back
-movbak_dir('/home/chad/Desktop', os.path.join(_bakdir, 'skool'))                   # skool
 movbak_dir('/home/chad/Desktop', os.path.join(_bakdir, '2023.txt'))                # notes
+#movbak_dir('/home/chad/Desktop', os.path.join(_bakdir, 'skool'))                  # skool
 #movbak_dir('/home/chad',               os.path.join(_bakdir, 'hello'))            # Sedgewick Java
 #movbak_dir('/home/chad',               os.path.join(_bakdir, 'Bitwig Studio'))    # bitwig projects
 #movbak_dir('/home/chad/.Rack',         os.path.join(_bakdir, '_Rack/.Rack'))      # VCV
